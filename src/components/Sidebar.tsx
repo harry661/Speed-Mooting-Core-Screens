@@ -1,7 +1,9 @@
-import { BookOpen, History, Settings, LogOut, LayoutDashboard, FileText, Shield } from "lucide-react"
+import { useState, useEffect } from "react"
+import { BookOpen, History, Settings, LogOut, LayoutDashboard, FileText, Shield, GraduationCap, ChevronDown, ChevronUp, Database } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Link, useLocation } from "react-router-dom"
+import { motion, AnimatePresence } from "framer-motion"
 
 const menuItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/" },
@@ -11,12 +13,26 @@ const menuItems = [
     { icon: Settings, label: "Settings", href: "#" },
 ]
 
+const resourcesSubmenu = [
+    { label: "Legal Databases", href: "/tutorials?tab=databases", icon: Database },
+    { label: "Subject Guides", href: "/tutorials?tab=subjects", icon: BookOpen },
+    { label: "Tutorials", href: "/tutorials?tab=tutorials", icon: GraduationCap },
+]
+
 interface SidebarProps {
     isCollapsed: boolean
 }
 
 export function Sidebar({ isCollapsed }: SidebarProps) {
     const location = useLocation()
+    const [isResourcesOpen, setIsResourcesOpen] = useState(location.pathname === "/tutorials")
+    
+    // Keep dropdown open when on tutorials page
+    useEffect(() => {
+        if (location.pathname === "/tutorials") {
+            setIsResourcesOpen(true)
+        }
+    }, [location.pathname])
 
     return (
         <div className={cn(
@@ -49,6 +65,75 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
                         </Button>
                     </Link>
                 ))}
+
+                {/* Resources Dropdown */}
+                {isCollapsed ? (
+                    <Link to="/tutorials">
+                        <Button
+                            variant="ghost"
+                            className={cn(
+                                "w-full justify-center text-white/60 hover:text-white hover:bg-white/5 transition-all duration-200 mb-0.5 font-heading font-medium tracking-wide rounded-l-sm rounded-r-none h-11 px-0",
+                                location.pathname === "/tutorials" && "bg-white/5 text-white font-bold border-r-2 border-accent"
+                            )}
+                        >
+                            <GraduationCap className={cn("w-4 h-4 shrink-0", location.pathname === "/tutorials" ? "text-accent" : "text-white/40")} />
+                        </Button>
+                    </Link>
+                ) : (
+                    <div className="space-y-1">
+                        <Button
+                            variant="ghost"
+                            onClick={() => setIsResourcesOpen(!isResourcesOpen)}
+                            className={cn(
+                                "w-full justify-between gap-4 text-white/60 hover:text-white hover:bg-white/5 transition-all duration-200 mb-0.5 font-heading font-medium tracking-wide rounded-l-sm rounded-r-none h-11 px-3",
+                                location.pathname === "/tutorials" && "bg-white/5 text-white font-bold"
+                            )}
+                        >
+                            <div className="flex items-center gap-4">
+                                <GraduationCap className={cn("w-4 h-4 shrink-0", location.pathname === "/tutorials" ? "text-accent" : "text-white/40")} />
+                                <span className="text-[11px] uppercase tracking-[0.1em]">Resources</span>
+                            </div>
+                            {isResourcesOpen ? (
+                                <ChevronUp className="w-4 h-4 text-white/40" />
+                            ) : (
+                                <ChevronDown className="w-4 h-4 text-white/40" />
+                            )}
+                        </Button>
+                        <AnimatePresence>
+                            {isResourcesOpen && (
+                                <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: "auto", opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="overflow-hidden"
+                                >
+                                    <div className="pl-7 space-y-1">
+                                        {resourcesSubmenu.map((subItem) => {
+                                            const searchParams = new URLSearchParams(location.search)
+                                            const isActive = location.pathname === "/tutorials" && searchParams.get("tab") === subItem.href.split("tab=")[1]
+                                            const SubIcon = subItem.icon
+                                            return (
+                                                <Link key={subItem.label} to={subItem.href}>
+                                                    <Button
+                                                        variant="ghost"
+                                                        className={cn(
+                                                            "w-full justify-start gap-3 text-white/50 hover:text-white hover:bg-white/5 transition-all duration-200 mb-0.5 font-heading font-medium tracking-wide rounded-l-sm rounded-r-none h-9 px-3 text-[10px]",
+                                                            isActive && "bg-white/5 text-white font-bold border-r-2 border-accent"
+                                                        )}
+                                                    >
+                                                        <SubIcon className={cn("w-3.5 h-3.5 shrink-0", isActive ? "text-accent" : "text-white/30")} />
+                                                        <span className="uppercase tracking-[0.1em]">{subItem.label}</span>
+                                                    </Button>
+                                                </Link>
+                                            )
+                                        })}
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                )}
 
                 <div className={cn("pt-8 pb-2", isCollapsed && "flex flex-col items-center")}>
                     {!isCollapsed ? (

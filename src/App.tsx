@@ -5,6 +5,7 @@ import ExerciseLibrary from "./pages/ExerciseLibrary"
 import SubmissionFlow from "./pages/SubmissionFlow"
 import AIFeedbackReport from "./pages/AIFeedbackReport"
 import AdminExerciseManagement from "./pages/AdminExerciseManagement"
+import TutorialsAndGuidance from "./pages/TutorialsAndGuidance"
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/exercises" element={<ExerciseLibrary />} />
           <Route path="/submit" element={<SubmissionFlow />} />
           <Route path="/report" element={<AIFeedbackReport />} />
+          <Route path="/tutorials" element={<TutorialsAndGuidance />} />
           <Route path="/admin/exercises" element={<AdminExerciseManagement />} />
         </Routes>
       </Layout>

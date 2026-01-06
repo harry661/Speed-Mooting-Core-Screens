@@ -1,5 +1,5 @@
 import { motion } from "framer-motion"
-import { Search, Bell, Clock, TrendingUp, BookOpen, Video, Scale, ChevronLeft, ChevronRight } from "lucide-react"
+import { Search, Bell, Clock, TrendingUp, BookOpen, Video, Scale, ChevronLeft, ChevronRight, FileText, MessageSquare, GraduationCap } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -18,6 +18,33 @@ const recentSubmissions = [
     { id: 1, title: "Contract Breach - Offer & Acceptance", date: "2 hours ago", score: "82", status: "Analyzed" },
     { id: 2, title: "Negligence Case - Duty of Care", date: "Yesterday", score: "74", status: "Analyzed" },
     { id: 3, title: "Criminal Law - Mens Rea", date: "3 days ago", score: "--", status: "Processing" },
+]
+
+const featuredTutorials = [
+    { 
+        id: 1, 
+        title: "Video Uploads", 
+        description: "Learn how to record and upload your mooting video submissions.",
+        category: "Platform Features",
+        icon: Video,
+        bannerImage: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=400&fit=crop"
+    },
+    { 
+        id: 2, 
+        title: "Interpreting AI Feedback", 
+        description: "Understand how to read and apply AI-generated feedback reports.",
+        category: "Feedback",
+        icon: MessageSquare,
+        bannerImage: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=400&fit=crop"
+    },
+    { 
+        id: 3, 
+        title: "Skeleton Argument Submissions", 
+        description: "Guidance on preparing and submitting skeleton arguments and case files.",
+        category: "Submissions",
+        icon: FileText,
+        bannerImage: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=400&fit=crop"
+    },
 ]
 
 export default function Dashboard() {
@@ -191,6 +218,76 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
+
+                {/* Tutorials & Guidance Section */}
+                <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                    <CardHeader className="flex flex-row items-center justify-between border-b border-gray-100 py-4">
+                        <div className="flex items-center gap-3">
+                            <div className="bg-accent/10 p-2 rounded-sm">
+                                <GraduationCap className="w-5 h-5 text-accent" />
+                            </div>
+                            <CardTitle className="text-base font-bold font-heading">Tutorials & Guidance</CardTitle>
+                        </div>
+                        <Link to="/tutorials">
+                            <Button variant="ghost" size="sm" className="text-accent hover:bg-accent/5 font-heading font-bold text-[10px] uppercase tracking-widest">
+                                Browse More
+                                <ChevronRight className="w-3.5 h-3.5 ml-1" />
+                            </Button>
+                        </Link>
+                    </CardHeader>
+                    <CardContent className="p-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {featuredTutorials.map((tutorial, i) => {
+                                const Icon = tutorial.icon
+                                return (
+                                    <motion.div
+                                        key={tutorial.id}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: i * 0.1 }}
+                                    >
+                                        <Card className="h-full rounded-sm border-gray-200 hover:border-accent transition-colors bg-white flex flex-col group shadow-sm overflow-hidden">
+                                            <div className="relative w-full h-32 overflow-hidden">
+                                                <img 
+                                                    src={tutorial.bannerImage} 
+                                                    alt={tutorial.title}
+                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                                                <div className="absolute top-3 right-3">
+                                                    <Badge variant="secondary" className="bg-white/90 text-gray-700 border-none px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-widest backdrop-blur-sm">
+                                                        {tutorial.category}
+                                                    </Badge>
+                                                </div>
+                                            </div>
+                                            <CardHeader className="p-5 pb-3">
+                                                <div className="flex items-center gap-3 mb-3">
+                                                    <div className="bg-accent/10 p-2 rounded-sm">
+                                                        <Icon className="w-5 h-5 text-accent" />
+                                                    </div>
+                                                </div>
+                                                <CardTitle className="text-base group-hover:text-accent transition-colors font-heading font-bold leading-tight">
+                                                    {tutorial.title}
+                                                </CardTitle>
+                                            </CardHeader>
+                                            <CardContent className="p-5 pt-0 flex-1">
+                                                <p className="text-sm text-gray-600 font-sans leading-relaxed">
+                                                    {tutorial.description}
+                                                </p>
+                                            </CardContent>
+                                            <CardContent className="p-5 pt-0">
+                                                <Button className="w-full bg-accent hover:bg-accent/90 text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 group/btn">
+                                                    Access Tutorial
+                                                    <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                                                </Button>
+                                            </CardContent>
+                                        </Card>
+                                    </motion.div>
+                                )
+                            })}
+                        </div>
+                    </CardContent>
+                </Card>
             </main>
         </div>
     )
