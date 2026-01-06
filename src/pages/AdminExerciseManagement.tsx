@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Plus, Search, MoreVertical, Edit2, Trash2, Scale, BookOpen, CheckCircle2, ChevronRight, X, Upload } from "lucide-react"
+import { Plus, MoreVertical, Edit2, Trash2, Scale, BookOpen, CheckCircle2, ChevronRight, X, Upload } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -60,7 +60,7 @@ export default function AdminExerciseManagement() {
     }
 
     return (
-        <div className="flex-1 bg-background min-h-screen p-6">
+        <div className="flex-1 bg-[#fcf8f8] min-h-screen p-6">
             <div className="w-full space-y-6">
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -96,13 +96,6 @@ export default function AdminExerciseManagement() {
                                     exit={{ opacity: 0, y: -10 }}
                                     className="space-y-6"
                                 >
-                                    {/* Filters & Search */}
-                                    <div className="flex flex-wrap items-center gap-4 bg-white p-4 rounded-sm border border-gray-100 shadow-none">
-                                        <div className="relative flex-1 min-w-[300px]">
-                                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                                            <Input placeholder="Search exercises..." className="pl-10 border-gray-200 bg-white rounded-sm focus:ring-accent" />
-                                        </div>
-                                    </div>
 
                                     {/* Exercise Cards */}
                                     <div className="grid grid-cols-1 gap-1">
@@ -307,7 +300,7 @@ export default function AdminExerciseManagement() {
                                                             onChange={(e) => setNewExercise({ ...newExercise, rules: e.target.value })}
                                                         />
                                                     </div>
-                                                    <div className="p-4 bg-accent/5 border border-accent/10 rounded-sm flex gap-4">
+                                                    <div className="p-4 bg-accent/5 border border-accent/10 rounded-xl flex gap-4">
                                                         <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0" />
                                                         <div>
                                                             <h4 className="text-[10px] font-bold uppercase tracking-widest text-accent font-heading">Ready to Publish</h4>

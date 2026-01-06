@@ -1,26 +1,37 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { Toaster } from "sonner"
+import { ErrorBoundary } from "./components/ErrorBoundary"
 import { Layout } from "./components/Layout"
 import Dashboard from "./pages/Dashboard"
 import ExerciseLibrary from "./pages/ExerciseLibrary"
+import ExerciseDetail from "./pages/ExerciseDetail"
 import SubmissionFlow from "./pages/SubmissionFlow"
 import AIFeedbackReport from "./pages/AIFeedbackReport"
 import AdminExerciseManagement from "./pages/AdminExerciseManagement"
 import TutorialsAndGuidance from "./pages/TutorialsAndGuidance"
+import SubmissionHistory from "./pages/SubmissionHistory"
+import Settings from "./pages/Settings"
 
 function App() {
   return (
-    <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/exercises" element={<ExerciseLibrary />} />
-          <Route path="/submit" element={<SubmissionFlow />} />
-          <Route path="/report" element={<AIFeedbackReport />} />
-          <Route path="/tutorials" element={<TutorialsAndGuidance />} />
-          <Route path="/admin/exercises" element={<AdminExerciseManagement />} />
-        </Routes>
-      </Layout>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <Layout>
+          <Toaster position="top-right" richColors />
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/exercises" element={<ExerciseLibrary />} />
+            <Route path="/exercises/:id" element={<ExerciseDetail />} />
+            <Route path="/submit" element={<SubmissionFlow />} />
+            <Route path="/report" element={<AIFeedbackReport />} />
+            <Route path="/history" element={<SubmissionHistory />} />
+            <Route path="/tutorials" element={<TutorialsAndGuidance />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/admin/exercises" element={<AdminExerciseManagement />} />
+          </Routes>
+        </Layout>
+      </Router>
+    </ErrorBoundary>
   )
 }
 

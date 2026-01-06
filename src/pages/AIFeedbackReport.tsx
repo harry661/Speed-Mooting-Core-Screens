@@ -1,4 +1,3 @@
-import { motion } from "framer-motion"
 import { ArrowLeft, Download, FileText, CheckCircle2, AlertTriangle, Info, Play, MessageSquare, Briefcase } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -6,6 +5,7 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useSearchParams, useNavigate } from "react-router-dom"
 
 const rubricScores = [
     { label: "Clarity", value: 85, description: "Precise language and clear articulation." },
@@ -16,13 +16,30 @@ const rubricScores = [
 ]
 
 export default function AIFeedbackReport() {
+    const [searchParams] = useSearchParams()
+    const navigate = useNavigate()
+    const submissionId = searchParams.get("submissionId")
+    const fromHistory = submissionId !== null
+
+    const handleBack = () => {
+        if (fromHistory) {
+            navigate("/history")
+        } else {
+            navigate("/")
+        }
+    }
+
     return (
-        <div className="flex-1 bg-background min-h-screen p-6">
+        <div className="flex-1 bg-[#fcf8f8] min-h-screen p-6">
             <div className="w-full space-y-6">
                 {/* Top Navigation */}
                 <div className="flex items-center justify-between">
-                    <Button variant="ghost" className="gap-2 text-primary hover:bg-primary/5 font-heading font-bold text-[10px] uppercase tracking-widest px-0">
-                        <ArrowLeft className="w-4 h-4" /> Back to Dashboard
+                    <Button 
+                        variant="ghost" 
+                        onClick={handleBack}
+                        className="gap-2 text-primary hover:bg-primary/5 font-heading font-bold text-[10px] uppercase tracking-widest px-0"
+                    >
+                        <ArrowLeft className="w-4 h-4" /> {fromHistory ? "Back to History" : "Back to Dashboard"}
                     </Button>
                     <div className="flex gap-3">
                         <Button variant="outline" className="gap-2 border-gray-200 font-heading font-bold text-[10px] uppercase tracking-widest h-9 rounded-sm shadow-none">
@@ -91,13 +108,13 @@ export default function AIFeedbackReport() {
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="p-6 space-y-4">
-                                    <div className="p-4 bg-green-50/50 border-l-2 border-green-200 flex gap-4">
+                                    <div className="p-4 bg-green-50/50 border-l-2 border-green-200 rounded-r-xl flex gap-4">
                                         <div className="bg-white p-2 rounded-sm border border-green-100 h-fit text-green-600">
                                             <MessageSquare className="w-4 h-4" />
                                         </div>
                                         <p className="text-xs text-gray-700 leading-relaxed font-sans mt-0.5">Excellent use of rhetorical questions at 02:15 to challenge the opposing side's interpretation of *Carlill v Carbolic Smoke Ball Co.*</p>
                                     </div>
-                                    <div className="p-4 bg-green-50/50 border-l-2 border-green-200 flex gap-4">
+                                    <div className="p-4 bg-green-50/50 border-l-2 border-green-200 rounded-r-xl flex gap-4">
                                         <div className="bg-white p-2 rounded-sm border border-green-100 h-fit text-green-600">
                                             <Briefcase className="w-4 h-4" />
                                         </div>
@@ -113,13 +130,13 @@ export default function AIFeedbackReport() {
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="p-6 space-y-4">
-                                    <div className="p-4 bg-amber-50/50 border-l-2 border-amber-200 flex gap-4">
+                                    <div className="p-4 bg-amber-50/50 border-l-2 border-amber-200 rounded-r-xl flex gap-4">
                                         <div className="bg-white p-2 rounded-sm border border-amber-100 h-fit text-amber-600">
                                             <FileText className="w-4 h-4" />
                                         </div>
                                         <p className="text-xs text-gray-700 leading-relaxed font-sans mt-0.5">The 'reasonable person' test was slightly vague. Consider referencing *Blyth v Birmingham Waterworks* explicitly next time.</p>
                                     </div>
-                                    <div className="p-4 bg-amber-50/50 border-l-2 border-amber-200 flex gap-4">
+                                    <div className="p-4 bg-amber-50/50 border-l-2 border-amber-200 rounded-r-xl flex gap-4">
                                         <div className="bg-white p-2 rounded-sm border border-amber-100 h-fit text-amber-600">
                                             <Clock className="w-4 h-4" />
                                         </div>

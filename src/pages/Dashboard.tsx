@@ -1,12 +1,10 @@
 import { motion } from "framer-motion"
-import { Search, Bell, Clock, TrendingUp, BookOpen, Video, Scale, ChevronLeft, ChevronRight, FileText, MessageSquare, GraduationCap } from "lucide-react"
+import { Clock, TrendingUp, BookOpen, Video, Scale, FileText, MessageSquare, GraduationCap, ChevronRight } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import { Link } from "react-router-dom"
-import { useSidebar } from "@/components/Layout"
 
 const stats = [
     { title: "Total Submissions", value: "12", icon: Clock, trend: "+2 this month", color: "text-blue-600" },
@@ -48,47 +46,8 @@ const featuredTutorials = [
 ]
 
 export default function Dashboard() {
-    const { isCollapsed, setIsCollapsed } = useSidebar()
-    
     return (
         <div className="flex-1 bg-[#fcf8f8] min-h-screen">
-            <header className="h-16 border-b bg-white flex items-center justify-between px-6 sticky top-0 z-10 shadow-sm">
-                <div className="flex items-center gap-3 flex-1">
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => setIsCollapsed(!isCollapsed)}
-                        className="bg-transparent border border-gray-300 rounded w-8 h-8 hover:bg-gray-100 text-gray-500 hover:text-gray-700"
-                    >
-                        {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-                    </Button>
-                    <div className="relative w-96">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <input
-                            placeholder="Search exercises or submissions..."
-                            className="w-full pl-10 pr-4 py-2 rounded-sm border border-gray-200 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-accent transition-all text-sm font-sans"
-                        />
-                    </div>
-                </div>
-
-                <div className="flex items-center gap-6">
-                    <button className="relative text-gray-500 hover:text-[#00524d] transition-colors">
-                        <Bell className="w-6 h-6" />
-                        <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-                    </button>
-                    <div className="flex items-center gap-3">
-                        <div className="text-right hidden sm:block">
-                            <p className="text-sm font-semibold text-gray-900">Alex Thompson</p>
-                            <p className="text-xs text-gray-500">Student Advocate</p>
-                        </div>
-                        <Avatar className="border-2 border-[#00524d]/10">
-                            <AvatarImage src="https://github.com/shadcn.png" />
-                            <AvatarFallback>AT</AvatarFallback>
-                        </Avatar>
-                    </div>
-                </div>
-            </header>
-
             <main className="p-6 space-y-6 w-full">
                 <div className="flex items-center justify-between">
                     <div className="space-y-1">
@@ -103,7 +62,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Redesigned Practice Suggestion as Notification */}
-                <div className="bg-white border-l-4 border-accent p-4 flex items-center justify-between shadow-none ring-1 ring-gray-100">
+                <div className="bg-accent/5 border-l-4 border-accent rounded-r-xl p-4 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <div className="bg-accent/10 p-2 rounded-sm">
                             <Scale className="w-4 h-4 text-accent" />
@@ -197,18 +156,18 @@ export default function Dashboard() {
                                 <CardTitle className="text-base font-bold font-heading">Advocacy Toolkit</CardTitle>
                             </CardHeader>
                             <CardContent className="p-4 space-y-2">
-                                <Button variant="outline" className="w-full justify-start gap-4 border-gray-200 hover:border-accent hover:text-accent font-heading font-bold text-[10px] uppercase tracking-widest h-11 rounded-sm group transition-all">
+                                <Button variant="outline" className="w-full justify-start gap-4 border-gray-200 text-gray-700 hover:bg-accent hover:border-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-11 rounded-sm group transition-all">
                                     <BookOpen className="w-4 h-4 group-hover:scale-110 transition-transform" />
                                     Legal Subject Guides
                                 </Button>
-                                <Button variant="outline" className="w-full justify-start gap-4 border-gray-200 hover:border-accent hover:text-accent font-heading font-bold text-[10px] uppercase tracking-widest h-11 rounded-sm group transition-all">
+                                <Button variant="outline" className="w-full justify-start gap-4 border-gray-200 text-gray-700 hover:bg-accent hover:border-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-11 rounded-sm group transition-all">
                                     <Video className="w-4 h-4 group-hover:scale-110 transition-transform" />
                                     Submission Checklist
                                 </Button>
                             </CardContent>
                         </Card>
 
-                        <div className="rounded-sm border-l-4 border-primary bg-primary/5 p-5">
+                        <div className="rounded-r-xl border-l-4 border-primary bg-primary/5 p-5">
                             <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary font-heading mb-1">Upcoming Milestone</h4>
                             <p className="text-sm font-bold text-gray-900 font-heading">Internal Mooting Competition</p>
                             <div className="flex items-center gap-2 mt-2">
@@ -238,7 +197,6 @@ export default function Dashboard() {
                     <CardContent className="p-6">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {featuredTutorials.map((tutorial, i) => {
-                                const Icon = tutorial.icon
                                 return (
                                     <motion.div
                                         key={tutorial.id}
@@ -261,11 +219,6 @@ export default function Dashboard() {
                                                 </div>
                                             </div>
                                             <CardHeader className="p-5 pb-3">
-                                                <div className="flex items-center gap-3 mb-3">
-                                                    <div className="bg-accent/10 p-2 rounded-sm">
-                                                        <Icon className="w-5 h-5 text-accent" />
-                                                    </div>
-                                                </div>
                                                 <CardTitle className="text-base group-hover:text-accent transition-colors font-heading font-bold leading-tight">
                                                     {tutorial.title}
                                                 </CardTitle>
@@ -276,7 +229,7 @@ export default function Dashboard() {
                                                 </p>
                                             </CardContent>
                                             <CardContent className="p-5 pt-0">
-                                                <Button className="w-full bg-accent hover:bg-accent/90 text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 group/btn">
+                                                <Button variant="outline" className="w-full border-gray-200 text-gray-700 hover:bg-accent hover:border-accent hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 group/btn">
                                                     Access Tutorial
                                                     <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                                                 </Button>
