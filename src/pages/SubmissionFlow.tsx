@@ -344,10 +344,6 @@ export default function SubmissionFlow() {
                                                     <div className="flex-1 flex flex-col space-y-6">
                                                         {/* Skeleton Argument */}
                                                         <div className="flex-1 flex flex-col">
-                                                            <h3 className="text-lg font-bold font-heading mb-3 flex items-center gap-2">
-                                                                <FileText className="w-4 h-4 text-primary" />
-                                                                Skeleton Argument
-                                                            </h3>
                                                             <input
                                                                 type="file"
                                                                 ref={skeletonInputRef}
@@ -360,7 +356,8 @@ export default function SubmissionFlow() {
                                                                     onClick={() => skeletonInputRef.current?.click()}
                                                                     className="border-2 border-dashed border-gray-200 rounded-xl p-6 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer text-center flex flex-col items-center justify-center min-h-[140px]"
                                                                 >
-                                                                    <Upload className="w-8 h-8 text-primary mb-2" />
+                                                                    <FileText className="w-8 h-8 text-primary mb-2" />
+                                                                    <h3 className="text-lg font-bold font-heading mb-2">Skeleton Argument</h3>
                                                                     <p className="text-sm font-medium text-gray-600 font-sans mb-1">Click to browse or drag file here</p>
                                                                     <p className="text-xs text-gray-400 font-sans">Word (.doc, .docx) or PDF • Optional</p>
                                                                 </div>
@@ -369,6 +366,7 @@ export default function SubmissionFlow() {
                                                                     <div className="flex items-center gap-3">
                                                                         <FileText className="w-8 h-8 text-primary" />
                                                                         <div>
+                                                                            <h3 className="text-sm font-bold font-heading mb-1">Skeleton Argument</h3>
                                                                             <p className="text-sm font-semibold text-gray-900 font-sans">{skeletonArgument.name}</p>
                                                                             <p className="text-xs text-gray-500 font-sans">{formatFileSize(skeletonArgument.size)} • {getFileType(skeletonArgument)}</p>
                                                                         </div>
@@ -396,10 +394,6 @@ export default function SubmissionFlow() {
 
                                                         {/* Case Files */}
                                                         <div className="flex-1 flex flex-col">
-                                                            <h3 className="text-lg font-bold font-heading mb-3 flex items-center gap-2">
-                                                                <File className="w-4 h-4 text-primary" />
-                                                                Case Files
-                                                            </h3>
                                                             <input
                                                                 type="file"
                                                                 ref={caseFilesInputRef}
@@ -413,12 +407,17 @@ export default function SubmissionFlow() {
                                                                     onClick={() => caseFilesInputRef.current?.click()}
                                                                     className="border-2 border-dashed border-gray-200 rounded-xl p-6 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer text-center flex flex-col items-center justify-center min-h-[140px]"
                                                                 >
-                                                                    <Upload className="w-8 h-8 text-primary mb-2" />
+                                                                    <File className="w-8 h-8 text-primary mb-2" />
+                                                                    <h3 className="text-lg font-bold font-heading mb-2">Case Files</h3>
                                                                     <p className="text-sm font-medium text-gray-600 font-sans mb-1">Click to browse or drag files here</p>
                                                                     <p className="text-xs text-gray-400 font-sans">PDF, Word (.doc, .docx) • Optional</p>
                                                                 </div>
                                                             ) : (
                                                                 <div className="flex-1 flex flex-col space-y-2">
+                                                                    <div className="flex items-center gap-2 mb-2">
+                                                                        <File className="w-5 h-5 text-primary" />
+                                                                        <h3 className="text-base font-bold font-heading">Case Files</h3>
+                                                                    </div>
                                                                     {caseFiles.map((file, index) => (
                                                                         <div key={index} className="border border-gray-200 rounded-xl p-3 bg-gray-50 flex items-center justify-between">
                                                                             <div className="flex items-center gap-2 min-w-0 flex-1">
