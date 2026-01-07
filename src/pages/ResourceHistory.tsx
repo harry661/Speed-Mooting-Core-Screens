@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { toast } from "sonner"
-import { Download, Eye, MoreVertical, Search, Info, ChevronRight, Database, BookOpen, GraduationCap } from "lucide-react"
+import { Download, Eye, MoreVertical, Search, ChevronRight, Database, BookOpen, GraduationCap } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -375,12 +375,6 @@ export default function ResourceHistory() {
                         </div>
                     </CardContent>
                 </Card>
-
-                {/* Data Retention Notice - Subtle */}
-                <div className="bg-accent/5 border-l-4 border-accent rounded-r-xl p-3 flex items-start gap-2">
-                    <Info className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                    <p className="text-xs text-gray-700 font-sans">Resource access history is retained for 3 years per our data retention policy.</p>
-                </div>
 
                 {/* Table */}
                 {filteredResources.length === 0 ? (

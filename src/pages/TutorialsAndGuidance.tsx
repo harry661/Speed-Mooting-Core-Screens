@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 import { useEffect, useState, useMemo } from "react"
-import { Search, BookOpen, Database, FileText, Video, MessageSquare, Navigation, Target, Scale, Info, ExternalLink, Shield, ChevronRight } from "lucide-react"
+import { Search, BookOpen, Database, FileText, Video, MessageSquare, Navigation, Target, Scale, ExternalLink, Shield, ChevronRight } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -307,14 +307,6 @@ export default function TutorialsAndGuidance() {
                 {currentTab === "databases" && (
                     <div className="mt-6">
                         <div className="space-y-4">
-                            <div className="bg-accent/5 border-l-4 border-accent rounded-r-xl p-4 flex items-start gap-4">
-                                <Info className="w-5 h-5 text-accent mt-0.5 shrink-0" />
-                                <div>
-                                    <h4 className="text-xs font-bold uppercase tracking-widest text-accent font-heading mb-1">Licensing & Compliance</h4>
-                                    <p className="text-sm text-gray-700 dark:text-gray-200 font-sans">All database access adheres to licensing restrictions and usage agreements. System logs all data source usage for auditing and compliance purposes.</p>
-                                </div>
-                            </div>
-
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {filteredData.map((db, i) => {
                                     return (

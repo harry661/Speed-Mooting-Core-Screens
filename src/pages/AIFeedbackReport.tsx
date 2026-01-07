@@ -427,7 +427,12 @@ export default function AIFeedbackReport() {
 
     return (
         <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
-            <div className="w-full space-y-6">
+            <motion.div 
+                className="w-full space-y-6"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+            >
                 {/* Top Navigation */}
                 <div className="flex items-center justify-between">
                     <Button 
@@ -855,7 +860,7 @@ export default function AIFeedbackReport() {
                         </Card>
                     </TabsContent>
                 </Tabs>
-            </div>
+            </motion.div>
         </div>
     )
 }

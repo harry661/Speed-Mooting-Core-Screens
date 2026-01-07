@@ -557,13 +557,6 @@ export default function SubmissionFlow() {
                                                     </div>
                                                 )}
                                             </div>
-
-                                            {/* Terms */}
-                                            <div className="bg-accent/5 border-l-4 border-accent rounded-r-xl p-3 mt-4">
-                                                <p className="text-sm text-gray-700 dark:text-gray-200 font-sans">
-                                                    By submitting, you agree to our terms of analysis. The AI report usually takes 2-5 minutes to generate.
-                                                </p>
-                                            </div>
                                         </div>
                                     </CardContent>
                                 )}

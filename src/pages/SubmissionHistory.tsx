@@ -1,6 +1,7 @@
 import { useState } from "react"
+import { motion } from "framer-motion"
 import { toast } from "sonner"
-import { Trash2, Search, MoreVertical, ChevronRight, Info } from "lucide-react"
+import { Trash2, Search, MoreVertical, ChevronRight } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -270,7 +271,12 @@ export default function SubmissionHistory() {
 
     return (
         <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
-            <div className="w-full space-y-6">
+            <motion.div 
+                className="w-full space-y-6"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+            >
                 {/* Breadcrumbs */}
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 font-sans">
                     <Link to="/history" className="hover:text-accent transition-colors">History</Link>
@@ -355,12 +361,6 @@ export default function SubmissionHistory() {
                         </div>
                     </CardContent>
                 </Card>
-
-                {/* Data Retention Notice - Subtle */}
-                <div className="bg-accent/5 border-l-4 border-accent rounded-r-xl p-3 flex items-start gap-2">
-                    <Info className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                    <p className="text-xs text-gray-700 dark:text-gray-300 font-sans">Submissions are retained for 3 years per our data retention policy.</p>
-                </div>
 
                 {/* Table */}
                 {filteredSubmissions.length === 0 ? (
@@ -478,7 +478,6 @@ export default function SubmissionHistory() {
                         </div>
                     </Card>
                 )}
-            </div>
 
             {/* Delete Confirmation Dialog */}
             <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
@@ -509,6 +508,7 @@ export default function SubmissionHistory() {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+            </motion.div>
         </div>
     )
 }
