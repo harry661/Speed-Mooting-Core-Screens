@@ -1,6 +1,6 @@
 import { useState, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams, useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
 import { toast } from "sonner"
 import { Upload, FileText, CheckCircle2, ChevronRight, ChevronLeft, Video, ArrowLeft, X, Tag, User, Clock, File, Loader2 } from "lucide-react"
@@ -21,6 +21,7 @@ const steps = [
 export default function SubmissionFlow() {
     const [currentStep, setCurrentStep] = useState(1)
     const [searchParams] = useSearchParams()
+    const navigate = useNavigate()
     const exerciseId = searchParams.get("exercise")
     
     // State for files
@@ -160,19 +161,19 @@ export default function SubmissionFlow() {
             })
             // In real app, would submit to API and redirect
             setTimeout(() => {
-                window.location.href = "/history"
+                navigate("/history")
             }, 2000)
         }
     }
     
     return (
-        <div className="flex-1 bg-[#fcf8f8] min-h-screen p-6">
+        <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
             <div className="w-full space-y-6 max-w-[95vw] mx-auto">
                 {/* Return Button */}
                 <Link to={returnPath}>
                     <Button 
                         variant="ghost" 
-                        className="gap-2 text-primary hover:bg-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest px-3 mb-4 transition-colors"
+                        className="gap-2 text-primary dark:text-gray-300 hover:bg-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest px-3 mb-4 transition-colors"
                     >
                         <ArrowLeft className="w-4 h-4" /> Back to Exercise
                     </Button>
@@ -182,18 +183,18 @@ export default function SubmissionFlow() {
                 <div className="space-y-3">
                     <div className="flex justify-between items-end">
                         <div className="space-y-0.5">
-                            <h2 className="text-xl font-bold text-gray-900 font-heading tracking-tight">New Submission</h2>
-                            <p className="text-gray-500 font-sans text-xs">Exercise: {exerciseName}</p>
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 font-heading tracking-tight">New Submission</h2>
+                            <p className="text-gray-500 dark:text-gray-400 font-sans text-xs">Exercise: {exerciseName}</p>
                         </div>
-                        <p className="text-[11px] font-bold text-primary font-heading uppercase tracking-widest">Step {currentStep} of {steps.length}</p>
+                        <p className="text-[11px] font-bold text-primary dark:text-gray-300 font-heading uppercase tracking-widest">Step {currentStep} of {steps.length}</p>
                     </div>
-                    <Progress value={progress} className="h-1.5 bg-gray-100" />
+                    <Progress value={progress} className="h-1.5 bg-gray-100 dark:bg-gray-800" />
                     <div className="flex justify-between mt-4">
                         {steps.map((step) => (
                             <div key={step.id} className="flex flex-col items-center gap-2 flex-1">
                                 <div className={cn(
                                     "w-7 h-7 rounded-sm flex items-center justify-center text-[10px] font-bold transition-all duration-300",
-                                    currentStep >= step.id ? "bg-primary text-white border border-primary shadow-none" : "bg-white text-gray-300 border border-gray-100"
+                                    currentStep >= step.id ? "bg-primary text-white border border-primary shadow-none" : "bg-white dark:bg-gray-900 text-gray-300 border border-gray-100 dark:border-gray-800"
                                 )}>
                                     {currentStep > step.id ? <CheckCircle2 className="w-4 h-4" /> : step.id}
                                 </div>
@@ -219,7 +220,7 @@ export default function SubmissionFlow() {
                             transition={{ duration: 0.2 }}
                             className="w-full"
                         >
-                            <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                            <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
                                 {currentStep === 1 && (
                                     <CardContent className="p-5">
                                         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] xl:grid-cols-[1fr_340px] gap-6">
@@ -251,30 +252,30 @@ export default function SubmissionFlow() {
                                                             className={cn(
                                                                 "border-2 border-dashed rounded-xl p-6 transition-all text-center",
                                                                 isUploading 
-                                                                    ? "border-gray-300 bg-gray-50 cursor-wait" 
-                                                                    : "border-gray-200 hover:border-primary hover:bg-primary/5 cursor-pointer"
+                                                                    ? "border-gray-300 bg-gray-50 dark:bg-gray-800 cursor-wait" 
+                                                                    : "border-gray-200 dark:border-gray-800 hover:border-primary hover:bg-primary/5 cursor-pointer"
                                                             )}
                                                         >
                                                             {isUploading ? (
                                                                 <>
-                                                                    <Loader2 className="w-8 h-8 text-primary mx-auto mb-2 animate-spin" />
-                                                                    <p className="text-sm font-medium text-gray-600 font-sans">Uploading video...</p>
+                                                                    <Loader2 className="w-8 h-8 text-primary dark:text-gray-300 mx-auto mb-2 animate-spin" />
+                                                                    <p className="text-sm font-medium text-gray-600 dark:text-gray-300 font-sans">Uploading video...</p>
                                                                 </>
                                                             ) : (
                                                                 <>
-                                                                    <Upload className="w-8 h-8 text-primary mx-auto mb-2" />
-                                                                    <p className="text-sm font-medium text-gray-600 font-sans mb-1">Click to browse or drag file here</p>
+                                                                    <Upload className="w-8 h-8 text-primary dark:text-gray-300 mx-auto mb-2" />
+                                                                    <p className="text-sm font-medium text-gray-600 dark:text-gray-300 font-sans mb-1">Click to browse or drag file here</p>
                                                                     <p className="text-xs text-gray-400 font-sans">MP4, MOV or WEBM • Max 500MB</p>
                                                                 </>
                                                             )}
                                                         </div>
                                                     ) : (
-                                                        <div className="border border-gray-200 rounded-xl p-4 bg-gray-50 flex items-center justify-between">
+                                                        <div className="border border-gray-200 dark:border-gray-800 rounded-xl p-4 bg-gray-50 dark:bg-gray-800 flex items-center justify-between">
                                                             <div className="flex items-center gap-3">
                                                                 <Video className="w-8 h-8 text-primary" />
                                                                 <div>
-                                                                    <p className="text-sm font-semibold text-gray-900 font-sans">{videoFile.name}</p>
-                                                                    <p className="text-xs text-gray-500 font-sans">{formatFileSize(videoFile.size)} • {getFileType(videoFile)}</p>
+                                                                    <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 font-sans">{videoFile.name}</p>
+                                                                    <p className="text-xs text-gray-500 dark:text-gray-400 font-sans">{formatFileSize(videoFile.size)} • {getFileType(videoFile)}</p>
                                                                 </div>
                                                             </div>
                                                             <Button
@@ -294,7 +295,7 @@ export default function SubmissionFlow() {
 
                                                 {/* Description Section */}
                                                 <div className="flex flex-col">
-                                                    <label className="text-xs font-semibold text-gray-700 font-sans mb-2 block">
+                                                    <label className="text-xs font-semibold text-gray-700 dark:text-gray-200 font-sans mb-2 block">
                                                         Description <span className="text-red-500">*</span>
                                                     </label>
                                                     <div className="flex flex-col">
@@ -302,10 +303,10 @@ export default function SubmissionFlow() {
                                                             value={description}
                                                             onChange={(e) => setDescription(e.target.value)}
                                                             placeholder="Provide a brief description of your submission..."
-                                                            className="min-h-[140px] rounded-xl border-gray-200 font-sans resize-none"
+                                                            className="min-h-[140px] rounded-xl border-gray-200 dark:border-gray-800 font-sans resize-none"
                                                             maxLength={500}
                                                         />
-                                                        <p className="text-xs text-gray-500 mt-1.5 font-sans">
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5 font-sans">
                                                             {description.length}/500 characters
                                                         </p>
                                                     </div>
@@ -314,7 +315,7 @@ export default function SubmissionFlow() {
                                                 {/* Exercise Topics Display */}
                                                 {exerciseTopics.length > 0 && (
                                                     <div>
-                                                        <label className="text-sm font-semibold text-gray-700 font-sans mb-1.5 block flex items-center gap-2">
+                                                        <label className="text-sm font-semibold text-gray-700 dark:text-gray-200 font-sans mb-1.5 block flex items-center gap-2">
                                                             <Tag className="w-4 h-4" />
                                                             Exercise Topics
                                                         </label>
@@ -325,7 +326,7 @@ export default function SubmissionFlow() {
                                                                 </Badge>
                                                             ))}
                                                         </div>
-                                                        <p className="text-xs text-gray-500 mt-1.5 font-sans">
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5 font-sans">
                                                             Topics are automatically detected from the exercise
                                                         </p>
                                                     </div>
@@ -354,20 +355,20 @@ export default function SubmissionFlow() {
                                                             {!skeletonArgument ? (
                                                                 <div
                                                                     onClick={() => skeletonInputRef.current?.click()}
-                                                                    className="border-2 border-dashed border-gray-200 rounded-xl p-6 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer text-center flex flex-col items-center justify-center min-h-[140px]"
+                                                                    className="border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-xl p-6 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer text-center flex flex-col items-center justify-center min-h-[140px]"
                                                                 >
                                                                     <FileText className="w-8 h-8 text-primary mb-2" />
-                                                                    <p className="text-sm font-medium text-gray-600 font-sans mb-1">Skeleton Argument</p>
-                                                                    <p className="text-sm font-medium text-gray-600 font-sans mb-1">Click to browse or drag file here</p>
+                                                                    <p className="text-sm font-medium text-gray-600 dark:text-gray-300 font-sans mb-1">Skeleton Argument</p>
+                                                                    <p className="text-sm font-medium text-gray-600 dark:text-gray-300 font-sans mb-1">Click to browse or drag file here</p>
                                                                     <p className="text-xs text-gray-400 font-sans">Word (.doc, .docx) or PDF • Optional</p>
                                                                 </div>
                                                             ) : (
-                                                                <div className="border border-gray-200 rounded-xl p-4 bg-gray-50 flex items-center justify-between min-h-[140px]">
+                                                                <div className="border border-gray-200 dark:border-gray-800 rounded-xl p-4 bg-gray-50 dark:bg-gray-800 flex items-center justify-between min-h-[140px]">
                                                                     <div className="flex items-center gap-3">
                                                                         <FileText className="w-8 h-8 text-primary" />
                                                                         <div>
-                                                                            <p className="text-sm font-semibold text-gray-900 font-sans">{skeletonArgument.name}</p>
-                                                                            <p className="text-xs text-gray-500 font-sans">{formatFileSize(skeletonArgument.size)} • {getFileType(skeletonArgument)}</p>
+                                                                            <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 font-sans">{skeletonArgument.name}</p>
+                                                                            <p className="text-xs text-gray-500 dark:text-gray-400 font-sans">{formatFileSize(skeletonArgument.size)} • {getFileType(skeletonArgument)}</p>
                                                                         </div>
                                                                     </div>
                                                                     <Button
@@ -404,26 +405,26 @@ export default function SubmissionFlow() {
                                                             {caseFiles.length === 0 ? (
                                                                 <div
                                                                     onClick={() => caseFilesInputRef.current?.click()}
-                                                                    className="border-2 border-dashed border-gray-200 rounded-xl p-6 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer text-center flex flex-col items-center justify-center min-h-[140px]"
+                                                                    className="border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-xl p-6 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer text-center flex flex-col items-center justify-center min-h-[140px]"
                                                                 >
                                                                     <File className="w-8 h-8 text-primary mb-2" />
-                                                                    <p className="text-sm font-medium text-gray-600 font-sans mb-1">Case Files</p>
-                                                                    <p className="text-sm font-medium text-gray-600 font-sans mb-1">Click to browse or drag files here</p>
+                                                                    <p className="text-sm font-medium text-gray-600 dark:text-gray-300 font-sans mb-1">Case Files</p>
+                                                                    <p className="text-sm font-medium text-gray-600 dark:text-gray-300 font-sans mb-1">Click to browse or drag files here</p>
                                                                     <p className="text-xs text-gray-400 font-sans">PDF, Word (.doc, .docx) • Optional</p>
                                                                 </div>
                                                             ) : (
                                                                 <div className="flex-1 flex flex-col space-y-2">
                                                                     <div className="flex items-center gap-2 mb-2">
                                                                         <File className="w-5 h-5 text-primary" />
-                                                                        <p className="text-sm font-medium text-gray-600 font-sans">Case Files</p>
+                                                                        <p className="text-sm font-medium text-gray-600 dark:text-gray-300 font-sans">Case Files</p>
                                                                     </div>
                                                                     {caseFiles.map((file, index) => (
-                                                                        <div key={index} className="border border-gray-200 rounded-xl p-3 bg-gray-50 flex items-center justify-between">
+                                                                        <div key={index} className="border border-gray-200 dark:border-gray-800 rounded-xl p-3 bg-gray-50 dark:bg-gray-800 flex items-center justify-between">
                                                                             <div className="flex items-center gap-2 min-w-0 flex-1">
                                                                                 <File className="w-4 h-4 text-primary shrink-0" />
                                                                                 <div className="min-w-0 flex-1">
-                                                                                    <p className="text-xs font-medium text-gray-900 font-sans truncate">{file.name}</p>
-                                                                                    <p className="text-[10px] text-gray-500 font-sans">{formatFileSize(file.size)}</p>
+                                                                                    <p className="text-xs font-medium text-gray-900 dark:text-gray-100 font-sans truncate">{file.name}</p>
+                                                                                    <p className="text-[10px] text-gray-500 dark:text-gray-400 font-sans">{formatFileSize(file.size)}</p>
                                                                                 </div>
                                                                             </div>
                                                                             <Button
@@ -438,9 +439,9 @@ export default function SubmissionFlow() {
                                                                     ))}
                                                                     <div
                                                                         onClick={() => caseFilesInputRef.current?.click()}
-                                                                        className="border border-dashed border-gray-200 rounded-xl p-3 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer text-center"
+                                                                        className="border border-dashed border-gray-200 dark:border-gray-800 rounded-xl p-3 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer text-center"
                                                                     >
-                                                                        <p className="text-[10px] text-gray-600 font-sans">+ Add more files</p>
+                                                                        <p className="text-[10px] text-gray-600 dark:text-gray-300 font-sans">+ Add more files</p>
                                                                     </div>
                                                                 </div>
                                                             )}
@@ -459,20 +460,20 @@ export default function SubmissionFlow() {
                                                 <CheckCircle2 className="w-10 h-10" />
                                             </div>
                                             <h3 className="text-xl font-bold font-heading mb-1.5">Review Your Submission</h3>
-                                            <p className="text-sm text-gray-500 font-sans">Please review all details before submitting</p>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400 font-sans">Please review all details before submitting</p>
                                         </div>
 
                                         <div className="space-y-4">
                                             {/* Exercise Information */}
-                                            <div className="border-b border-gray-200 pb-3">
+                                            <div className="border-b border-gray-200 dark:border-gray-800 pb-3">
                                                 <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest font-heading mb-2">Exercise</h4>
-                                                <p className="text-lg font-semibold text-gray-900 font-heading">{exerciseName}</p>
+                                                <p className="text-lg font-semibold text-gray-900 dark:text-gray-100 font-heading">{exerciseName}</p>
                                                 {exercise && (
                                                     <div className="flex items-center gap-2 mt-2">
-                                                        <Badge variant="secondary" className="bg-gray-50 text-gray-600 border-none text-[10px]">
+                                                        <Badge variant="secondary" className="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-none text-[10px]">
                                                             {exercise.subject}
                                                         </Badge>
-                                                        <Badge variant="secondary" className="bg-gray-50 text-gray-600 border-none text-[10px]">
+                                                        <Badge variant="secondary" className="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-none text-[10px]">
                                                             {exercise.difficulty}
                                                         </Badge>
                                                     </div>
@@ -480,27 +481,27 @@ export default function SubmissionFlow() {
                                             </div>
 
                                             {/* Files Review */}
-                                            <div className="border-b border-gray-200 pb-3">
+                                            <div className="border-b border-gray-200 dark:border-gray-800 pb-3">
                                                 <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest font-heading mb-2">Uploaded Files</h4>
                                                 <div className="space-y-2">
                                                     {videoFile && (
-                                                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-sm">
+                                                        <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-sm">
                                                             <div className="flex items-center gap-3">
                                                                 <Video className="w-5 h-5 text-primary" />
                                                                 <div>
-                                                                    <p className="text-sm font-semibold text-gray-900 font-sans">{videoFile.name}</p>
-                                                                    <p className="text-xs text-gray-500 font-sans">{formatFileSize(videoFile.size)} • {getFileType(videoFile)}</p>
+                                                                    <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 font-sans">{videoFile.name}</p>
+                                                                    <p className="text-xs text-gray-500 dark:text-gray-400 font-sans">{formatFileSize(videoFile.size)} • {getFileType(videoFile)}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     )}
                                                     {skeletonArgument && (
-                                                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-sm">
+                                                        <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-sm">
                                                             <div className="flex items-center gap-3">
                                                                 <FileText className="w-5 h-5 text-primary" />
                                                                 <div>
-                                                                    <p className="text-sm font-semibold text-gray-900 font-sans">{skeletonArgument.name}</p>
-                                                                    <p className="text-xs text-gray-500 font-sans">{formatFileSize(skeletonArgument.size)} • {getFileType(skeletonArgument)}</p>
+                                                                    <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 font-sans">{skeletonArgument.name}</p>
+                                                                    <p className="text-xs text-gray-500 dark:text-gray-400 font-sans">{formatFileSize(skeletonArgument.size)} • {getFileType(skeletonArgument)}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -508,12 +509,12 @@ export default function SubmissionFlow() {
                                                     {caseFiles.length > 0 && (
                                                         <div className="space-y-2">
                                                             {caseFiles.map((file, index) => (
-                                                                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-sm">
+                                                                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-sm">
                                                                     <div className="flex items-center gap-3">
                                                                         <File className="w-5 h-5 text-primary" />
                                                                         <div>
-                                                                            <p className="text-sm font-semibold text-gray-900 font-sans">{file.name}</p>
-                                                                            <p className="text-xs text-gray-500 font-sans">{formatFileSize(file.size)}</p>
+                                                                            <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 font-sans">{file.name}</p>
+                                                                            <p className="text-xs text-gray-500 dark:text-gray-400 font-sans">{formatFileSize(file.size)}</p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -524,14 +525,14 @@ export default function SubmissionFlow() {
                                             </div>
 
                                             {/* Description Review */}
-                                            <div className="border-b border-gray-200 pb-3">
+                                            <div className="border-b border-gray-200 dark:border-gray-800 pb-3">
                                                 <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest font-heading mb-2">Description</h4>
-                                                <p className="text-sm text-gray-700 font-sans whitespace-pre-wrap">{description || "No description provided"}</p>
+                                                <p className="text-sm text-gray-700 dark:text-gray-200 font-sans whitespace-pre-wrap">{description || "No description provided"}</p>
                                             </div>
 
                                             {/* Topics Review */}
                                             {exerciseTopics.length > 0 && (
-                                                <div className="border-b border-gray-200 pb-3">
+                                                <div className="border-b border-gray-200 dark:border-gray-800 pb-3">
                                                     <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest font-heading mb-2">Topics</h4>
                                                     <div className="flex flex-wrap gap-2">
                                                         {exerciseTopics.map((topic: string) => (
@@ -545,12 +546,12 @@ export default function SubmissionFlow() {
 
                                             {/* Metadata */}
                                             <div className="space-y-2">
-                                                <div className="flex items-center gap-2 text-sm text-gray-600 font-sans">
+                                                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 font-sans">
                                                     <User className="w-4 h-4" />
                                                     <span>User: Alex Thompson</span>
                                                 </div>
                                                 {uploadTimestamp && (
-                                                    <div className="flex items-center gap-2 text-sm text-gray-600 font-sans">
+                                                    <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 font-sans">
                                                         <Clock className="w-4 h-4" />
                                                         <span>Uploaded: {uploadTimestamp.toLocaleString()}</span>
                                                     </div>
@@ -559,7 +560,7 @@ export default function SubmissionFlow() {
 
                                             {/* Terms */}
                                             <div className="bg-accent/5 border-l-4 border-accent rounded-r-xl p-3 mt-4">
-                                                <p className="text-sm text-gray-700 font-sans">
+                                                <p className="text-sm text-gray-700 dark:text-gray-200 font-sans">
                                                     By submitting, you agree to our terms of analysis. The AI report usually takes 2-5 minutes to generate.
                                                 </p>
                                             </div>

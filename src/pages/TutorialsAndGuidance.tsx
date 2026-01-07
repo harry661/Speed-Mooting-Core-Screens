@@ -207,12 +207,12 @@ export default function TutorialsAndGuidance() {
     }, [currentTab, currentContent.title])
 
     return (
-        <div className="flex-1 bg-[#fcf8f8] min-h-screen p-6">
+        <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
             <div className="w-full space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-900 tracking-tight font-heading">{currentContent.title}</h2>
-                        <p className="text-gray-500 text-xs font-sans mt-1">{currentContent.description}</p>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 tracking-tight font-heading">{currentContent.title}</h2>
+                        <p className="text-gray-500 dark:text-gray-400 text-xs font-sans mt-1">{currentContent.description}</p>
                     </div>
                 </div>
 
@@ -223,7 +223,7 @@ export default function TutorialsAndGuidance() {
                                 <Info className="w-5 h-5 text-accent mt-0.5 shrink-0" />
                                 <div>
                                     <h4 className="text-xs font-bold uppercase tracking-widest text-accent font-heading mb-1">Licensing & Compliance</h4>
-                                    <p className="text-sm text-gray-700 font-sans">All database access adheres to licensing restrictions and usage agreements. System logs all data source usage for auditing and compliance purposes.</p>
+                                    <p className="text-sm text-gray-700 dark:text-gray-200 font-sans">All database access adheres to licensing restrictions and usage agreements. System logs all data source usage for auditing and compliance purposes.</p>
                                 </div>
                             </div>
 
@@ -236,7 +236,7 @@ export default function TutorialsAndGuidance() {
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: i * 0.05 }}
                                         >
-                                            <Card className="h-full rounded-sm border-gray-200 hover:border-accent transition-colors bg-white flex flex-col group shadow-sm overflow-hidden">
+                                            <Card className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-sm overflow-hidden">
                                                 <div className="relative w-full h-32 overflow-hidden">
                                                     <img 
                                                         src={db.bannerImage} 
@@ -258,10 +258,10 @@ export default function TutorialsAndGuidance() {
                                                     </CardTitle>
                                                 </CardHeader>
                                                 <CardContent className="p-5 pt-0 flex-1">
-                                                    <p className="text-sm text-gray-600 font-sans mb-4 leading-relaxed">
+                                                    <p className="text-sm text-gray-600 dark:text-gray-300 font-sans mb-4 leading-relaxed">
                                                         {db.description}
                                                     </p>
-                                                    <div className="flex items-center gap-2 text-[11px] text-gray-500 font-sans uppercase font-bold tracking-wider">
+                                                    <div className="flex items-center gap-2 text-[11px] text-gray-500 dark:text-gray-400 font-sans uppercase font-bold tracking-wider">
                                                         <Shield className="w-3.5 h-3.5" />
                                                         {db.access}
                                                     </div>
@@ -286,7 +286,7 @@ export default function TutorialsAndGuidance() {
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: i * 0.05 }}
                                     >
-                                        <Card className="h-full rounded-sm border-gray-200 hover:border-accent transition-colors bg-white flex flex-col group shadow-sm overflow-hidden">
+                                        <Card className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-sm overflow-hidden">
                                             <div className="relative w-full h-32 overflow-hidden">
                                                 <img 
                                                     src={subject.bannerImage} 
@@ -301,17 +301,17 @@ export default function TutorialsAndGuidance() {
                                                 </CardTitle>
                                             </CardHeader>
                                             <CardContent className="p-5 pt-0 flex-1">
-                                                <p className="text-sm text-gray-600 font-sans mb-4 leading-relaxed">
+                                                <p className="text-sm text-gray-600 dark:text-gray-300 font-sans mb-4 leading-relaxed">
                                                     {subject.description}
                                                 </p>
                                                 <div className="space-y-2">
                                                     <p className="text-[10px] font-bold text-gray-400 font-heading uppercase tracking-widest">Key Topics</p>
-                                                    <p className="text-xs text-gray-700 font-sans">{subject.topics}</p>
+                                                    <p className="text-xs text-gray-700 dark:text-gray-200 font-sans">{subject.topics}</p>
                                                 </div>
                                             </CardContent>
                                             <CardContent className="p-5 pt-0">
                                                 <Link to={`/subjects/${subject.id}`}>
-                                                    <Button variant="outline" className="w-full border-gray-200 text-gray-700 hover:bg-accent hover:border-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-9 rounded-sm group/btn">
+                                                    <Button variant="outline" className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 hover:bg-accent hover:border-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-9 rounded-sm group/btn">
                                                         View Guide
                                                         <ExternalLink className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                                                     </Button>
@@ -336,7 +336,7 @@ export default function TutorialsAndGuidance() {
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: i * 0.05 }}
                                         >
-                                            <Card className="h-full rounded-sm border-gray-200 hover:border-accent transition-colors bg-white flex flex-col group shadow-sm overflow-hidden">
+                                            <Card className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-sm overflow-hidden">
                                                 <div className="relative w-full h-32 overflow-hidden">
                                                     <img 
                                                         src={tutorial.bannerImage} 
@@ -345,7 +345,7 @@ export default function TutorialsAndGuidance() {
                                                     />
                                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                                                     <div className="absolute top-3 right-3">
-                                                        <Badge variant="secondary" className="bg-white/90 text-gray-700 border-none px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-widest backdrop-blur-sm">
+                                                        <Badge variant="secondary" className="bg-white dark:bg-gray-900/90 text-gray-700 dark:text-gray-200 border-none px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-widest backdrop-blur-sm">
                                                             {tutorial.category}
                                                         </Badge>
                                                     </div>
@@ -356,13 +356,13 @@ export default function TutorialsAndGuidance() {
                                                     </CardTitle>
                                                 </CardHeader>
                                                 <CardContent className="p-5 pt-0 flex-1">
-                                                    <p className="text-sm text-gray-600 font-sans leading-relaxed">
+                                                    <p className="text-sm text-gray-600 dark:text-gray-300 font-sans leading-relaxed">
                                                         {tutorial.description}
                                                     </p>
                                                 </CardContent>
                                                 <CardContent className="p-5 pt-0">
                                                     <Link to={`/tutorials/${tutorial.id}`}>
-                                                        <Button variant="outline" className="w-full border-gray-200 text-gray-700 hover:bg-accent hover:border-accent hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 group/btn">
+                                                        <Button variant="outline" className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 hover:bg-accent hover:border-accent hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 group/btn">
                                                             Access Tutorial
                                                             <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                                                         </Button>

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 const stats = [
     { title: "Total Submissions", value: "12", icon: Clock, trend: "+2 this month", color: "text-blue-600" },
@@ -46,13 +46,21 @@ const featuredTutorials = [
 ]
 
 export default function Dashboard() {
+    const navigate = useNavigate()
+
+    const handleSubmissionClick = (submission: typeof recentSubmissions[0]) => {
+        if (submission.status === "Analyzed") {
+            navigate(`/report?submissionId=${submission.id}`)
+        }
+    }
+
     return (
-        <div className="flex-1 bg-[#fcf8f8] min-h-screen p-6">
+        <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
             <div className="w-full space-y-6">
                 <div className="flex items-center justify-between">
                     <div className="space-y-1">
-                        <h2 className="text-2xl font-bold text-gray-900 tracking-tight font-heading">Dashboard Overview</h2>
-                        <p className="text-gray-500 font-sans text-xs">Review your latest trial advocacy metrics and case preparation status.</p>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 tracking-tight font-heading">Dashboard Overview</h2>
+                        <p className="text-gray-500 dark:text-gray-400 font-sans text-xs">Review your latest trial advocacy metrics and case preparation status.</p>
                     </div>
                     <Link to="/exercises">
                         <Button className="bg-accent hover:bg-accent/90 text-white shadow-none rounded-sm px-6 h-10 font-heading font-bold uppercase tracking-widest text-[10px]">
@@ -69,12 +77,14 @@ export default function Dashboard() {
                         </div>
                         <div>
                             <h4 className="text-xs font-bold uppercase tracking-widest text-accent font-heading">High Priority Recommendation</h4>
-                            <p className="text-sm text-gray-800 font-sans">Based on recent analytics, we recommend focusing on <span className="font-bold underline decoration-accent/30 underline-offset-2">Criminal Law: Mens Rea</span> to improve your performance.</p>
+                            <p className="text-sm text-gray-800 dark:text-gray-200 font-sans">Based on recent analytics, we recommend focusing on <span className="font-bold underline decoration-accent/30 underline-offset-2">Criminal Law: Mens Rea</span> to improve your performance.</p>
                         </div>
                     </div>
-                    <Button variant="outline" className="text-accent border-accent hover:bg-accent/5 rounded-sm font-heading font-bold uppercase tracking-widest text-[9px] h-8 px-4">
-                        Take Action
-                    </Button>
+                    <Link to="/subjects/3">
+                        <Button variant="outline" className="text-accent border-accent dark:border-accent/80 hover:bg-accent hover:text-white rounded-sm font-heading font-bold uppercase tracking-widest text-[9px] h-8 px-4 transition-colors">
+                            Take Action
+                        </Button>
+                    </Link>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -85,14 +95,14 @@ export default function Dashboard() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.1 }}
                         >
-                            <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                            <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
                                 <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                    <CardTitle className="text-[10px] font-bold text-gray-400 uppercase tracking-widest font-heading">{stat.title}</CardTitle>
+                                    <CardTitle className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest font-heading">{stat.title}</CardTitle>
                                     <stat.icon className={cn("w-4 h-4", stat.color)} />
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="text-2xl font-bold text-gray-900 font-sans tabular-nums tracking-tight">{stat.value}</div>
-                                    <p className="text-[10px] text-green-700 mt-1 flex items-center gap-1 font-bold font-heading uppercase tracking-wide">
+                                    <div className="text-2xl font-bold text-gray-900 dark:text-gray-100 font-sans tabular-nums tracking-tight">{stat.value}</div>
+                                    <p className="text-[10px] text-green-700 dark:text-green-400 mt-1 flex items-center gap-1 font-bold font-heading uppercase tracking-wide">
                                         <TrendingUp className="w-3 h-3" />
                                         {stat.trend}
                                     </p>
@@ -103,22 +113,26 @@ export default function Dashboard() {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <Card className="lg:col-span-2 rounded-sm border-gray-200 bg-white shadow-none">
-                        <CardHeader className="flex flex-row items-center justify-between border-b border-gray-100 py-4">
-                            <CardTitle className="text-base font-bold font-heading">Recent Case Practice</CardTitle>
+                    <Card className="lg:col-span-2 rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
+                        <CardHeader className="flex flex-row items-center justify-between border-b border-gray-100 dark:border-gray-800 py-4">
+                            <CardTitle className="text-base font-bold font-heading text-gray-900 dark:text-gray-100">Recent Case Practice</CardTitle>
                             <Link to="/history">
-                                <Button variant="ghost" size="sm" className="text-accent hover:bg-accent/5 font-heading font-bold text-[10px] uppercase tracking-widest">Full History</Button>
+                                <Button variant="ghost" size="sm" className="text-accent hover:bg-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest transition-colors">Full History</Button>
                             </Link>
                         </CardHeader>
                         <CardContent className="p-0">
-                            <div className="divide-y divide-gray-100">
+                            <div className="divide-y divide-gray-100 dark:divide-gray-800">
                                 {recentSubmissions.map((sub, i) => (
                                     <motion.div
                                         key={sub.id}
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: 0.3 + (i * 0.1) }}
-                                        className="p-4 hover:bg-gray-50/50 transition-colors flex items-center justify-between group"
+                                        onClick={() => handleSubmissionClick(sub)}
+                                        className={cn(
+                                            "p-4 transition-colors flex items-center justify-between group",
+                                            sub.status === "Analyzed" ? "hover:bg-gray-50/50 dark:hover:bg-gray-800/50 cursor-pointer" : "hover:bg-gray-50/30 dark:hover:bg-gray-800/30 cursor-default"
+                                        )}
                                     >
                                         <div className="flex items-center gap-4">
                                             <div className={cn(
@@ -126,20 +140,20 @@ export default function Dashboard() {
                                                 sub.status === "Analyzed" ? "bg-accent/40" : "bg-gray-200"
                                             )} />
                                             <div>
-                                                <h4 className="font-bold text-sm text-gray-900 group-hover:text-accent transition-colors font-heading">{sub.title}</h4>
-                                                <p className="text-xs text-gray-500 font-sans uppercase tracking-tight">{sub.date}</p>
+                                                <h4 className="font-bold text-sm text-gray-900 dark:text-gray-100 group-hover:text-accent transition-colors font-heading">{sub.title}</h4>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400 font-sans uppercase tracking-tight">{sub.date}</p>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-6">
                                             {sub.score !== "--" && (
                                                 <div className="text-right">
-                                                    <p className="text-lg font-bold text-gray-900 font-sans tabular-nums">{sub.score}</p>
-                                                    <p className="text-[9px] uppercase font-bold text-gray-400 font-heading tracking-widest leading-none">Score</p>
+                                                    <p className="text-lg font-bold text-gray-900 dark:text-gray-100 font-sans tabular-nums">{sub.score}</p>
+                                                    <p className="text-[9px] uppercase font-bold text-gray-400 dark:text-gray-500 font-heading tracking-widest leading-none">Score</p>
                                                 </div>
                                             )}
                                             <Badge variant="outline" className={cn(
                                                 "rounded-sm px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest",
-                                                sub.status === "Analyzed" ? "border-green-200 text-green-700 bg-green-50" : "border-gray-200 text-gray-500 bg-gray-50"
+                                                sub.status === "Analyzed" ? "border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/30" : "border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800"
                                             )}>
                                                 {sub.status}
                                             </Badge>
@@ -151,44 +165,48 @@ export default function Dashboard() {
                     </Card>
 
                     <div className="space-y-6">
-                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                            <CardHeader className="border-b border-gray-100 py-4">
-                                <CardTitle className="text-base font-bold font-heading">Advocacy Toolkit</CardTitle>
+                        <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
+                            <CardHeader className="border-b border-gray-100 dark:border-gray-800 py-4">
+                                <CardTitle className="text-base font-bold font-heading text-gray-900 dark:text-gray-100">Advocacy Toolkit</CardTitle>
                             </CardHeader>
                             <CardContent className="p-4 space-y-2">
-                                <Button variant="outline" className="w-full justify-start gap-4 border-gray-200 text-gray-700 hover:bg-accent hover:border-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-11 rounded-sm group transition-all">
-                                    <BookOpen className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                                    Legal Subject Guides
-                                </Button>
-                                <Button variant="outline" className="w-full justify-start gap-4 border-gray-200 text-gray-700 hover:bg-accent hover:border-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-11 rounded-sm group transition-all">
-                                    <Video className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                                    Submission Checklist
-                                </Button>
+                                <Link to="/tutorials?tab=subjects">
+                                    <Button variant="outline" className="w-full justify-start gap-4 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-accent hover:border-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-11 rounded-sm group transition-all">
+                                        <BookOpen className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                                        Legal Subject Guides
+                                    </Button>
+                                </Link>
+                                <Link to="/tutorials/1">
+                                    <Button variant="outline" className="w-full justify-start gap-4 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-accent hover:border-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-11 rounded-sm group transition-all">
+                                        <Video className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                                        Submission Checklist
+                                    </Button>
+                                </Link>
                             </CardContent>
                         </Card>
 
-                        <div className="rounded-r-xl border-l-4 border-primary bg-primary/5 p-5">
-                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary font-heading mb-1">Upcoming Milestone</h4>
-                            <p className="text-sm font-bold text-gray-900 font-heading">Internal Mooting Competition</p>
+                        <div className="rounded-r-xl border-l-4 border-primary dark:border-primary/60 bg-primary/5 dark:bg-primary/20 p-5">
+                            <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary dark:text-gray-300 font-heading mb-1">Upcoming Milestone</h4>
+                            <p className="text-sm font-bold text-gray-900 dark:text-gray-100 font-heading">Internal Mooting Competition</p>
                             <div className="flex items-center gap-2 mt-2">
-                                <Clock className="w-3 h-3 text-primary" />
-                                <span className="text-[11px] text-primary font-bold font-sans">12 Jan – 3 Days Left</span>
+                                <Clock className="w-3 h-3 text-primary dark:text-gray-300" />
+                                <span className="text-[11px] text-primary dark:text-gray-300 font-bold font-sans">12 Jan – 3 Days Left</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Tutorials & Guidance Section */}
-                <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                    <CardHeader className="flex flex-row items-center justify-between border-b border-gray-100 py-4">
+                <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
+                    <CardHeader className="flex flex-row items-center justify-between border-b border-gray-100 dark:border-gray-800 py-4">
                         <div className="flex items-center gap-3">
-                            <div className="bg-accent/10 p-2 rounded-sm">
+                            <div className="bg-accent/10 dark:bg-accent/20 p-2 rounded-sm">
                                 <GraduationCap className="w-5 h-5 text-accent" />
                             </div>
-                            <CardTitle className="text-base font-bold font-heading">Tutorials & Guidance</CardTitle>
+                            <CardTitle className="text-base font-bold font-heading text-gray-900 dark:text-gray-100">Tutorials & Guidance</CardTitle>
                         </div>
                         <Link to="/tutorials">
-                            <Button variant="ghost" size="sm" className="text-accent hover:bg-accent/5 font-heading font-bold text-[10px] uppercase tracking-widest">
+                            <Button variant="ghost" size="sm" className="text-accent hover:bg-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest transition-colors">
                                 Browse More
                                 <ChevronRight className="w-3.5 h-3.5 ml-1" />
                             </Button>
@@ -204,7 +222,7 @@ export default function Dashboard() {
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: i * 0.1 }}
                                     >
-                                        <Card className="h-full rounded-sm border-gray-200 hover:border-accent transition-colors bg-white flex flex-col group shadow-none overflow-hidden">
+                                        <Card className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-none overflow-hidden">
                                             <div className="relative w-full h-32 overflow-hidden">
                                                 <img 
                                                     src={tutorial.bannerImage} 
@@ -224,13 +242,13 @@ export default function Dashboard() {
                                                 </CardTitle>
                                             </CardHeader>
                                             <CardContent className="p-5 pt-0 flex-1">
-                                                <p className="text-sm text-gray-600 font-sans leading-relaxed">
+                                                <p className="text-sm text-gray-600 dark:text-gray-300 font-sans leading-relaxed">
                                                     {tutorial.description}
                                                 </p>
                                             </CardContent>
                                             <CardContent className="p-5 pt-0">
                                                 <Link to={`/tutorials/${tutorial.id}`}>
-                                                    <Button variant="outline" className="w-full border-gray-200 text-gray-700 hover:bg-accent hover:border-accent hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 group/btn">
+                                                    <Button variant="outline" className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 hover:bg-accent hover:border-accent hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 group/btn">
                                                         Access Tutorial
                                                         <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                                                     </Button>

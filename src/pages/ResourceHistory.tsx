@@ -249,11 +249,11 @@ export default function ResourceHistory() {
                     icon: "text-blue-600"
                 }
             default:
-                return {
-                    badge: "bg-gray-100 text-gray-700 border-gray-200",
-                    hover: "hover:bg-gray-50/50",
-                    icon: "text-gray-400"
-                }
+        return {
+            badge: "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700",
+            hover: "hover:bg-gray-50/50 dark:hover:bg-gray-800/50",
+            icon: "text-gray-400 dark:text-gray-500"
+        }
         }
     }
 
@@ -262,55 +262,55 @@ export default function ResourceHistory() {
         switch (status) {
             case "Completed":
                 return (
-                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-green-100 border border-green-200">
-                        <span className="text-green-700 font-bold text-xs">•</span>
-                        <span className="text-xs font-semibold text-green-700 font-sans">Completed</span>
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800">
+                        <span className="text-green-700 dark:text-green-400 font-bold text-xs">•</span>
+                        <span className="text-xs font-semibold text-green-700 dark:text-green-400 font-sans">Completed</span>
                     </div>
                 )
             case "In Progress":
                 return (
-                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-amber-100 border border-amber-200">
-                        <span className="text-amber-700 font-bold text-xs">•</span>
-                        <span className="text-xs font-semibold text-amber-700 font-sans">In Progress</span>
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-amber-100 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800">
+                        <span className="text-amber-700 dark:text-amber-400 font-bold text-xs">•</span>
+                        <span className="text-xs font-semibold text-amber-700 dark:text-amber-400 font-sans">In Progress</span>
                     </div>
                 )
             case "Bookmarked":
                 return (
-                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-blue-100 border border-blue-200">
-                        <span className="text-blue-700 font-bold text-xs">•</span>
-                        <span className="text-xs font-semibold text-blue-700 font-sans">Bookmarked</span>
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800">
+                        <span className="text-blue-700 dark:text-blue-400 font-bold text-xs">•</span>
+                        <span className="text-xs font-semibold text-blue-700 dark:text-blue-400 font-sans">Bookmarked</span>
                     </div>
                 )
             default:
                 return (
-                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-gray-100 border border-gray-200">
-                        <span className="text-gray-600 font-bold text-xs">•</span>
-                        <span className="text-xs font-semibold text-gray-600 font-sans">{status}</span>
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                        <span className="text-gray-600 dark:text-gray-400 font-bold text-xs">•</span>
+                        <span className="text-xs font-semibold text-gray-600 dark:text-gray-400 font-sans">{status}</span>
                     </div>
                 )
         }
     }
 
     return (
-        <div className="flex-1 bg-[#fcf8f8] min-h-screen p-6">
+        <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
             <div className="w-full space-y-6">
                 {/* Breadcrumbs */}
-                <div className="flex items-center gap-2 text-sm text-gray-600 font-sans">
+                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 font-sans">
                     <Link to="/history" className="hover:text-accent transition-colors">History</Link>
                     <ChevronRight className="w-4 h-4" />
-                    <span className="text-gray-900 font-semibold">Resource History</span>
+                    <span className="text-gray-900 dark:text-gray-100 font-semibold">Resource History</span>
                 </div>
 
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-900 tracking-tight font-heading">Resource History</h2>
-                        <p className="text-gray-500 text-xs font-sans mt-1">Track your access to legal databases, subject guides, and tutorials.</p>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 tracking-tight font-heading">Resource History</h2>
+                        <p className="text-gray-500 dark:text-gray-400 text-xs font-sans mt-1">Track your access to legal databases, subject guides, and tutorials.</p>
                     </div>
                 </div>
 
                 {/* Compact Filter Bar */}
-                <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                <Card className="rounded-sm border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-none">
                     <CardContent className="p-4">
                         <div className="flex flex-col lg:flex-row gap-3 items-start lg:items-center">
                             {/* Search */}
@@ -320,7 +320,7 @@ export default function ResourceHistory() {
                                     placeholder="Search resource..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="pl-10 rounded-sm border-gray-200 bg-white font-sans text-sm h-9"
+                                    className="pl-10 rounded-sm border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 font-sans text-sm h-9 text-gray-900 dark:text-gray-100"
                                 />
                             </div>
 
@@ -329,10 +329,10 @@ export default function ResourceHistory() {
                                 setTypeFilter(value)
                                 setCategoryFilter("all") // Reset category when type changes
                             }}>
-                                <SelectTrigger className="w-full lg:w-[160px] bg-white border-gray-200 rounded-sm h-9 font-sans text-xs">
+                                <SelectTrigger className="w-full lg:w-[160px] bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100">
                                     <SelectValue placeholder="Type: All" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-sm border-gray-200 shadow-none">
+                                <SelectContent className="rounded-sm border-gray-200 dark:border-gray-700 shadow-none bg-white dark:bg-gray-800">
                                     <SelectItem value="all">All Types</SelectItem>
                                     <SelectItem value="Legal Database">Legal Databases</SelectItem>
                                     <SelectItem value="Subject Guide">Subject Guides</SelectItem>
@@ -342,10 +342,10 @@ export default function ResourceHistory() {
 
                             {/* Category Filter */}
                             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                                <SelectTrigger className="w-full lg:w-[150px] bg-white border-gray-200 rounded-sm h-9 font-sans text-xs">
+                                <SelectTrigger className="w-full lg:w-[150px] bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100">
                                     <SelectValue placeholder="Category: All" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-sm border-gray-200 shadow-none">
+                                <SelectContent className="rounded-sm border-gray-200 dark:border-gray-700 shadow-none bg-white dark:bg-gray-800">
                                     <SelectItem value="all">All Categories</SelectItem>
                                     {categories.map(cat => (
                                         <SelectItem key={cat} value={cat}>{cat}</SelectItem>
@@ -355,10 +355,10 @@ export default function ResourceHistory() {
 
                             {/* Date Range Filter */}
                             <Select value={dateRangeFilter} onValueChange={setDateRangeFilter}>
-                                <SelectTrigger className="w-full lg:w-[140px] bg-white border-gray-200 rounded-sm h-9 font-sans text-xs">
+                                <SelectTrigger className="w-full lg:w-[140px] bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100">
                                     <SelectValue placeholder="Date Range" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-sm border-gray-200 shadow-none">
+                                <SelectContent className="rounded-sm border-gray-200 dark:border-gray-700 shadow-none bg-white dark:bg-gray-800">
                                     <SelectItem value="all">All Time</SelectItem>
                                     <SelectItem value="last30">Last 30 days</SelectItem>
                                 </SelectContent>
@@ -366,10 +366,10 @@ export default function ResourceHistory() {
 
                             {/* Sort */}
                             <Select value={sortBy} onValueChange={setSortBy}>
-                                <SelectTrigger className="w-full lg:w-[140px] bg-white border-gray-200 rounded-sm h-9 font-sans text-xs">
+                                <SelectTrigger className="w-full lg:w-[140px] bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100">
                                     <SelectValue placeholder="Sort by" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-sm border-gray-200 shadow-none">
+                                <SelectContent className="rounded-sm border-gray-200 dark:border-gray-700 shadow-none bg-white dark:bg-gray-800">
                                     <SelectItem value="newest">Date (Newest)</SelectItem>
                                     <SelectItem value="oldest">Date (Oldest)</SelectItem>
                                     <SelectItem value="name">Name (A-Z)</SelectItem>
@@ -381,7 +381,7 @@ export default function ResourceHistory() {
                             <Button
                                 variant="outline"
                                 onClick={handleExport}
-                                className="gap-2 border-gray-200 font-heading font-bold text-[10px] uppercase tracking-widest h-9 rounded-sm shadow-none w-full lg:w-auto"
+                                className="gap-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 font-heading font-bold text-[10px] uppercase tracking-widest h-9 rounded-sm shadow-none w-full lg:w-auto"
                             >
                                 <Upload className="w-3.5 h-3.5" />
                                 Export
@@ -398,25 +398,25 @@ export default function ResourceHistory() {
 
                 {/* Table */}
                 {filteredResources.length === 0 ? (
-                    <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                    <Card className="rounded-sm border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-none">
                         <CardContent className="p-12 text-center">
-                            <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                            <h3 className="text-lg font-semibold text-gray-900 font-heading mb-2">No resources found</h3>
-                            <p className="text-sm text-gray-600 font-sans">Try adjusting your filters or search query.</p>
+                            <Search className="w-12 h-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 font-heading mb-2">No resources found</h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-300 font-sans">Try adjusting your filters or search query.</p>
                         </CardContent>
                     </Card>
                 ) : (
-                    <Card className="rounded-sm border-gray-200 bg-white shadow-none overflow-hidden">
+                    <Card className="rounded-sm border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-none overflow-hidden">
                         <div className="overflow-x-auto">
                             <table className="w-full">
                                 <thead>
-                                    <tr className="border-b border-gray-200 bg-gray-50/50">
-                                        <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Date</th>
-                                        <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Resource Name</th>
-                                        <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Type</th>
-                                        <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Category</th>
-                                        <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Status</th>
-                                        <th className="text-right py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Action</th>
+                                    <tr className="border-b border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/50">
+                                        <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Date</th>
+                                        <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Resource Name</th>
+                                        <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Type</th>
+                                        <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Category</th>
+                                        <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Status</th>
+                                        <th className="text-right py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -426,17 +426,17 @@ export default function ResourceHistory() {
                                         return (
                                             <tr 
                                                 key={resource.id} 
-                                                className={`border-b border-gray-100 ${typeColors.hover} transition-colors`}
+                                                className={`border-b border-gray-100 dark:border-gray-800 ${typeColors.hover} transition-colors`}
                                             >
                                                 <td className="py-4 px-4">
-                                                    <div className="text-sm text-gray-900 font-sans">
+                                                    <div className="text-sm text-gray-900 dark:text-gray-100 font-sans">
                                                         {formatTableDate(resource.accessedDate)}
                                                     </div>
                                                 </td>
                                                 <td className="py-4 px-4">
                                                     <div className="flex items-center gap-2">
                                                         <TypeIcon className={`w-4 h-4 ${typeColors.icon}`} />
-                                                        <span className="text-sm font-semibold text-gray-900 font-heading">
+                                                        <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 font-heading">
                                                             {resource.name}
                                                         </span>
                                                     </div>
@@ -447,11 +447,11 @@ export default function ResourceHistory() {
                                                     </Badge>
                                                 </td>
                                                 <td className="py-4 px-4">
-                                                    <span className="text-sm text-gray-700 font-sans">{resource.category}</span>
+                                                    <span className="text-sm text-gray-700 dark:text-gray-300 font-sans">{resource.category}</span>
                                                 </td>
                                                 <td className="py-4 px-4">
                                                     {resource.status ? getStatusBadge(resource.status) : (
-                                                        <span className="text-sm text-gray-400 font-sans">--</span>
+                                                        <span className="text-sm text-gray-400 dark:text-gray-500 font-sans">--</span>
                                                     )}
                                                 </td>
                                                 <td className="py-4 px-4">

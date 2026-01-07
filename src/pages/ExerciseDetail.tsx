@@ -274,10 +274,10 @@ export default function ExerciseDetail() {
         return (
             <div className="flex-1 bg-[#fcf8f8] min-h-screen p-6">
                 <div className="max-w-4xl mx-auto">
-                    <Card className="rounded-sm border-gray-200 bg-white">
+                    <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
                         <CardContent className="p-8 text-center">
-                            <h2 className="text-xl font-bold text-gray-900 font-heading mb-2">Exercise Not Found</h2>
-                            <p className="text-gray-600 font-sans mb-6">The exercise you're looking for doesn't exist.</p>
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 font-heading mb-2">Exercise Not Found</h2>
+                            <p className="text-gray-600 dark:text-gray-300 font-sans mb-6">The exercise you're looking for doesn't exist.</p>
                             <Link to="/exercises">
                                 <Button className="gap-2 bg-accent hover:bg-accent/90 text-white rounded-sm font-heading font-bold text-[10px] uppercase tracking-widest">
                                     <ArrowLeft className="w-4 h-4" /> Back to Exercise Library
@@ -291,18 +291,18 @@ export default function ExerciseDetail() {
     }
 
     return (
-        <div className="flex-1 bg-[#fcf8f8] min-h-screen p-6">
+        <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
             <div className="w-full max-w-[95vw] mx-auto">
                 {/* Header */}
                 <div className="flex items-center gap-4 mb-6">
                     <Link to="/exercises">
-                        <Button variant="ghost" size="icon" className="rounded-sm hover:bg-accent hover:text-white transition-colors">
+                        <Button variant="ghost" size="icon" className="rounded-sm text-primary dark:text-gray-300 hover:bg-accent hover:text-white transition-colors">
                             <ArrowLeft className="w-4 h-4" />
                         </Button>
                     </Link>
                     <div className="flex-1">
-                        <h1 className="text-3xl font-bold text-gray-900 tracking-tight font-heading mb-3">{exercise.title}</h1>
-                        <p className="text-gray-700 font-sans leading-relaxed text-sm">{exercise.description}</p>
+                        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 tracking-tight font-heading mb-3">{exercise.title}</h1>
+                        <p className="text-gray-700 dark:text-gray-200 font-sans leading-relaxed text-sm">{exercise.description}</p>
                     </div>
                 </div>
 
@@ -311,8 +311,8 @@ export default function ExerciseDetail() {
                     {/* Main Content Area */}
                     <div className="space-y-4">
                         {/* Case Details */}
-                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                            <CardHeader className="border-b border-gray-100 py-4">
+                        <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
+                            <CardHeader className="border-b border-gray-100 dark:border-gray-800 py-4">
                                 <CardTitle className="text-base font-bold font-heading flex items-center gap-2">
                                     <FileText className="w-4 h-4 text-accent" />
                                     Case Details
@@ -320,20 +320,20 @@ export default function ExerciseDetail() {
                             </CardHeader>
                             <CardContent className="p-5 space-y-4">
                                 <div>
-                                    <h3 className="text-xs font-bold text-gray-900 font-heading uppercase tracking-widest mb-2">Factual Background</h3>
-                                    <p className="text-sm text-gray-700 font-sans leading-relaxed">{exercise.caseDetails.factualBackground}</p>
+                                    <h3 className="text-xs font-bold text-gray-900 dark:text-gray-100 font-heading uppercase tracking-widest mb-2">Factual Background</h3>
+                                    <p className="text-sm text-gray-700 dark:text-gray-200 font-sans leading-relaxed">{exercise.caseDetails.factualBackground}</p>
                                 </div>
                                 <Separator />
                                 <div>
-                                    <h3 className="text-xs font-bold text-gray-900 font-heading uppercase tracking-widest mb-2">Relevant Legal Issues</h3>
-                                    <p className="text-sm text-gray-700 font-sans leading-relaxed">{exercise.caseDetails.legalIssues}</p>
+                                    <h3 className="text-xs font-bold text-gray-900 dark:text-gray-100 font-heading uppercase tracking-widest mb-2">Relevant Legal Issues</h3>
+                                    <p className="text-sm text-gray-700 dark:text-gray-200 font-sans leading-relaxed">{exercise.caseDetails.legalIssues}</p>
                                 </div>
                             </CardContent>
                         </Card>
 
                         {/* Arguments */}
-                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                            <CardHeader className="border-b border-gray-100 py-4">
+                        <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
+                            <CardHeader className="border-b border-gray-100 dark:border-gray-800 py-4">
                                 <CardTitle className="text-base font-bold font-heading flex items-center gap-2">
                                     <Scale className="w-4 h-4 text-accent" />
                                     Arguments
@@ -341,11 +341,11 @@ export default function ExerciseDetail() {
                             </CardHeader>
                             <CardContent className="p-5">
                                 <Tabs defaultValue="for" className="w-full">
-                                    <TabsList className="bg-gray-100/50 p-1 rounded-sm border border-gray-100 h-9">
-                                        <TabsTrigger value="for" className="rounded-sm px-4 py-1.5 text-xs data-[state=active]:bg-white data-[state=active]:text-primary font-heading font-bold uppercase tracking-widest">
+                                    <TabsList className="bg-gray-100/50 dark:bg-gray-800/50 p-1 rounded-sm border border-gray-100 dark:border-gray-800 h-9">
+                                        <TabsTrigger value="for" className="rounded-sm px-4 py-1.5 text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-primary dark:data-[state=active]:text-white text-gray-700 dark:text-gray-300 font-heading font-bold uppercase tracking-widest">
                                             Arguments For
                                         </TabsTrigger>
-                                        <TabsTrigger value="against" className="rounded-sm px-4 py-1.5 text-xs data-[state=active]:bg-white data-[state=active]:text-primary font-heading font-bold uppercase tracking-widest">
+                                        <TabsTrigger value="against" className="rounded-sm px-4 py-1.5 text-xs data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-primary dark:data-[state=active]:text-white text-gray-700 dark:text-gray-300 font-heading font-bold uppercase tracking-widest">
                                             Arguments Against
                                         </TabsTrigger>
                                     </TabsList>
@@ -372,8 +372,8 @@ export default function ExerciseDetail() {
                         </Card>
 
                         {/* Rules & Guidelines */}
-                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                            <CardHeader className="border-b border-gray-100 py-4">
+                        <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
+                            <CardHeader className="border-b border-gray-100 dark:border-gray-800 py-4">
                                 <CardTitle className="text-base font-bold font-heading">Rules & Guidelines</CardTitle>
                             </CardHeader>
                             <CardContent className="p-5">
@@ -384,17 +384,17 @@ export default function ExerciseDetail() {
                         </Card>
 
                         {/* Evaluation Rubric */}
-                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                            <CardHeader className="border-b border-gray-100 py-4">
+                        <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
+                            <CardHeader className="border-b border-gray-100 dark:border-gray-800 py-4">
                                 <CardTitle className="text-base font-bold font-heading">Evaluation Rubric</CardTitle>
                                 <p className="text-xs text-gray-500 font-sans mt-1">You will be evaluated on the following criteria:</p>
                             </CardHeader>
                             <CardContent className="p-5">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     {exercise.rubric.map((criterion, i) => (
-                                        <div key={i} className="bg-gray-50/50 rounded-sm p-3 border border-gray-100">
-                                            <h4 className="text-xs font-bold text-gray-900 font-heading mb-1">{criterion.name}</h4>
-                                            <p className="text-xs text-gray-600 font-sans leading-relaxed">{criterion.description}</p>
+                                        <div key={i} className="bg-gray-50/50 rounded-sm p-3 border border-gray-100 dark:border-gray-800">
+                                            <h4 className="text-xs font-bold text-gray-900 dark:text-gray-100 font-heading mb-1">{criterion.name}</h4>
+                                            <p className="text-xs text-gray-600 dark:text-gray-300 font-sans leading-relaxed">{criterion.description}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -405,8 +405,8 @@ export default function ExerciseDetail() {
                     {/* Right Sidebar */}
                     <div className="space-y-4 lg:sticky lg:top-6 lg:self-start">
                         {/* Exercise Metadata */}
-                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                            <CardHeader className="border-b border-gray-100 py-4">
+                        <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
+                            <CardHeader className="border-b border-gray-100 dark:border-gray-800 py-4">
                                 <CardTitle className="text-base font-bold font-heading">Exercise Details</CardTitle>
                             </CardHeader>
                             <CardContent className="p-5 space-y-4">
@@ -421,27 +421,27 @@ export default function ExerciseDetail() {
                                         {exercise.type}
                                     </Badge>
                                 </div>
-                                <div className="space-y-3 pt-2 border-t border-gray-100">
+                                <div className="space-y-3 pt-2 border-t border-gray-100 dark:border-gray-800">
                                     <div className="flex items-center justify-between text-sm">
-                                        <div className="flex items-center gap-2 text-gray-600">
+                                        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
                                             <Clock className="w-4 h-4" />
                                             <span className="font-sans">Duration</span>
                                         </div>
-                                        <span className="font-semibold text-gray-900 font-sans">{exercise.time}</span>
+                                        <span className="font-semibold text-gray-900 dark:text-gray-100 font-sans">{exercise.time}</span>
                                     </div>
                                     <div className="flex items-center justify-between text-sm">
-                                        <div className="flex items-center gap-2 text-gray-600">
+                                        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
                                             <Star className="w-4 h-4 text-accent fill-current" />
                                             <span className="font-sans">Rating</span>
                                         </div>
-                                        <span className="font-semibold text-gray-900 font-sans">{exercise.rating}</span>
+                                        <span className="font-semibold text-gray-900 dark:text-gray-100 font-sans">{exercise.rating}</span>
                                     </div>
                                 </div>
                             </CardContent>
                         </Card>
 
                         {/* Quick Actions */}
-                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                        <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
                             <CardContent className="p-5 space-y-3">
                                 <Link to={`/submit?exercise=${exercise.id}`} className="block">
                                     <Button className="w-full bg-accent hover:bg-accent/90 text-white rounded-sm h-11 font-heading font-bold uppercase tracking-widest text-[11px] group">
@@ -450,7 +450,7 @@ export default function ExerciseDetail() {
                                     </Button>
                                 </Link>
                                 <Link to="/exercises" className="block">
-                                    <Button variant="ghost" className="w-full gap-2 text-primary hover:bg-accent hover:text-white rounded-sm border-gray-200 font-heading font-bold text-[10px] uppercase tracking-widest transition-colors">
+                                    <Button variant="ghost" className="w-full gap-2 text-primary dark:text-gray-300 hover:bg-accent hover:text-white rounded-sm border-gray-200 dark:border-gray-800 font-heading font-bold text-[10px] uppercase tracking-widest transition-colors">
                                         <ArrowLeft className="w-4 h-4" />
                                         Back to Library
                                     </Button>
@@ -459,8 +459,8 @@ export default function ExerciseDetail() {
                         </Card>
 
                         {/* Case Files */}
-                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                            <CardHeader className="border-b border-gray-100 py-4">
+                        <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
+                            <CardHeader className="border-b border-gray-100 dark:border-gray-800 py-4">
                                 <CardTitle className="text-base font-bold font-heading flex items-center gap-2">
                                     <FileText className="w-4 h-4 text-accent" />
                                     Case Files
@@ -469,15 +469,15 @@ export default function ExerciseDetail() {
                             <CardContent className="p-5">
                                 <div className="space-y-2">
                                     {exercise.caseFiles.map((file, i) => (
-                                        <div key={i} className="flex items-center justify-between p-2.5 bg-gray-50/50 rounded-sm border border-gray-100 hover:bg-gray-100/50 transition-colors group">
+                                        <div key={i} className="flex items-center justify-between p-2.5 bg-gray-50/50 rounded-sm border border-gray-100 dark:border-gray-800 hover:bg-gray-100/50 transition-colors group">
                                             <div className="flex items-center gap-2.5 min-w-0 flex-1">
                                                 <FileText className="w-3.5 h-3.5 text-gray-400 shrink-0" />
                                                 <div className="min-w-0 flex-1">
-                                                    <p className="text-xs font-medium text-gray-900 font-sans truncate">{file.name}</p>
+                                                    <p className="text-xs font-medium text-gray-900 dark:text-gray-100 font-sans truncate">{file.name}</p>
                                                     <p className="text-[10px] text-gray-500 font-sans">{file.size} • {file.type}</p>
                                                 </div>
                                             </div>
-                                            <Button variant="ghost" size="sm" className="text-accent hover:bg-accent/5 rounded-sm h-7 px-2 shrink-0">
+                                            <Button variant="ghost" size="sm" className="text-accent hover:bg-accent hover:text-white rounded-sm h-7 px-2 shrink-0 transition-colors">
                                                 <Download className="w-3.5 h-3.5" />
                                             </Button>
                                         </div>
@@ -487,8 +487,8 @@ export default function ExerciseDetail() {
                         </Card>
 
                         {/* Legal Topics & Keywords */}
-                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                            <CardHeader className="border-b border-gray-100 py-4">
+                        <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
+                            <CardHeader className="border-b border-gray-100 dark:border-gray-800 py-4">
                                 <CardTitle className="text-base font-bold font-heading flex items-center gap-2">
                                     <Tag className="w-4 h-4 text-accent" />
                                     Topics & Keywords
@@ -510,7 +510,7 @@ export default function ExerciseDetail() {
                                     <h3 className="text-[10px] font-bold text-gray-500 font-heading uppercase tracking-widest mb-2">Keywords</h3>
                                     <div className="flex flex-wrap gap-1.5">
                                         {exercise.keywords.map((keyword, i) => (
-                                            <Badge key={i} variant="secondary" className="bg-gray-100 text-gray-600 border-none px-1.5 py-0.5 rounded-sm text-[8px] font-medium">
+                                            <Badge key={i} variant="secondary" className="bg-gray-100 text-gray-600 dark:text-gray-300 border-none px-1.5 py-0.5 rounded-sm text-[8px] font-medium">
                                                 {keyword}
                                             </Badge>
                                         ))}

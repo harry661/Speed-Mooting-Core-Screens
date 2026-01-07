@@ -48,7 +48,7 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
 
     return (
         <div className={cn(
-            "bg-primary text-white h-screen flex flex-col transition-all duration-300 shadow-none border-r border-[#1a3d34] z-20 relative",
+            "bg-primary dark:bg-gray-900 text-white dark:text-gray-100 h-screen flex flex-col transition-all duration-300 shadow-none border-r border-[#1a3d34] dark:border-gray-800 z-20 relative",
             isCollapsed ? "w-20 p-4" : "w-64 p-6"
         )}>
             <div className={cn(

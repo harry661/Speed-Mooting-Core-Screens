@@ -219,9 +219,9 @@ export default function SubmissionHistory() {
                 )
             default:
                 return (
-                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-gray-100 border border-gray-200">
-                        <span className="text-gray-600 font-bold text-xs">•</span>
-                        <span className="text-xs font-semibold text-gray-600 font-sans">{status}</span>
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                        <span className="text-gray-600 dark:text-gray-300 font-bold text-xs">•</span>
+                        <span className="text-xs font-semibold text-gray-600 dark:text-gray-300 font-sans">{status}</span>
                     </div>
                 )
         }
@@ -232,87 +232,87 @@ export default function SubmissionHistory() {
         if (subjectLower.includes("contract")) {
             return {
                 badge: "bg-accent/10 text-accent border-accent/20",
-                hover: "hover:bg-gray-50/50"
+                hover: "hover:bg-gray-50/50 dark:hover:bg-gray-800/50"
             }
         } else if (subjectLower.includes("tort")) {
             return {
-                badge: "bg-blue-100 text-blue-700 border-blue-200",
-                hover: "hover:bg-gray-50/50"
+                badge: "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800",
+                hover: "hover:bg-gray-50/50 dark:hover:bg-gray-800/50"
             }
         } else if (subjectLower.includes("criminal")) {
             return {
-                badge: "bg-primary/10 text-primary border-primary/20",
-                hover: "hover:bg-gray-50/50"
+                badge: "bg-primary/10 dark:bg-primary/30 text-primary dark:text-green-400 border-primary/20 dark:border-green-700",
+                hover: "hover:bg-gray-50/50 dark:hover:bg-gray-800/50"
             }
         } else if (subjectLower.includes("public") || subjectLower.includes("constitutional") || subjectLower.includes("administrative")) {
             return {
-                badge: "bg-purple-100 text-purple-700 border-purple-200",
-                hover: "hover:bg-gray-50/50"
+                badge: "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800",
+                hover: "hover:bg-gray-50/50 dark:hover:bg-gray-800/50"
             }
         } else if (subjectLower.includes("property")) {
             return {
-                badge: "bg-indigo-100 text-indigo-700 border-indigo-200",
-                hover: "hover:bg-gray-50/50"
+                badge: "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800",
+                hover: "hover:bg-gray-50/50 dark:hover:bg-gray-800/50"
             }
         } else if (subjectLower.includes("evidence") || subjectLower.includes("procedure")) {
             return {
-                badge: "bg-teal-100 text-teal-700 border-teal-200",
-                hover: "hover:bg-gray-50/50"
+                badge: "bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400 border-teal-200 dark:border-teal-800",
+                hover: "hover:bg-gray-50/50 dark:hover:bg-gray-800/50"
             }
         }
         // Default neutral
         return {
-            badge: "bg-gray-100 text-gray-700 border-gray-200",
-            hover: "hover:bg-gray-50/50"
+            badge: "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700",
+            hover: "hover:bg-gray-50/50 dark:hover:bg-gray-800/50"
         }
     }
 
     const getScoreColor = (score: number | null) => {
-        if (score === null) return "text-gray-400"
-        if (score >= 80) return "text-green-700"
-        if (score >= 60) return "text-amber-700"
-        return "text-red-700"
+        if (score === null) return "text-gray-400 dark:text-gray-500"
+        if (score >= 80) return "text-green-700 dark:text-green-400"
+        if (score >= 60) return "text-amber-700 dark:text-amber-400"
+        return "text-red-700 dark:text-red-400"
     }
 
     return (
-        <div className="flex-1 bg-[#fcf8f8] min-h-screen p-6">
+        <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
             <div className="w-full space-y-6">
                 {/* Breadcrumbs */}
-                <div className="flex items-center gap-2 text-sm text-gray-600 font-sans">
+                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 font-sans">
                     <Link to="/history" className="hover:text-accent transition-colors">History</Link>
                     <ChevronRight className="w-4 h-4" />
-                    <span className="text-gray-900 font-semibold">Submission History</span>
+                    <span className="text-gray-900 dark:text-gray-100 font-semibold">Submission History</span>
                 </div>
 
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-900 tracking-tight font-heading">Submission History</h2>
-                        <p className="text-gray-500 text-xs font-sans mt-1">Review your past video submissions and AI-generated feedback.</p>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 tracking-tight font-heading">Submission History</h2>
+                        <p className="text-gray-500 dark:text-gray-400 text-xs font-sans mt-1">Review your past video submissions and AI-generated feedback.</p>
                     </div>
                 </div>
 
                 {/* Compact Filter Bar */}
-                <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
                     <CardContent className="p-4">
                         <div className="flex flex-col lg:flex-row gap-3 items-start lg:items-center">
                             {/* Search */}
                             <div className="relative flex-1 w-full lg:w-auto min-w-[200px]">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
                                 <Input
                                     placeholder="Search submission..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="pl-10 rounded-sm border-gray-200 bg-white font-sans text-sm h-9"
+                                    className="pl-10 rounded-sm border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 font-sans text-sm h-9 text-gray-900 dark:text-gray-100"
                                 />
                             </div>
 
                             {/* Type Filter - Using Exercise as Type */}
                             <Select value={exerciseFilter} onValueChange={setExerciseFilter}>
-                                <SelectTrigger className="w-full lg:w-[140px] bg-white border-gray-200 rounded-sm h-9 font-sans text-xs">
+                                <SelectTrigger className="w-full lg:w-[140px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100">
                                     <SelectValue placeholder="Exercise: All" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-sm border-gray-200 shadow-none">
+                                <SelectContent className="rounded-sm border-gray-200 dark:border-gray-800 shadow-none bg-white dark:bg-gray-900">
                                     <SelectItem value="all">All Exercises</SelectItem>
                                     {uniqueExercises.map(ex => (
                                         <SelectItem key={ex} value={ex}>{ex}</SelectItem>
@@ -322,10 +322,10 @@ export default function SubmissionHistory() {
 
                             {/* Status Filter */}
                             <Select value={statusFilter} onValueChange={setStatusFilter}>
-                                <SelectTrigger className="w-full lg:w-[130px] bg-white border-gray-200 rounded-sm h-9 font-sans text-xs">
+                                <SelectTrigger className="w-full lg:w-[130px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100">
                                     <SelectValue placeholder="Status: All" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-sm border-gray-200 shadow-none">
+                                <SelectContent className="rounded-sm border-gray-200 dark:border-gray-800 shadow-none bg-white dark:bg-gray-900">
                                     <SelectItem value="all">All Statuses</SelectItem>
                                     <SelectItem value="Analyzed">Completed</SelectItem>
                                     <SelectItem value="Processing">Pending</SelectItem>
@@ -335,10 +335,10 @@ export default function SubmissionHistory() {
 
                             {/* Date Range Filter */}
                             <Select value={dateRangeFilter} onValueChange={setDateRangeFilter}>
-                                <SelectTrigger className="w-full lg:w-[140px] bg-white border-gray-200 rounded-sm h-9 font-sans text-xs">
+                                <SelectTrigger className="w-full lg:w-[140px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100">
                                     <SelectValue placeholder="Date Range" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-sm border-gray-200 shadow-none">
+                                <SelectContent className="rounded-sm border-gray-200 dark:border-gray-800 shadow-none bg-white dark:bg-gray-900">
                                     <SelectItem value="all">All Time</SelectItem>
                                     <SelectItem value="last30">Last 30 days</SelectItem>
                                 </SelectContent>
@@ -346,10 +346,10 @@ export default function SubmissionHistory() {
 
                             {/* Sort */}
                             <Select value={sortBy} onValueChange={setSortBy}>
-                                <SelectTrigger className="w-full lg:w-[140px] bg-white border-gray-200 rounded-sm h-9 font-sans text-xs">
+                                <SelectTrigger className="w-full lg:w-[140px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100">
                                     <SelectValue placeholder="Sort by" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-sm border-gray-200 shadow-none">
+                                <SelectContent className="rounded-sm border-gray-200 dark:border-gray-800 shadow-none bg-white dark:bg-gray-900">
                                     <SelectItem value="newest">Date (Newest)</SelectItem>
                                     <SelectItem value="oldest">Date (Oldest)</SelectItem>
                                     <SelectItem value="exercise">Exercise Name</SelectItem>
@@ -374,31 +374,31 @@ export default function SubmissionHistory() {
                 {/* Data Retention Notice - Subtle */}
                 <div className="bg-accent/5 border-l-4 border-accent rounded-r-xl p-3 flex items-start gap-2">
                     <Info className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-                    <p className="text-xs text-gray-700 font-sans">Submissions are retained for 3 years per our data retention policy.</p>
+                    <p className="text-xs text-gray-700 dark:text-gray-300 font-sans">Submissions are retained for 3 years per our data retention policy.</p>
                 </div>
 
                 {/* Table */}
                 {filteredSubmissions.length === 0 ? (
-                    <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                    <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
                         <CardContent className="p-12 text-center">
-                            <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                            <h3 className="text-lg font-semibold text-gray-900 font-heading mb-2">No submissions found</h3>
-                            <p className="text-sm text-gray-600 font-sans">Try adjusting your filters or search query.</p>
+                            <Search className="w-12 h-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 font-heading mb-2">No submissions found</h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-300 font-sans">Try adjusting your filters or search query.</p>
                         </CardContent>
                     </Card>
                 ) : (
-                    <Card className="rounded-sm border-gray-200 bg-white shadow-none overflow-hidden">
+                    <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none overflow-hidden">
                         <div className="overflow-x-auto">
                             <table className="w-full">
                                     <thead>
-                                        <tr className="border-b border-gray-200 bg-gray-50/50">
-                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Date</th>
-                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Submission Name</th>
-                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Exercise</th>
-                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Type</th>
-                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Score</th>
-                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Status</th>
-                                            <th className="text-right py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Action</th>
+                                        <tr className="border-b border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/50">
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Date</th>
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Submission Name</th>
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Exercise</th>
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Type</th>
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Score</th>
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Status</th>
+                                            <th className="text-right py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -420,22 +420,22 @@ export default function SubmissionHistory() {
                                                     key={submission.id} 
                                                     onClick={handleRowClick}
                                                     className={cn(
-                                                        "border-b border-gray-100 transition-colors",
-                                                        isClickable ? "cursor-pointer hover:bg-gray-50/50" : "cursor-default",
+                                                        "border-b border-gray-100 dark:border-gray-800 transition-colors",
+                                                        isClickable ? "cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-800/50" : "cursor-default",
                                                         !isClickable && subjectColors.hover
                                                     )}
                                                 >
                                                     <td className="py-4 px-4">
-                                                        <div className="text-sm text-gray-900 font-sans">
+                                                        <div className="text-sm text-gray-900 dark:text-gray-100 font-sans">
                                                             {formatTableDate(submission.submissionDate)}
                                                         </div>
                                                     </td>
                                                     <td className="py-4 px-4">
                                                         <div className="flex items-center gap-2">
-                                                            <span className="text-sm font-semibold text-gray-900 font-heading">
+                                                            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 font-heading">
                                                                 {submission.exerciseName}
                                                             </span>
-                                                            <Badge variant="outline" className="text-[9px] font-heading font-bold uppercase tracking-widest border-gray-200 text-gray-600 px-1.5 py-0">
+                                                            <Badge variant="outline" className="text-[9px] font-heading font-bold uppercase tracking-widest border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 px-1.5 py-0">
                                                                 v{submission.version}
                                                             </Badge>
                                                         </div>
@@ -446,16 +446,16 @@ export default function SubmissionHistory() {
                                                         </Badge>
                                                     </td>
                                                     <td className="py-4 px-4">
-                                                        <span className="text-sm text-gray-700 font-sans">Video Submission</span>
+                                                        <span className="text-sm text-gray-700 dark:text-gray-300 font-sans">Video Submission</span>
                                                     </td>
                                                     <td className="py-4 px-4">
                                                         {submission.score !== null ? (
                                                             <div className="flex items-center gap-1">
                                                                 <span className={`text-sm font-bold font-sans tabular-nums ${getScoreColor(submission.score)}`}>{submission.score}</span>
-                                                                <span className="text-xs text-gray-500 font-heading font-bold uppercase tracking-widest">({submission.grade})</span>
+                                                                <span className="text-xs text-gray-500 dark:text-gray-400 font-heading font-bold uppercase tracking-widest">({submission.grade})</span>
                                                             </div>
                                                         ) : (
-                                                            <span className="text-sm text-gray-400 font-sans">--</span>
+                                                            <span className="text-sm text-gray-400 dark:text-gray-500 font-sans">--</span>
                                                         )}
                                                     </td>
                                                     <td className="py-4 px-4">
@@ -467,10 +467,10 @@ export default function SubmissionHistory() {
                                                                 <DropdownMenuTrigger asChild>
                                                                     <Button
                                                                         variant="ghost"
-                                                                        className="h-8 w-8 p-0 hover:bg-gray-100"
+                                                                        className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-gray-800"
                                                                         onClick={(e) => e.stopPropagation()}
                                                                     >
-                                                                        <MoreVertical className="h-4 w-4 text-gray-600" />
+                                                                        <MoreVertical className="h-4 w-4 text-gray-600 dark:text-gray-400" />
                                                                     </Button>
                                                                 </DropdownMenuTrigger>
                                                                 <DropdownMenuContent align="end" className="w-48" onClick={(e) => e.stopPropagation()}>

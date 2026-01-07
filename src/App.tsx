@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { Toaster } from "sonner"
 import { ErrorBoundary } from "./components/ErrorBoundary"
 import { Layout } from "./components/Layout"
+import { ThemeProvider } from "./contexts/ThemeContext"
 import Dashboard from "./pages/Dashboard"
 import ExerciseLibrary from "./pages/ExerciseLibrary"
 import ExerciseDetail from "./pages/ExerciseDetail"
@@ -18,10 +19,11 @@ import Settings from "./pages/Settings"
 function App() {
   return (
     <ErrorBoundary>
-      <Router>
-        <Layout>
-          <Toaster position="top-right" richColors />
-          <Routes>
+      <ThemeProvider>
+        <Router>
+          <Layout>
+            <Toaster position="top-right" richColors />
+            <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/exercises" element={<ExerciseLibrary />} />
             <Route path="/exercises/:id" element={<ExerciseDetail />} />
@@ -34,9 +36,10 @@ function App() {
             <Route path="/subjects/:id" element={<SubjectGuideDetail />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/admin/exercises" element={<AdminExerciseManagement />} />
-          </Routes>
-        </Layout>
-      </Router>
+            </Routes>
+          </Layout>
+        </Router>
+      </ThemeProvider>
     </ErrorBoundary>
   )
 }
