@@ -10,6 +10,7 @@ import AIFeedbackReport from "./pages/AIFeedbackReport"
 import AdminExerciseManagement from "./pages/AdminExerciseManagement"
 import TutorialsAndGuidance from "./pages/TutorialsAndGuidance"
 import SubmissionHistory from "./pages/SubmissionHistory"
+import ResourceHistory from "./pages/ResourceHistory"
 import Settings from "./pages/Settings"
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path="/submit" element={<SubmissionFlow />} />
             <Route path="/report" element={<AIFeedbackReport />} />
             <Route path="/history" element={<SubmissionHistory />} />
+            <Route path="/history/resources" element={<ResourceHistory />} />
             <Route path="/tutorials" element={<TutorialsAndGuidance />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/admin/exercises" element={<AdminExerciseManagement />} />

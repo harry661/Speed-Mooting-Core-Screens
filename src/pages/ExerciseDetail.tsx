@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom"
-import { ArrowLeft, Clock, BookOpen, Scale, FileText, Download, ChevronRight, Star, Tag } from "lucide-react"
+import { ArrowLeft, Clock, Scale, FileText, Download, ChevronRight, Star, Tag } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -292,221 +292,235 @@ export default function ExerciseDetail() {
 
     return (
         <div className="flex-1 bg-[#fcf8f8] min-h-screen p-6">
-            <div className="max-w-5xl mx-auto space-y-6">
+            <div className="w-full max-w-[95vw] mx-auto">
                 {/* Header */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 mb-6">
                     <Link to="/exercises">
                         <Button variant="ghost" size="icon" className="rounded-sm">
                             <ArrowLeft className="w-4 h-4" />
                         </Button>
                     </Link>
                     <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                            <Badge variant="secondary" className="bg-gray-50 text-gray-500 border-none px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-widest">
-                                {exercise.subject}
-                            </Badge>
-                            <Badge variant="secondary" className="bg-gray-50 text-gray-500 border-none px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-widest">
-                                {exercise.difficulty}
-                            </Badge>
-                            <Badge variant="secondary" className="bg-gray-50 text-gray-500 border-none px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-widest">
-                                {exercise.type}
-                            </Badge>
-                            <div className="flex items-center gap-1 text-[11px] font-bold text-accent ml-auto">
-                                <Star className="w-3.5 h-3.5 fill-current" />
-                                {exercise.rating}
-                            </div>
-                        </div>
-                        <h1 className="text-3xl font-bold text-gray-900 tracking-tight font-heading">{exercise.title}</h1>
+                        <h1 className="text-3xl font-bold text-gray-900 tracking-tight font-heading mb-3">{exercise.title}</h1>
+                        <p className="text-gray-700 font-sans leading-relaxed text-sm">{exercise.description}</p>
                     </div>
                 </div>
 
-                {/* Description */}
-                <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                    <CardContent className="p-6">
-                        <p className="text-gray-700 font-sans leading-relaxed">{exercise.description}</p>
-                        <div className="flex items-center gap-6 mt-4 pt-4 border-t border-gray-100">
-                            <div className="flex items-center gap-2 text-sm text-gray-600">
-                                <Clock className="w-4 h-4" />
-                                <span className="font-sans">{exercise.time}</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm text-gray-600">
-                                <BookOpen className="w-4 h-4" />
-                                <span className="font-sans">{exercise.difficulty} Level</span>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
+                {/* Two-Column Layout */}
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] xl:grid-cols-[1fr_450px] gap-6">
+                    {/* Main Content Area */}
+                    <div className="space-y-4">
+                        {/* Case Details */}
+                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                            <CardHeader className="border-b border-gray-100 py-4">
+                                <CardTitle className="text-base font-bold font-heading flex items-center gap-2">
+                                    <FileText className="w-4 h-4 text-accent" />
+                                    Case Details
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-5 space-y-4">
+                                <div>
+                                    <h3 className="text-xs font-bold text-gray-900 font-heading uppercase tracking-widest mb-2">Factual Background</h3>
+                                    <p className="text-sm text-gray-700 font-sans leading-relaxed">{exercise.caseDetails.factualBackground}</p>
+                                </div>
+                                <Separator />
+                                <div>
+                                    <h3 className="text-xs font-bold text-gray-900 font-heading uppercase tracking-widest mb-2">Relevant Legal Issues</h3>
+                                    <p className="text-sm text-gray-700 font-sans leading-relaxed">{exercise.caseDetails.legalIssues}</p>
+                                </div>
+                            </CardContent>
+                        </Card>
 
-                {/* Case Details */}
-                <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                    <CardHeader className="border-b border-gray-100">
-                        <CardTitle className="text-lg font-bold font-heading flex items-center gap-2">
-                            <FileText className="w-5 h-5 text-accent" />
-                            Case Details
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-6 space-y-6">
-                        <div>
-                            <h3 className="text-sm font-bold text-gray-900 font-heading uppercase tracking-widest mb-2">Factual Background</h3>
-                            <p className="text-gray-700 font-sans leading-relaxed">{exercise.caseDetails.factualBackground}</p>
-                        </div>
-                        <Separator />
-                        <div>
-                            <h3 className="text-sm font-bold text-gray-900 font-heading uppercase tracking-widest mb-2">Relevant Legal Issues</h3>
-                            <p className="text-gray-700 font-sans leading-relaxed">{exercise.caseDetails.legalIssues}</p>
-                        </div>
-                    </CardContent>
-                </Card>
+                        {/* Arguments */}
+                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                            <CardHeader className="border-b border-gray-100 py-4">
+                                <CardTitle className="text-base font-bold font-heading flex items-center gap-2">
+                                    <Scale className="w-4 h-4 text-accent" />
+                                    Arguments
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-5">
+                                <Tabs defaultValue="for" className="w-full">
+                                    <TabsList className="bg-gray-100/50 p-1 rounded-sm border border-gray-100 h-9">
+                                        <TabsTrigger value="for" className="rounded-sm px-4 py-1.5 text-xs data-[state=active]:bg-white data-[state=active]:text-primary font-heading font-bold uppercase tracking-widest">
+                                            Arguments For
+                                        </TabsTrigger>
+                                        <TabsTrigger value="against" className="rounded-sm px-4 py-1.5 text-xs data-[state=active]:bg-white data-[state=active]:text-primary font-heading font-bold uppercase tracking-widest">
+                                            Arguments Against
+                                        </TabsTrigger>
+                                    </TabsList>
+                                    <TabsContent value="for" className="mt-4">
+                                        <div className="space-y-2.5">
+                                            {exercise.argumentsFor.map((arg, i) => (
+                                                <div key={i} className="bg-green-50/50 border-l-2 border-green-200 rounded-r-xl p-3">
+                                                    <p className="text-xs text-gray-800 font-sans leading-relaxed">{arg}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </TabsContent>
+                                    <TabsContent value="against" className="mt-4">
+                                        <div className="space-y-2.5">
+                                            {exercise.argumentsAgainst.map((arg, i) => (
+                                                <div key={i} className="bg-amber-50/50 border-l-2 border-amber-200 rounded-r-xl p-3">
+                                                    <p className="text-xs text-gray-800 font-sans leading-relaxed">{arg}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </TabsContent>
+                                </Tabs>
+                            </CardContent>
+                        </Card>
 
-                {/* Arguments */}
-                <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                    <CardHeader className="border-b border-gray-100">
-                        <CardTitle className="text-lg font-bold font-heading flex items-center gap-2">
-                            <Scale className="w-5 h-5 text-accent" />
-                            Arguments
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-6">
-                        <Tabs defaultValue="for" className="w-full">
-                            <TabsList className="bg-gray-100/50 p-1 rounded-sm border border-gray-100">
-                                <TabsTrigger value="for" className="rounded-sm px-6 py-2 data-[state=active]:bg-white data-[state=active]:text-primary font-heading font-bold text-[10px] uppercase tracking-widest">
-                                    Arguments For
-                                </TabsTrigger>
-                                <TabsTrigger value="against" className="rounded-sm px-6 py-2 data-[state=active]:bg-white data-[state=active]:text-primary font-heading font-bold text-[10px] uppercase tracking-widest">
-                                    Arguments Against
-                                </TabsTrigger>
-                            </TabsList>
-                            <TabsContent value="for" className="mt-4">
-                                <div className="space-y-3">
-                                    {exercise.argumentsFor.map((arg, i) => (
-                                        <div key={i} className="bg-green-50/50 border-l-2 border-green-200 rounded-r-xl p-4">
-                                            <p className="text-sm text-gray-800 font-sans leading-relaxed">{arg}</p>
+                        {/* Rules & Guidelines */}
+                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                            <CardHeader className="border-b border-gray-100 py-4">
+                                <CardTitle className="text-base font-bold font-heading">Rules & Guidelines</CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-5">
+                                <div className="bg-accent/5 border-l-4 border-accent rounded-r-xl p-4">
+                                    <p className="text-xs text-gray-800 font-sans leading-relaxed whitespace-pre-line">{exercise.rules}</p>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Evaluation Rubric */}
+                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                            <CardHeader className="border-b border-gray-100 py-4">
+                                <CardTitle className="text-base font-bold font-heading">Evaluation Rubric</CardTitle>
+                                <p className="text-xs text-gray-500 font-sans mt-1">You will be evaluated on the following criteria:</p>
+                            </CardHeader>
+                            <CardContent className="p-5">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    {exercise.rubric.map((criterion, i) => (
+                                        <div key={i} className="bg-gray-50/50 rounded-sm p-3 border border-gray-100">
+                                            <h4 className="text-xs font-bold text-gray-900 font-heading mb-1">{criterion.name}</h4>
+                                            <p className="text-xs text-gray-600 font-sans leading-relaxed">{criterion.description}</p>
                                         </div>
                                     ))}
                                 </div>
-                            </TabsContent>
-                            <TabsContent value="against" className="mt-4">
-                                <div className="space-y-3">
-                                    {exercise.argumentsAgainst.map((arg, i) => (
-                                        <div key={i} className="bg-amber-50/50 border-l-2 border-amber-200 rounded-r-xl p-4">
-                                            <p className="text-sm text-gray-800 font-sans leading-relaxed">{arg}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </TabsContent>
-                        </Tabs>
-                    </CardContent>
-                </Card>
+                            </CardContent>
+                        </Card>
+                    </div>
 
-                {/* Rules & Guidelines */}
-                <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                    <CardHeader className="border-b border-gray-100">
-                        <CardTitle className="text-lg font-bold font-heading">Rules & Guidelines</CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-6">
-                        <div className="bg-accent/5 border-l-4 border-accent rounded-r-xl p-4">
-                            <p className="text-sm text-gray-800 font-sans leading-relaxed whitespace-pre-line">{exercise.rules}</p>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* Evaluation Rubric */}
-                <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                    <CardHeader className="border-b border-gray-100">
-                        <CardTitle className="text-lg font-bold font-heading">Evaluation Rubric</CardTitle>
-                        <p className="text-xs text-gray-500 font-sans mt-1">You will be evaluated on the following criteria:</p>
-                    </CardHeader>
-                    <CardContent className="p-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {exercise.rubric.map((criterion, i) => (
-                                <div key={i} className="bg-gray-50/50 rounded-sm p-4 border border-gray-100">
-                                    <h4 className="text-sm font-bold text-gray-900 font-heading mb-1">{criterion.name}</h4>
-                                    <p className="text-xs text-gray-600 font-sans">{criterion.description}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* Legal Topics & Keywords */}
-                <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                    <CardHeader className="border-b border-gray-100">
-                        <CardTitle className="text-lg font-bold font-heading flex items-center gap-2">
-                            <Tag className="w-5 h-5 text-accent" />
-                            Legal Topics & Keywords
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-6 space-y-4">
-                        <div>
-                            <h3 className="text-xs font-bold text-gray-500 font-heading uppercase tracking-widest mb-2">Relevant Topics</h3>
-                            <div className="flex flex-wrap gap-2">
-                                {exercise.topics.map((topic, i) => (
-                                    <Badge key={i} variant="secondary" className="bg-accent/10 text-accent border-none px-3 py-1 rounded-sm text-[10px] font-bold">
-                                        {topic}
+                    {/* Right Sidebar */}
+                    <div className="space-y-4 lg:sticky lg:top-6 lg:self-start">
+                        {/* Exercise Metadata */}
+                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                            <CardHeader className="border-b border-gray-100 py-4">
+                                <CardTitle className="text-base font-bold font-heading">Exercise Details</CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-5 space-y-4">
+                                <div className="flex flex-wrap gap-2">
+                                    <Badge variant="secondary" className="bg-gray-50 text-gray-500 border-none px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-widest">
+                                        {exercise.subject}
                                     </Badge>
-                                ))}
-                            </div>
-                        </div>
-                        <Separator />
-                        <div>
-                            <h3 className="text-xs font-bold text-gray-500 font-heading uppercase tracking-widest mb-2">Keywords</h3>
-                            <div className="flex flex-wrap gap-2">
-                                {exercise.keywords.map((keyword, i) => (
-                                    <Badge key={i} variant="secondary" className="bg-gray-100 text-gray-600 border-none px-2 py-0.5 rounded-sm text-[9px] font-medium">
-                                        {keyword}
+                                    <Badge variant="secondary" className="bg-gray-50 text-gray-500 border-none px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-widest">
+                                        {exercise.difficulty}
                                     </Badge>
-                                ))}
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* Case Files */}
-                <Card className="rounded-sm border-gray-200 bg-white shadow-none">
-                    <CardHeader className="border-b border-gray-100">
-                        <CardTitle className="text-lg font-bold font-heading flex items-center gap-2">
-                            <FileText className="w-5 h-5 text-accent" />
-                            Case Files
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-6">
-                        <div className="space-y-2">
-                            {exercise.caseFiles.map((file, i) => (
-                                <div key={i} className="flex items-center justify-between p-3 bg-gray-50/50 rounded-sm border border-gray-100 hover:bg-gray-100/50 transition-colors group">
-                                    <div className="flex items-center gap-3">
-                                        <FileText className="w-4 h-4 text-gray-400" />
-                                        <div>
-                                            <p className="text-sm font-medium text-gray-900 font-sans">{file.name}</p>
-                                            <p className="text-xs text-gray-500 font-sans">{file.size} • {file.type}</p>
+                                    <Badge variant="secondary" className="bg-gray-50 text-gray-500 border-none px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-widest">
+                                        {exercise.type}
+                                    </Badge>
+                                </div>
+                                <div className="space-y-3 pt-2 border-t border-gray-100">
+                                    <div className="flex items-center justify-between text-sm">
+                                        <div className="flex items-center gap-2 text-gray-600">
+                                            <Clock className="w-4 h-4" />
+                                            <span className="font-sans">Duration</span>
                                         </div>
+                                        <span className="font-semibold text-gray-900 font-sans">{exercise.time}</span>
                                     </div>
-                                    <Button variant="ghost" size="sm" className="text-accent hover:bg-accent/5 rounded-sm">
-                                        <Download className="w-4 h-4 mr-2" />
-                                        Download
-                                    </Button>
+                                    <div className="flex items-center justify-between text-sm">
+                                        <div className="flex items-center gap-2 text-gray-600">
+                                            <Star className="w-4 h-4 text-accent fill-current" />
+                                            <span className="font-sans">Rating</span>
+                                        </div>
+                                        <span className="font-semibold text-gray-900 font-sans">{exercise.rating}</span>
+                                    </div>
                                 </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
+                            </CardContent>
+                        </Card>
 
-                {/* Start Exercise Button */}
-                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                    <Link to="/exercises">
-                        <Button variant="outline" className="rounded-sm">
-                            <ArrowLeft className="w-4 h-4 mr-2" />
-                            Back to Library
-                        </Button>
-                    </Link>
-                    <Link to={`/submit?exercise=${exercise.id}`}>
-                        <Button className="bg-accent hover:bg-accent/90 text-white rounded-sm px-8 h-12 font-heading font-bold uppercase tracking-widest text-[11px] group">
-                            Start Exercise
-                            <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                    </Link>
+                        {/* Quick Actions */}
+                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                            <CardContent className="p-5 space-y-3">
+                                <Link to={`/submit?exercise=${exercise.id}`} className="block">
+                                    <Button className="w-full bg-accent hover:bg-accent/90 text-white rounded-sm h-11 font-heading font-bold uppercase tracking-widest text-[11px] group">
+                                        Start Exercise
+                                        <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                                    </Button>
+                                </Link>
+                                <Link to="/exercises" className="block">
+                                    <Button variant="outline" className="w-full rounded-sm border-gray-200">
+                                        <ArrowLeft className="w-4 h-4 mr-2" />
+                                        Back to Library
+                                    </Button>
+                                </Link>
+                            </CardContent>
+                        </Card>
+
+                        {/* Case Files */}
+                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                            <CardHeader className="border-b border-gray-100 py-4">
+                                <CardTitle className="text-base font-bold font-heading flex items-center gap-2">
+                                    <FileText className="w-4 h-4 text-accent" />
+                                    Case Files
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-5">
+                                <div className="space-y-2">
+                                    {exercise.caseFiles.map((file, i) => (
+                                        <div key={i} className="flex items-center justify-between p-2.5 bg-gray-50/50 rounded-sm border border-gray-100 hover:bg-gray-100/50 transition-colors group">
+                                            <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                                                <FileText className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                                                <div className="min-w-0 flex-1">
+                                                    <p className="text-xs font-medium text-gray-900 font-sans truncate">{file.name}</p>
+                                                    <p className="text-[10px] text-gray-500 font-sans">{file.size} • {file.type}</p>
+                                                </div>
+                                            </div>
+                                            <Button variant="ghost" size="sm" className="text-accent hover:bg-accent/5 rounded-sm h-7 px-2 shrink-0">
+                                                <Download className="w-3.5 h-3.5" />
+                                            </Button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Legal Topics & Keywords */}
+                        <Card className="rounded-sm border-gray-200 bg-white shadow-none">
+                            <CardHeader className="border-b border-gray-100 py-4">
+                                <CardTitle className="text-base font-bold font-heading flex items-center gap-2">
+                                    <Tag className="w-4 h-4 text-accent" />
+                                    Topics & Keywords
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-5 space-y-4">
+                                <div>
+                                    <h3 className="text-[10px] font-bold text-gray-500 font-heading uppercase tracking-widest mb-2">Relevant Topics</h3>
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {exercise.topics.map((topic, i) => (
+                                            <Badge key={i} variant="secondary" className="bg-accent/10 text-accent border-none px-2 py-0.5 rounded-sm text-[9px] font-bold">
+                                                {topic}
+                                            </Badge>
+                                        ))}
+                                    </div>
+                                </div>
+                                <Separator />
+                                <div>
+                                    <h3 className="text-[10px] font-bold text-gray-500 font-heading uppercase tracking-widest mb-2">Keywords</h3>
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {exercise.keywords.map((keyword, i) => (
+                                            <Badge key={i} variant="secondary" className="bg-gray-100 text-gray-600 border-none px-1.5 py-0.5 rounded-sm text-[8px] font-medium">
+                                                {keyword}
+                                            </Badge>
+                                        ))}
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
                 </div>
             </div>
         </div>
     )
 }
-

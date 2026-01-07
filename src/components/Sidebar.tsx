@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { BookOpen, History, LogOut, LayoutDashboard, GraduationCap, ChevronDown, ChevronUp, Database, Settings } from "lucide-react"
+import { BookOpen, History, LogOut, LayoutDashboard, GraduationCap, ChevronDown, ChevronUp, Database, Settings, FileText } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Link, useLocation } from "react-router-dom"
@@ -8,7 +8,11 @@ import { motion, AnimatePresence } from "framer-motion"
 const menuItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/" },
     { icon: BookOpen, label: "Exercises", href: "/exercises" },
-    { icon: History, label: "History", href: "/history" },
+]
+
+const historySubmenu = [
+    { label: "Submission History", href: "/history", icon: FileText },
+    { label: "Resource History", href: "/history/resources", icon: Database },
 ]
 
 const resourcesSubmenu = [
@@ -24,11 +28,21 @@ interface SidebarProps {
 export function Sidebar({ isCollapsed }: SidebarProps) {
     const location = useLocation()
     const [isResourcesOpen, setIsResourcesOpen] = useState(location.pathname === "/tutorials")
+    const [isHistoryOpen, setIsHistoryOpen] = useState(
+        location.pathname === "/history" || location.pathname.startsWith("/history/")
+    )
     
     // Keep dropdown open when on tutorials page
     useEffect(() => {
         if (location.pathname === "/tutorials") {
             setIsResourcesOpen(true)
+        }
+    }, [location.pathname])
+
+    // Keep dropdown open when on any history page
+    useEffect(() => {
+        if (location.pathname === "/history" || location.pathname.startsWith("/history/")) {
+            setIsHistoryOpen(true)
         }
     }, [location.pathname])
 
@@ -63,6 +77,74 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
                         </Button>
                     </Link>
                 ))}
+
+                {/* History Dropdown */}
+                {isCollapsed ? (
+                    <Link to="/history">
+                        <Button
+                            variant="ghost"
+                            className={cn(
+                                "w-full justify-center text-white/60 hover:text-white hover:bg-white/5 transition-all duration-200 mb-0.5 font-heading font-medium tracking-wide rounded-l-sm rounded-r-none h-11 px-0",
+                                (location.pathname === "/history" || location.pathname.startsWith("/history/")) && "bg-white/5 text-white font-bold border-r-2 border-accent"
+                            )}
+                        >
+                            <History className={cn("w-4 h-4 shrink-0", (location.pathname === "/history" || location.pathname.startsWith("/history/")) ? "text-accent" : "text-white/40")} />
+                        </Button>
+                    </Link>
+                ) : (
+                    <div className="space-y-1">
+                        <Button
+                            variant="ghost"
+                            onClick={() => setIsHistoryOpen(!isHistoryOpen)}
+                            className={cn(
+                                "w-full justify-between gap-4 text-white/60 hover:text-white hover:bg-white/5 transition-all duration-200 mb-0.5 font-heading font-medium tracking-wide rounded-l-sm rounded-r-none h-11 px-3",
+                                (location.pathname === "/history" || location.pathname.startsWith("/history/")) && "bg-white/5 text-white font-bold"
+                            )}
+                        >
+                            <div className="flex items-center gap-4">
+                                <History className={cn("w-4 h-4 shrink-0", (location.pathname === "/history" || location.pathname.startsWith("/history/")) ? "text-accent" : "text-white/40")} />
+                                <span className="text-[11px] uppercase tracking-[0.1em]">History</span>
+                            </div>
+                            {isHistoryOpen ? (
+                                <ChevronUp className="w-4 h-4 text-white/40" />
+                            ) : (
+                                <ChevronDown className="w-4 h-4 text-white/40" />
+                            )}
+                        </Button>
+                        <AnimatePresence>
+                            {isHistoryOpen && (
+                                <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: "auto", opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="overflow-hidden"
+                                >
+                                    <div className="pl-7 space-y-1">
+                                        {historySubmenu.map((subItem) => {
+                                            const isActive = location.pathname === subItem.href
+                                            const SubIcon = subItem.icon
+                                            return (
+                                                <Link key={subItem.label} to={subItem.href}>
+                                                    <Button
+                                                        variant="ghost"
+                                                        className={cn(
+                                                            "w-full justify-start gap-3 text-white/50 hover:text-white hover:bg-white/5 transition-all duration-200 mb-0.5 font-heading font-medium tracking-wide rounded-l-sm rounded-r-none h-9 px-3 text-[10px]",
+                                                            isActive && "bg-white/5 text-white font-bold border-r-2 border-accent"
+                                                        )}
+                                                    >
+                                                        <SubIcon className={cn("w-3.5 h-3.5 shrink-0", isActive ? "text-accent" : "text-white/30")} />
+                                                        <span className="uppercase tracking-[0.1em]">{subItem.label}</span>
+                                                    </Button>
+                                                </Link>
+                                            )
+                                        })}
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                )}
 
                 {/* Resources Dropdown */}
                 {isCollapsed ? (

@@ -192,30 +192,84 @@ export default function SubmissionHistory() {
         })
     }
 
-    const getStatusDot = (status: string) => {
+    const getStatusBadge = (status: string) => {
         switch (status) {
             case "Analyzed":
-                return <span className="text-green-600 font-bold">•</span>
+                return (
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-green-100 border border-green-200">
+                        <span className="text-green-700 font-bold text-xs">•</span>
+                        <span className="text-xs font-semibold text-green-700 font-sans">Completed</span>
+                    </div>
+                )
             case "Processing":
-                return <span className="text-gray-500 font-bold">•</span>
+                return (
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-amber-100 border border-amber-200">
+                        <span className="text-amber-700 font-bold text-xs">•</span>
+                        <span className="text-xs font-semibold text-amber-700 font-sans">Pending</span>
+                    </div>
+                )
             case "Failed":
-                return <span className="text-red-600 font-bold">•</span>
+                return (
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-red-100 border border-red-200">
+                        <span className="text-red-700 font-bold text-xs">•</span>
+                        <span className="text-xs font-semibold text-red-700 font-sans">Canceled</span>
+                    </div>
+                )
             default:
-                return <span className="text-gray-400 font-bold">•</span>
+                return (
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-gray-100 border border-gray-200">
+                        <span className="text-gray-600 font-bold text-xs">•</span>
+                        <span className="text-xs font-semibold text-gray-600 font-sans">{status}</span>
+                    </div>
+                )
         }
     }
 
-    const getStatusText = (status: string) => {
-        switch (status) {
-            case "Analyzed":
-                return "Completed"
-            case "Processing":
-                return "Pending"
-            case "Failed":
-                return "Canceled"
-            default:
-                return status
+    const getSubjectColorClasses = (subject: string) => {
+        const subjectLower = subject.toLowerCase()
+        if (subjectLower.includes("contract")) {
+            return {
+                badge: "bg-accent/10 text-accent border-accent/20",
+                hover: "hover:bg-gray-50/50"
+            }
+        } else if (subjectLower.includes("tort")) {
+            return {
+                badge: "bg-blue-100 text-blue-700 border-blue-200",
+                hover: "hover:bg-gray-50/50"
+            }
+        } else if (subjectLower.includes("criminal")) {
+            return {
+                badge: "bg-primary/10 text-primary border-primary/20",
+                hover: "hover:bg-gray-50/50"
+            }
+        } else if (subjectLower.includes("public") || subjectLower.includes("constitutional") || subjectLower.includes("administrative")) {
+            return {
+                badge: "bg-purple-100 text-purple-700 border-purple-200",
+                hover: "hover:bg-gray-50/50"
+            }
+        } else if (subjectLower.includes("property")) {
+            return {
+                badge: "bg-indigo-100 text-indigo-700 border-indigo-200",
+                hover: "hover:bg-gray-50/50"
+            }
+        } else if (subjectLower.includes("evidence") || subjectLower.includes("procedure")) {
+            return {
+                badge: "bg-teal-100 text-teal-700 border-teal-200",
+                hover: "hover:bg-gray-50/50"
+            }
         }
+        // Default neutral
+        return {
+            badge: "bg-gray-100 text-gray-700 border-gray-200",
+            hover: "hover:bg-gray-50/50"
+        }
+    }
+
+    const getScoreColor = (score: number | null) => {
+        if (score === null) return "text-gray-400"
+        if (score >= 80) return "text-green-700"
+        if (score >= 60) return "text-amber-700"
+        return "text-red-700"
     }
 
     return (
@@ -346,89 +400,91 @@ export default function SubmissionHistory() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {filteredSubmissions.map((submission) => (
-                                            <tr 
-                                                key={submission.id} 
-                                                className="border-b border-gray-100 hover:bg-gray-50/50 transition-colors"
-                                            >
-                                                <td className="py-4 px-4">
-                                                    <div className="text-sm text-gray-900 font-sans">
-                                                        {formatTableDate(submission.submissionDate)}
-                                                    </div>
-                                                </td>
-                                                <td className="py-4 px-4">
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="text-sm font-semibold text-gray-900 font-heading">
-                                                            {submission.exerciseName}
-                                                        </span>
-                                                        <Badge variant="outline" className="text-[9px] font-heading font-bold uppercase tracking-widest border-gray-200 text-gray-600 px-1.5 py-0">
-                                                            v{submission.version}
-                                                        </Badge>
-                                                    </div>
-                                                </td>
-                                                <td className="py-4 px-4">
-                                                    <span className="text-sm text-gray-700 font-sans">{submission.subject}</span>
-                                                </td>
-                                                <td className="py-4 px-4">
-                                                    <span className="text-sm text-gray-700 font-sans">Video Submission</span>
-                                                </td>
-                                                <td className="py-4 px-4">
-                                                    {submission.score !== null ? (
-                                                        <div className="flex items-center gap-1">
-                                                            <span className="text-sm font-bold text-gray-900 font-sans tabular-nums">{submission.score}</span>
-                                                            <span className="text-xs text-gray-500 font-heading font-bold uppercase tracking-widest">({submission.grade})</span>
+                                        {filteredSubmissions.map((submission) => {
+                                            const subjectColors = getSubjectColorClasses(submission.subject)
+                                            return (
+                                                <tr 
+                                                    key={submission.id} 
+                                                    className={`border-b border-gray-100 ${subjectColors.hover} transition-colors`}
+                                                >
+                                                    <td className="py-4 px-4">
+                                                        <div className="text-sm text-gray-900 font-sans">
+                                                            {formatTableDate(submission.submissionDate)}
                                                         </div>
-                                                    ) : (
-                                                        <span className="text-sm text-gray-400 font-sans">--</span>
-                                                    )}
-                                                </td>
-                                                <td className="py-4 px-4">
-                                                    <div className="flex items-center gap-2">
-                                                        {getStatusDot(submission.status)}
-                                                        <span className="text-sm text-gray-700 font-sans">{getStatusText(submission.status)}</span>
-                                                    </div>
-                                                </td>
-                                                <td className="py-4 px-4">
-                                                    <div className="flex justify-end">
-                                                        <DropdownMenu>
-                                                            <DropdownMenuTrigger asChild>
-                                                                <Button
-                                                                    variant="ghost"
-                                                                    className="h-8 w-8 p-0 hover:bg-gray-100"
-                                                                >
-                                                                    <MoreVertical className="h-4 w-4 text-gray-600" />
-                                                                </Button>
-                                                            </DropdownMenuTrigger>
-                                                            <DropdownMenuContent align="end" className="w-48">
-                                                                {submission.status === "Analyzed" && (
-                                                                    <>
-                                                                        <DropdownMenuItem asChild>
-                                                                            <Link to={`/report?submissionId=${submission.id}`} className="cursor-pointer">
-                                                                                <Eye className="mr-2 h-4 w-4" />
-                                                                                View Report
-                                                                            </Link>
-                                                                        </DropdownMenuItem>
-                                                                        <DropdownMenuSeparator />
-                                                                    </>
-                                                                )}
-                                                                <DropdownMenuItem onClick={() => handleExport()}>
-                                                                    <Download className="mr-2 h-4 w-4" />
-                                                                    Download PDF
-                                                                </DropdownMenuItem>
-                                                                <DropdownMenuSeparator />
-                                                                <DropdownMenuItem 
-                                                                    onClick={() => handleDeleteClick(submission.id)}
-                                                                    className="text-red-600 focus:text-red-600 focus:bg-red-50"
-                                                                >
-                                                                    <Trash2 className="mr-2 h-4 w-4" />
-                                                                    Delete
-                                                                </DropdownMenuItem>
-                                                            </DropdownMenuContent>
-                                                        </DropdownMenu>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                                    </td>
+                                                    <td className="py-4 px-4">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="text-sm font-semibold text-gray-900 font-heading">
+                                                                {submission.exerciseName}
+                                                            </span>
+                                                            <Badge variant="outline" className="text-[9px] font-heading font-bold uppercase tracking-widest border-gray-200 text-gray-600 px-1.5 py-0">
+                                                                v{submission.version}
+                                                            </Badge>
+                                                        </div>
+                                                    </td>
+                                                    <td className="py-4 px-4">
+                                                        <Badge className={`text-[10px] font-heading font-semibold uppercase tracking-wider px-2 py-0.5 border ${subjectColors.badge}`}>
+                                                            {submission.subject}
+                                                        </Badge>
+                                                    </td>
+                                                    <td className="py-4 px-4">
+                                                        <span className="text-sm text-gray-700 font-sans">Video Submission</span>
+                                                    </td>
+                                                    <td className="py-4 px-4">
+                                                        {submission.score !== null ? (
+                                                            <div className="flex items-center gap-1">
+                                                                <span className={`text-sm font-bold font-sans tabular-nums ${getScoreColor(submission.score)}`}>{submission.score}</span>
+                                                                <span className="text-xs text-gray-500 font-heading font-bold uppercase tracking-widest">({submission.grade})</span>
+                                                            </div>
+                                                        ) : (
+                                                            <span className="text-sm text-gray-400 font-sans">--</span>
+                                                        )}
+                                                    </td>
+                                                    <td className="py-4 px-4">
+                                                        {getStatusBadge(submission.status)}
+                                                    </td>
+                                                    <td className="py-4 px-4">
+                                                        <div className="flex justify-end">
+                                                            <DropdownMenu>
+                                                                <DropdownMenuTrigger asChild>
+                                                                    <Button
+                                                                        variant="ghost"
+                                                                        className="h-8 w-8 p-0 hover:bg-gray-100"
+                                                                    >
+                                                                        <MoreVertical className="h-4 w-4 text-gray-600" />
+                                                                    </Button>
+                                                                </DropdownMenuTrigger>
+                                                                <DropdownMenuContent align="end" className="w-48">
+                                                                    {submission.status === "Analyzed" && (
+                                                                        <>
+                                                                            <DropdownMenuItem asChild>
+                                                                                <Link to={`/report?submissionId=${submission.id}`} className="cursor-pointer">
+                                                                                    <Eye className="mr-2 h-4 w-4" />
+                                                                                    View Report
+                                                                                </Link>
+                                                                            </DropdownMenuItem>
+                                                                            <DropdownMenuSeparator />
+                                                                        </>
+                                                                    )}
+                                                                    <DropdownMenuItem onClick={() => handleExport()}>
+                                                                        <Download className="mr-2 h-4 w-4" />
+                                                                        Download PDF
+                                                                    </DropdownMenuItem>
+                                                                    <DropdownMenuSeparator />
+                                                                    <DropdownMenuItem 
+                                                                        onClick={() => handleDeleteClick(submission.id)}
+                                                                        className="text-red-600 focus:text-red-600 focus:bg-red-50"
+                                                                    >
+                                                                        <Trash2 className="mr-2 h-4 w-4" />
+                                                                        Delete
+                                                                    </DropdownMenuItem>
+                                                                </DropdownMenuContent>
+                                                            </DropdownMenu>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })}
                                     </tbody>
                                 </table>
                         </div>
