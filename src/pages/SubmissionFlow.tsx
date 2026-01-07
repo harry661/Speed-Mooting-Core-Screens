@@ -293,20 +293,22 @@ export default function SubmissionFlow() {
                                                 </div>
 
                                                 {/* Description Section */}
-                                                <div>
-                                                    <label className="text-sm font-semibold text-gray-700 font-sans mb-1.5 block">
+                                                <div className="flex flex-col">
+                                                    <label className="text-xs font-semibold text-gray-700 font-sans mb-2 block">
                                                         Description <span className="text-red-500">*</span>
                                                     </label>
-                                                    <Textarea
-                                                        value={description}
-                                                        onChange={(e) => setDescription(e.target.value)}
-                                                        placeholder="Provide a brief description of your submission..."
-                                                        className="min-h-[80px] rounded-sm border-gray-200 font-sans"
-                                                        maxLength={500}
-                                                    />
-                                                    <p className="text-xs text-gray-500 mt-1.5 font-sans">
-                                                        {description.length}/500 characters
-                                                    </p>
+                                                    <div className="flex flex-col">
+                                                        <Textarea
+                                                            value={description}
+                                                            onChange={(e) => setDescription(e.target.value)}
+                                                            placeholder="Provide a brief description of your submission..."
+                                                            className="min-h-[140px] rounded-xl border-gray-200 font-sans resize-none"
+                                                            maxLength={500}
+                                                        />
+                                                        <p className="text-xs text-gray-500 mt-1.5 font-sans">
+                                                            {description.length}/500 characters
+                                                        </p>
+                                                    </div>
                                                 </div>
 
                                                 {/* Exercise Topics Display */}
@@ -342,7 +344,10 @@ export default function SubmissionFlow() {
                                                     <div className="flex-1 flex flex-col space-y-6">
                                                         {/* Skeleton Argument */}
                                                         <div className="flex-1 flex flex-col">
-                                                            <label className="text-xs font-semibold text-gray-700 font-sans mb-2 block">Skeleton Argument (Optional)</label>
+                                                            <h3 className="text-lg font-bold font-heading mb-3 flex items-center gap-2">
+                                                                <FileText className="w-4 h-4 text-primary" />
+                                                                Skeleton Argument
+                                                            </h3>
                                                             <input
                                                                 type="file"
                                                                 ref={skeletonInputRef}
@@ -353,18 +358,19 @@ export default function SubmissionFlow() {
                                                             {!skeletonArgument ? (
                                                                 <div
                                                                     onClick={() => skeletonInputRef.current?.click()}
-                                                                    className="border border-dashed border-gray-200 rounded-xl p-8 min-h-[140px] hover:border-primary hover:bg-primary/5 transition-all cursor-pointer text-center flex flex-col items-center justify-center"
+                                                                    className="border-2 border-dashed border-gray-200 rounded-xl p-6 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer text-center flex flex-col items-center justify-center min-h-[140px]"
                                                                 >
-                                                                    <FileText className="w-7 h-7 text-gray-400 mb-3" />
-                                                                    <p className="text-xs text-gray-600 font-sans">Word or PDF format</p>
+                                                                    <Upload className="w-8 h-8 text-primary mb-2" />
+                                                                    <p className="text-sm font-medium text-gray-600 font-sans mb-1">Click to browse or drag file here</p>
+                                                                    <p className="text-xs text-gray-400 font-sans">Word (.doc, .docx) or PDF • Optional</p>
                                                                 </div>
                                                             ) : (
-                                                                <div className="border border-gray-200 rounded-xl p-5 bg-gray-50 flex items-center justify-between min-h-[140px]">
-                                                                    <div className="flex items-center gap-2 min-w-0 flex-1">
-                                                                        <FileText className="w-5 h-5 text-primary shrink-0" />
-                                                                        <div className="min-w-0 flex-1">
-                                                                            <p className="text-xs font-semibold text-gray-900 font-sans truncate">{skeletonArgument.name}</p>
-                                                                            <p className="text-[10px] text-gray-500 font-sans">{formatFileSize(skeletonArgument.size)} • {getFileType(skeletonArgument)}</p>
+                                                                <div className="border border-gray-200 rounded-xl p-4 bg-gray-50 flex items-center justify-between min-h-[140px]">
+                                                                    <div className="flex items-center gap-3">
+                                                                        <FileText className="w-8 h-8 text-primary" />
+                                                                        <div>
+                                                                            <p className="text-sm font-semibold text-gray-900 font-sans">{skeletonArgument.name}</p>
+                                                                            <p className="text-xs text-gray-500 font-sans">{formatFileSize(skeletonArgument.size)} • {getFileType(skeletonArgument)}</p>
                                                                         </div>
                                                                     </div>
                                                                     <Button
@@ -374,9 +380,9 @@ export default function SubmissionFlow() {
                                                                             setSkeletonArgument(null)
                                                                             if (skeletonInputRef.current) skeletonInputRef.current.value = ""
                                                                         }}
-                                                                        className="text-red-600 hover:text-red-700 hover:bg-red-50 shrink-0 h-7 w-7 p-0"
+                                                                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
                                                                     >
-                                                                        <X className="w-3.5 h-3.5" />
+                                                                        <X className="w-4 h-4" />
                                                                     </Button>
                                                                 </div>
                                                             )}
@@ -390,7 +396,10 @@ export default function SubmissionFlow() {
 
                                                         {/* Case Files */}
                                                         <div className="flex-1 flex flex-col">
-                                                            <label className="text-xs font-semibold text-gray-700 font-sans mb-2 block">Case Files (Optional)</label>
+                                                            <h3 className="text-lg font-bold font-heading mb-3 flex items-center gap-2">
+                                                                <File className="w-4 h-4 text-primary" />
+                                                                Case Files
+                                                            </h3>
                                                             <input
                                                                 type="file"
                                                                 ref={caseFilesInputRef}
@@ -402,10 +411,11 @@ export default function SubmissionFlow() {
                                                             {caseFiles.length === 0 ? (
                                                                 <div
                                                                     onClick={() => caseFilesInputRef.current?.click()}
-                                                                    className="border border-dashed border-gray-200 rounded-xl p-8 min-h-[140px] hover:border-primary hover:bg-primary/5 transition-all cursor-pointer text-center flex flex-col items-center justify-center"
+                                                                    className="border-2 border-dashed border-gray-200 rounded-xl p-6 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer text-center flex flex-col items-center justify-center min-h-[140px]"
                                                                 >
-                                                                    <File className="w-7 h-7 text-gray-400 mb-3" />
-                                                                    <p className="text-xs text-gray-600 font-sans">Add legal case documents</p>
+                                                                    <Upload className="w-8 h-8 text-primary mb-2" />
+                                                                    <p className="text-sm font-medium text-gray-600 font-sans mb-1">Click to browse or drag files here</p>
+                                                                    <p className="text-xs text-gray-400 font-sans">PDF, Word (.doc, .docx) • Optional</p>
                                                                 </div>
                                                             ) : (
                                                                 <div className="flex-1 flex flex-col space-y-2">
