@@ -266,9 +266,22 @@ const fallbackExerciseData: Record<number, {
     }
 }
 
+// Sample submissions data to check if user has started an exercise
+// In a real app, this would come from an API or context
+const sampleSubmissions = [
+    { exerciseId: 1 }, // Contract Breach - user has started
+    { exerciseId: 2 }, // Negligence Case - user has started
+    { exerciseId: 3 }, // Criminal Law - user has started
+    { exerciseId: 4 }, // Constitutional Review - user has started
+]
+
 export default function ExerciseDetail() {
     const { id } = useParams<{ id: string }>()
-    const exercise = getExerciseById(Number(id) || 0) || fallbackExerciseData[Number(id) || 0]
+    const exerciseId = id ? parseInt(id, 10) : null
+    const exercise = getExerciseById(exerciseId || 0) || fallbackExerciseData[exerciseId || 0]
+    
+    // Check if user has started this exercise (has any submission for this exerciseId)
+    const hasStarted = exerciseId ? sampleSubmissions.some(sub => sub.exerciseId === exerciseId) : false
 
     if (!exercise) {
         return (
@@ -445,7 +458,7 @@ export default function ExerciseDetail() {
                             <CardContent className="p-5 space-y-3">
                                 <Link to={`/submit?exercise=${exercise.id}`} className="block">
                                     <Button className="w-full bg-accent hover:bg-accent/90 text-white rounded-sm h-11 font-heading font-bold uppercase tracking-widest text-[11px] group">
-                                        Start Exercise
+                                        {hasStarted ? "Continue Exercise" : "Start Exercise"}
                                         <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                                     </Button>
                                 </Link>

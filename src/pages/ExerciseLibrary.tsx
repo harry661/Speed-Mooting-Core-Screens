@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 import { useState, useMemo } from "react"
-import { Search, ChevronRight, Star, Clock, TrendingUp, Sparkles, Users } from "lucide-react"
+import { Search, ChevronRight, Star, Clock, Sparkles } from "lucide-react"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -17,8 +17,6 @@ const exercises = [
         difficulty: "Beginner" as const, 
         time: "15 mins", 
         rating: 4.8,
-        attempts: 1247,
-        completions: 892,
         recommended: true,
         bannerImage: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=400&fit=crop",
         description: "A comprehensive exercise examining the fundamental principles of contract formation, focusing on the elements of offer, acceptance, and consideration in a commercial dispute context."
@@ -30,8 +28,6 @@ const exercises = [
         difficulty: "Intermediate" as const, 
         time: "20 mins", 
         rating: 4.5,
-        attempts: 856,
-        completions: 623,
         recommended: false,
         bannerImage: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&h=400&fit=crop",
         description: "An intermediate-level exercise exploring the duty of care in negligence, examining the neighbor principle and the modern approach to establishing duty in novel situations."
@@ -43,8 +39,6 @@ const exercises = [
         difficulty: "Beginner" as const, 
         time: "12 mins", 
         rating: 4.9,
-        attempts: 2103,
-        completions: 1654,
         recommended: true,
         bannerImage: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&h=400&fit=crop",
         description: "A beginner-friendly exercise focusing on the mental element in criminal law, examining different levels of mens rea and their application to various offenses."
@@ -56,8 +50,6 @@ const exercises = [
         difficulty: "Advanced" as const, 
         time: "30 mins", 
         rating: 4.7,
-        attempts: 432,
-        completions: 287,
         recommended: false,
         bannerImage: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=400&fit=crop",
         description: "An advanced exercise examining judicial review principles, separation of powers, and constitutional interpretation in public law disputes."
@@ -69,8 +61,6 @@ const exercises = [
         difficulty: "Intermediate" as const, 
         time: "25 mins", 
         rating: 4.2,
-        attempts: 678,
-        completions: 445,
         recommended: false,
         bannerImage: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=400&fit=crop",
         description: "An intermediate exercise exploring easements, rights of way, and property disputes involving land use and access rights."
@@ -82,8 +72,6 @@ const exercises = [
         difficulty: "Advanced" as const, 
         time: "15 mins", 
         rating: 4.6,
-        attempts: 543,
-        completions: 389,
         recommended: false,
         bannerImage: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=400&fit=crop",
         description: "An advanced exercise focusing on the rules of evidence, admissibility of evidence, and the exclusionary rules in civil and criminal proceedings."
@@ -129,8 +117,6 @@ export default function ExerciseLibrary() {
             switch (sortBy) {
                 case "rating":
                     return b.rating - a.rating
-                case "popularity":
-                    return b.attempts - a.attempts
                 case "difficulty":
                     const difficultyOrder = { "Beginner": 1, "Intermediate": 2, "Advanced": 3 }
                     return difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]
@@ -251,23 +237,14 @@ export default function ExerciseLibrary() {
                                             <p className="text-sm text-gray-600 dark:text-gray-300 font-sans mb-4 leading-relaxed line-clamp-2">
                                                 {ex.description}
                                             </p>
-                                            <div className="flex items-center gap-4 text-[11px] text-gray-400 dark:text-gray-500 font-sans mb-3">
+                                            <div className="flex items-center gap-4 text-[11px] text-gray-400 dark:text-gray-500 font-sans">
                                                 <div className="flex items-center gap-1.5">
                                                     <Clock className="w-3.5 h-3.5" />
                                                     {ex.time}
                                                 </div>
-                                                <div className="flex items-center gap-1.5">
-                                                    <Users className="w-3.5 h-3.5" />
-                                                    {ex.attempts} attempts
-                                                </div>
-                                            </div>
-                                            <div className="flex items-center gap-2">
                                                 <div className="flex items-center gap-1 text-[11px] font-bold text-accent">
                                                     <Star className="w-3.5 h-3.5 fill-current" />
                                                     {ex.rating}
-                                                </div>
-                                                <div className="text-[10px] text-gray-400 dark:text-gray-500 font-sans">
-                                                    ({ex.completions} completed)
                                                 </div>
                                             </div>
                                         </CardContent>
@@ -326,12 +303,6 @@ export default function ExerciseLibrary() {
                                             <Badge variant="secondary" className="bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border-none px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-widest">
                                                 {ex.subject}
                                             </Badge>
-                                            {ex.attempts > 1000 && (
-                                                <Badge className="bg-blue-100 text-blue-700 border-blue-200 px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-widest">
-                                                    <TrendingUp className="w-3 h-3 mr-1" />
-                                                    Popular
-                                                </Badge>
-                                            )}
                                         </div>
                                         <CardTitle className="text-base group-hover:text-accent transition-colors font-heading font-bold leading-tight text-gray-900 dark:text-gray-100">
                                             {ex.title}
@@ -341,25 +312,14 @@ export default function ExerciseLibrary() {
                                         <p className="text-sm text-gray-600 dark:text-gray-300 font-sans mb-4 leading-relaxed line-clamp-3">
                                             {ex.description}
                                         </p>
-                                        <div className="space-y-2">
-                                            <div className="flex items-center gap-4 text-[11px] text-gray-400 dark:text-gray-500 font-sans">
-                                                <div className="flex items-center gap-1.5">
-                                                    <Clock className="w-3.5 h-3.5" />
-                                                    {ex.time}
-                                                </div>
-                                                <div className="flex items-center gap-1.5">
-                                                    <Users className="w-3.5 h-3.5" />
-                                                    {ex.attempts} attempts
-                                                </div>
+                                        <div className="flex items-center gap-4 text-[11px] text-gray-400 dark:text-gray-500 font-sans">
+                                            <div className="flex items-center gap-1.5">
+                                                <Clock className="w-3.5 h-3.5" />
+                                                {ex.time}
                                             </div>
-                                            <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-800">
-                                                <div className="flex items-center gap-1 text-[11px] font-bold text-accent">
-                                                    <Star className="w-3.5 h-3.5 fill-current" />
-                                                    {ex.rating}
-                                                </div>
-                                                <div className="text-[10px] text-gray-400 dark:text-gray-500 font-sans">
-                                                    {ex.completions} completed
-                                                </div>
+                                            <div className="flex items-center gap-1 text-[11px] font-bold text-accent">
+                                                <Star className="w-3.5 h-3.5 fill-current" />
+                                                {ex.rating}
                                             </div>
                                         </div>
                                     </CardContent>
