@@ -1,9 +1,10 @@
 import { motion } from "framer-motion"
+import { useEffect } from "react"
 import { Search, BookOpen, Database, FileText, Video, MessageSquare, Navigation, Target, Scale, Info, ExternalLink, Shield, ChevronRight } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams, Link } from "react-router-dom"
 
 const legalDatabases = [
     { 
@@ -182,13 +183,36 @@ export default function TutorialsAndGuidance() {
     const tabParam = searchParams.get("tab")
     const currentTab = tabParam && ["databases", "subjects", "tutorials"].includes(tabParam) ? tabParam : "databases"
 
+    // Title and description mapping based on active tab
+    const pageContent = {
+        databases: {
+            title: "Legal Databases",
+            description: "Access comprehensive legal research databases with case law, statutes, and secondary sources."
+        },
+        subjects: {
+            title: "Subject Guides",
+            description: "Explore comprehensive guides for different areas of law relevant to mooting."
+        },
+        tutorials: {
+            title: "Tutorials",
+            description: "Learn how to use the platform effectively with step-by-step guides and tutorials."
+        }
+    }
+
+    const currentContent = pageContent[currentTab as keyof typeof pageContent]
+
+    // Update document title
+    useEffect(() => {
+        document.title = `${currentContent.title} - SpeedMooting`
+    }, [currentTab, currentContent.title])
+
     return (
         <div className="flex-1 bg-[#fcf8f8] min-h-screen p-6">
             <div className="w-full space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-900 tracking-tight font-heading">Tutorials & Guidance</h2>
-                        <p className="text-gray-500 text-xs font-sans mt-1">Access legal research databases, subject guides, and platform tutorials.</p>
+                        <h2 className="text-2xl font-bold text-gray-900 tracking-tight font-heading">{currentContent.title}</h2>
+                        <p className="text-gray-500 text-xs font-sans mt-1">{currentContent.description}</p>
                     </div>
                 </div>
 
@@ -286,10 +310,12 @@ export default function TutorialsAndGuidance() {
                                                 </div>
                                             </CardContent>
                                             <CardContent className="p-5 pt-0">
-                                                <Button variant="outline" className="w-full border-gray-200 text-gray-700 hover:bg-accent hover:border-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-9 rounded-sm group/btn">
-                                                    View Guide
-                                                    <ExternalLink className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                                                </Button>
+                                                <Link to={`/subjects/${subject.id}`}>
+                                                    <Button variant="outline" className="w-full border-gray-200 text-gray-700 hover:bg-accent hover:border-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-9 rounded-sm group/btn">
+                                                        View Guide
+                                                        <ExternalLink className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                                                    </Button>
+                                                </Link>
                                             </CardContent>
                                         </Card>
                                     </motion.div>
@@ -335,10 +361,12 @@ export default function TutorialsAndGuidance() {
                                                     </p>
                                                 </CardContent>
                                                 <CardContent className="p-5 pt-0">
-                                                    <Button variant="outline" className="w-full border-gray-200 text-gray-700 hover:bg-accent hover:border-accent hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 group/btn">
-                                                        Access Tutorial
-                                                        <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                                                    </Button>
+                                                    <Link to={`/tutorials/${tutorial.id}`}>
+                                                        <Button variant="outline" className="w-full border-gray-200 text-gray-700 hover:bg-accent hover:border-accent hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 group/btn">
+                                                            Access Tutorial
+                                                            <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                                                        </Button>
+                                                    </Link>
                                                 </CardContent>
                                             </Card>
                                         </motion.div>

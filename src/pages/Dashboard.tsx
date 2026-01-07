@@ -47,8 +47,8 @@ const featuredTutorials = [
 
 export default function Dashboard() {
     return (
-        <div className="flex-1 bg-[#fcf8f8] min-h-screen">
-            <main className="p-6 space-y-6 w-full">
+        <div className="flex-1 bg-[#fcf8f8] min-h-screen p-6">
+            <div className="w-full space-y-6">
                 <div className="flex items-center justify-between">
                     <div className="space-y-1">
                         <h2 className="text-2xl font-bold text-gray-900 tracking-tight font-heading">Dashboard Overview</h2>
@@ -106,7 +106,7 @@ export default function Dashboard() {
                     <Card className="lg:col-span-2 rounded-sm border-gray-200 bg-white shadow-none">
                         <CardHeader className="flex flex-row items-center justify-between border-b border-gray-100 py-4">
                             <CardTitle className="text-base font-bold font-heading">Recent Case Practice</CardTitle>
-                            <Link to="/report">
+                            <Link to="/history">
                                 <Button variant="ghost" size="sm" className="text-accent hover:bg-accent/5 font-heading font-bold text-[10px] uppercase tracking-widest">Full History</Button>
                             </Link>
                         </CardHeader>
@@ -204,7 +204,7 @@ export default function Dashboard() {
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: i * 0.1 }}
                                     >
-                                        <Card className="h-full rounded-sm border-gray-200 hover:border-accent transition-colors bg-white flex flex-col group shadow-sm overflow-hidden">
+                                        <Card className="h-full rounded-sm border-gray-200 hover:border-accent transition-colors bg-white flex flex-col group shadow-none overflow-hidden">
                                             <div className="relative w-full h-32 overflow-hidden">
                                                 <img 
                                                     src={tutorial.bannerImage} 
@@ -229,10 +229,12 @@ export default function Dashboard() {
                                                 </p>
                                             </CardContent>
                                             <CardContent className="p-5 pt-0">
-                                                <Button variant="outline" className="w-full border-gray-200 text-gray-700 hover:bg-accent hover:border-accent hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 group/btn">
-                                                    Access Tutorial
-                                                    <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                                                </Button>
+                                                <Link to={`/tutorials/${tutorial.id}`}>
+                                                    <Button variant="outline" className="w-full border-gray-200 text-gray-700 hover:bg-accent hover:border-accent hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 group/btn">
+                                                        Access Tutorial
+                                                        <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                                                    </Button>
+                                                </Link>
                                             </CardContent>
                                         </Card>
                                     </motion.div>
@@ -241,7 +243,7 @@ export default function Dashboard() {
                         </div>
                     </CardContent>
                 </Card>
-            </main>
+            </div>
         </div>
     )
 }

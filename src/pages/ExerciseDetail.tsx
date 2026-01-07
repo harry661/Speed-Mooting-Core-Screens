@@ -279,8 +279,8 @@ export default function ExerciseDetail() {
                             <h2 className="text-xl font-bold text-gray-900 font-heading mb-2">Exercise Not Found</h2>
                             <p className="text-gray-600 font-sans mb-6">The exercise you're looking for doesn't exist.</p>
                             <Link to="/exercises">
-                                <Button className="bg-accent hover:bg-accent/90 text-white rounded-sm">
-                                    Back to Exercise Library
+                                <Button className="gap-2 bg-accent hover:bg-accent/90 text-white rounded-sm font-heading font-bold text-[10px] uppercase tracking-widest">
+                                    <ArrowLeft className="w-4 h-4" /> Back to Exercise Library
                                 </Button>
                             </Link>
                         </CardContent>
@@ -296,7 +296,7 @@ export default function ExerciseDetail() {
                 {/* Header */}
                 <div className="flex items-center gap-4 mb-6">
                     <Link to="/exercises">
-                        <Button variant="ghost" size="icon" className="rounded-sm">
+                        <Button variant="ghost" size="icon" className="rounded-sm hover:bg-accent hover:text-white transition-colors">
                             <ArrowLeft className="w-4 h-4" />
                         </Button>
                     </Link>
@@ -450,8 +450,8 @@ export default function ExerciseDetail() {
                                     </Button>
                                 </Link>
                                 <Link to="/exercises" className="block">
-                                    <Button variant="outline" className="w-full rounded-sm border-gray-200">
-                                        <ArrowLeft className="w-4 h-4 mr-2" />
+                                    <Button variant="ghost" className="w-full gap-2 text-primary hover:bg-accent hover:text-white rounded-sm border-gray-200 font-heading font-bold text-[10px] uppercase tracking-widest transition-colors">
+                                        <ArrowLeft className="w-4 h-4" />
                                         Back to Library
                                     </Button>
                                 </Link>

@@ -12,7 +12,7 @@ const menuItems = [
 
 const historySubmenu = [
     { label: "Submission History", href: "/history", icon: FileText },
-    { label: "Resource History", href: "/history/resources", icon: Database },
+    // { label: "Resource History", href: "/history/resources", icon: Database },
 ]
 
 const resourcesSubmenu = [

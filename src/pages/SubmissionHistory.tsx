@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { toast } from "sonner"
-import { Download, Trash2, Eye, Search, MoreVertical, ChevronRight, Upload, Info } from "lucide-react"
+import { Download, Trash2, Search, MoreVertical, ChevronRight, Upload, Info } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -14,7 +14,8 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { cn } from "@/lib/utils"
 
 interface Submission {
     id: number
@@ -80,9 +81,9 @@ const sampleSubmissions: Submission[] = [
         subject: "Criminal Law",
         submissionDate: new Date("2024-01-14T09:20:00"),
         version: 1,
-        status: "Processing",
-        score: null,
-        grade: null,
+        status: "Analyzed",
+        score: 76,
+        grade: "B+",
         videoFile: "submission_v1_mens_rea.mp4"
     },
     {
@@ -115,6 +116,7 @@ const sampleSubmissions: Submission[] = [
 ]
 
 export default function SubmissionHistory() {
+    const navigate = useNavigate()
     const [submissions, setSubmissions] = useState<Submission[]>(sampleSubmissions)
     const [searchQuery, setSearchQuery] = useState("")
     const [statusFilter, setStatusFilter] = useState<string>("all")
@@ -402,10 +404,26 @@ export default function SubmissionHistory() {
                                     <tbody>
                                         {filteredSubmissions.map((submission) => {
                                             const subjectColors = getSubjectColorClasses(submission.subject)
+                                            const isClickable = submission.status === "Analyzed"
+                                            const handleRowClick = (e: React.MouseEvent) => {
+                                                // Don't navigate if clicking on the dropdown or its button
+                                                if ((e.target as HTMLElement).closest('[role="menu"]') || 
+                                                    (e.target as HTMLElement).closest('button')) {
+                                                    return
+                                                }
+                                                if (isClickable) {
+                                                    navigate(`/report?submissionId=${submission.id}`)
+                                                }
+                                            }
                                             return (
                                                 <tr 
                                                     key={submission.id} 
-                                                    className={`border-b border-gray-100 ${subjectColors.hover} transition-colors`}
+                                                    onClick={handleRowClick}
+                                                    className={cn(
+                                                        "border-b border-gray-100 transition-colors",
+                                                        isClickable ? "cursor-pointer hover:bg-gray-50/50" : "cursor-default",
+                                                        !isClickable && subjectColors.hover
+                                                    )}
                                                 >
                                                     <td className="py-4 px-4">
                                                         <div className="text-sm text-gray-900 font-sans">
@@ -444,35 +462,25 @@ export default function SubmissionHistory() {
                                                         {getStatusBadge(submission.status)}
                                                     </td>
                                                     <td className="py-4 px-4">
-                                                        <div className="flex justify-end">
+                                                        <div className="flex justify-end" onClick={(e) => e.stopPropagation()}>
                                                             <DropdownMenu>
                                                                 <DropdownMenuTrigger asChild>
                                                                     <Button
                                                                         variant="ghost"
                                                                         className="h-8 w-8 p-0 hover:bg-gray-100"
+                                                                        onClick={(e) => e.stopPropagation()}
                                                                     >
                                                                         <MoreVertical className="h-4 w-4 text-gray-600" />
                                                                     </Button>
                                                                 </DropdownMenuTrigger>
-                                                                <DropdownMenuContent align="end" className="w-48">
-                                                                    {submission.status === "Analyzed" && (
-                                                                        <>
-                                                                            <DropdownMenuItem asChild>
-                                                                                <Link to={`/report?submissionId=${submission.id}`} className="cursor-pointer">
-                                                                                    <Eye className="mr-2 h-4 w-4" />
-                                                                                    View Report
-                                                                                </Link>
-                                                                            </DropdownMenuItem>
-                                                                            <DropdownMenuSeparator />
-                                                                        </>
-                                                                    )}
-                                                                    <DropdownMenuItem onClick={() => handleExport()}>
+                                                                <DropdownMenuContent align="end" className="w-48" onClick={(e) => e.stopPropagation()}>
+                                                                    <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleExport(); }}>
                                                                         <Download className="mr-2 h-4 w-4" />
                                                                         Download PDF
                                                                     </DropdownMenuItem>
                                                                     <DropdownMenuSeparator />
                                                                     <DropdownMenuItem 
-                                                                        onClick={() => handleDeleteClick(submission.id)}
+                                                                        onClick={(e) => { e.stopPropagation(); handleDeleteClick(submission.id); }}
                                                                         className="text-red-600 focus:text-red-600 focus:bg-red-50"
                                                                     >
                                                                         <Trash2 className="mr-2 h-4 w-4" />
