@@ -1,13 +1,19 @@
 import { useState } from "react"
-import { motion } from "framer-motion"
 import { toast } from "sonner"
-import { Calendar, Clock, FileText, Download, Trash2, Eye, Search, AlertCircle, Info } from "lucide-react"
+import { Download, Trash2, Eye, Search, MoreVertical, ChevronRight, Upload, Info } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Link } from "react-router-dom"
 
 interface Submission {
@@ -113,6 +119,7 @@ export default function SubmissionHistory() {
     const [searchQuery, setSearchQuery] = useState("")
     const [statusFilter, setStatusFilter] = useState<string>("all")
     const [exerciseFilter, setExerciseFilter] = useState<string>("all")
+    const [dateRangeFilter, setDateRangeFilter] = useState<string>("all")
     const [sortBy, setSortBy] = useState<string>("newest")
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const [submissionToDelete, setSubmissionToDelete] = useState<number | null>(null)
@@ -127,7 +134,16 @@ export default function SubmissionHistory() {
                                  sub.subject.toLowerCase().includes(searchQuery.toLowerCase())
             const matchesStatus = statusFilter === "all" || sub.status === statusFilter
             const matchesExercise = exerciseFilter === "all" || sub.exerciseName === exerciseFilter
-            return matchesSearch && matchesStatus && matchesExercise
+            
+            // Date range filter
+            let matchesDateRange = true
+            if (dateRangeFilter === "last30") {
+                const thirtyDaysAgo = new Date()
+                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+                matchesDateRange = sub.submissionDate >= thirtyDaysAgo
+            }
+            
+            return matchesSearch && matchesStatus && matchesExercise && matchesDateRange
         })
         .sort((a, b) => {
             switch (sortBy) {
@@ -146,22 +162,12 @@ export default function SubmissionHistory() {
             }
         })
 
-    const formatDate = (date: Date) => {
-        const now = new Date()
-        const diffMs = now.getTime() - date.getTime()
-        const diffMins = Math.floor(diffMs / 60000)
-        const diffHours = Math.floor(diffMs / 3600000)
-        const diffDays = Math.floor(diffMs / 86400000)
-
-        if (diffMins < 60) {
-            return `${diffMins} ${diffMins === 1 ? 'minute' : 'minutes'} ago`
-        } else if (diffHours < 24) {
-            return `${diffHours} ${diffHours === 1 ? 'hour' : 'hours'} ago`
-        } else if (diffDays < 7) {
-            return `${diffDays} ${diffDays === 1 ? 'day' : 'days'} ago`
-        } else {
-            return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-        }
+    const formatTableDate = (date: Date) => {
+        return date.toLocaleDateString('en-US', { 
+            month: 'long', 
+            day: 'numeric', 
+            year: 'numeric' 
+        })
     }
 
     const handleDeleteClick = (id: number) => {
@@ -180,22 +186,48 @@ export default function SubmissionHistory() {
         }
     }
 
-    const getStatusColor = (status: string) => {
+    const handleExport = () => {
+        toast.info("Export functionality coming soon", {
+            description: "You'll be able to export your submission history as CSV or PDF."
+        })
+    }
+
+    const getStatusDot = (status: string) => {
         switch (status) {
             case "Analyzed":
-                return "bg-green-100 text-green-800 border-green-200"
+                return <span className="text-green-600 font-bold">•</span>
             case "Processing":
-                return "bg-amber-100 text-amber-800 border-amber-200"
+                return <span className="text-gray-500 font-bold">•</span>
             case "Failed":
-                return "bg-red-100 text-red-800 border-red-200"
+                return <span className="text-red-600 font-bold">•</span>
             default:
-                return "bg-gray-100 text-gray-800 border-gray-200"
+                return <span className="text-gray-400 font-bold">•</span>
+        }
+    }
+
+    const getStatusText = (status: string) => {
+        switch (status) {
+            case "Analyzed":
+                return "Completed"
+            case "Processing":
+                return "Pending"
+            case "Failed":
+                return "Canceled"
+            default:
+                return status
         }
     }
 
     return (
         <div className="flex-1 bg-[#fcf8f8] min-h-screen p-6">
             <div className="w-full space-y-6">
+                {/* Breadcrumbs */}
+                <div className="flex items-center gap-2 text-sm text-gray-600 font-sans">
+                    <Link to="/history" className="hover:text-accent transition-colors">History</Link>
+                    <ChevronRight className="w-4 h-4" />
+                    <span className="text-gray-900 font-semibold">Submission History</span>
+                </div>
+
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
@@ -204,47 +236,25 @@ export default function SubmissionHistory() {
                     </div>
                 </div>
 
-                {/* Data Retention Notice */}
-                <div className="bg-accent/5 border-l-4 border-accent rounded-r-xl p-4 flex items-start gap-3">
-                    <Info className="w-5 h-5 text-accent shrink-0 mt-0.5" />
-                    <div className="flex-1">
-                        <h4 className="text-xs font-bold uppercase tracking-widest text-accent font-heading mb-1">Data Retention Policy</h4>
-                        <p className="text-sm text-gray-800 font-sans">Your submission history is retained for 3 years in accordance with our data retention policy. Submissions older than 3 years may be automatically archived or deleted.</p>
-                    </div>
-                </div>
-
-                {/* Filters and Search */}
+                {/* Compact Filter Bar */}
                 <Card className="rounded-sm border-gray-200 bg-white shadow-none">
                     <CardContent className="p-4">
-                        <div className="flex flex-col md:flex-row gap-4">
+                        <div className="flex flex-col lg:flex-row gap-3 items-start lg:items-center">
                             {/* Search */}
-                            <div className="relative flex-1">
+                            <div className="relative flex-1 w-full lg:w-auto min-w-[200px]">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                                 <Input
-                                    placeholder="Search by exercise name or subject..."
+                                    placeholder="Search submission..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="pl-10 rounded-sm border-gray-200 bg-white font-sans text-sm"
+                                    className="pl-10 rounded-sm border-gray-200 bg-white font-sans text-sm h-9"
                                 />
                             </div>
 
-                            {/* Status Filter */}
-                            <Select value={statusFilter} onValueChange={setStatusFilter}>
-                                <SelectTrigger className="w-[180px] bg-white border-gray-200 rounded-sm h-10 font-sans text-xs">
-                                    <SelectValue placeholder="All Statuses" />
-                                </SelectTrigger>
-                                <SelectContent className="rounded-sm border-gray-200 shadow-none">
-                                    <SelectItem value="all">All Statuses</SelectItem>
-                                    <SelectItem value="Analyzed">Analyzed</SelectItem>
-                                    <SelectItem value="Processing">Processing</SelectItem>
-                                    <SelectItem value="Failed">Failed</SelectItem>
-                                </SelectContent>
-                            </Select>
-
-                            {/* Exercise Filter */}
+                            {/* Type Filter - Using Exercise as Type */}
                             <Select value={exerciseFilter} onValueChange={setExerciseFilter}>
-                                <SelectTrigger className="w-[180px] bg-white border-gray-200 rounded-sm h-10 font-sans text-xs">
-                                    <SelectValue placeholder="All Exercises" />
+                                <SelectTrigger className="w-full lg:w-[140px] bg-white border-gray-200 rounded-sm h-9 font-sans text-xs">
+                                    <SelectValue placeholder="Exercise: All" />
                                 </SelectTrigger>
                                 <SelectContent className="rounded-sm border-gray-200 shadow-none">
                                     <SelectItem value="all">All Exercises</SelectItem>
@@ -254,155 +264,176 @@ export default function SubmissionHistory() {
                                 </SelectContent>
                             </Select>
 
+                            {/* Status Filter */}
+                            <Select value={statusFilter} onValueChange={setStatusFilter}>
+                                <SelectTrigger className="w-full lg:w-[130px] bg-white border-gray-200 rounded-sm h-9 font-sans text-xs">
+                                    <SelectValue placeholder="Status: All" />
+                                </SelectTrigger>
+                                <SelectContent className="rounded-sm border-gray-200 shadow-none">
+                                    <SelectItem value="all">All Statuses</SelectItem>
+                                    <SelectItem value="Analyzed">Completed</SelectItem>
+                                    <SelectItem value="Processing">Pending</SelectItem>
+                                    <SelectItem value="Failed">Canceled</SelectItem>
+                                </SelectContent>
+                            </Select>
+
+                            {/* Date Range Filter */}
+                            <Select value={dateRangeFilter} onValueChange={setDateRangeFilter}>
+                                <SelectTrigger className="w-full lg:w-[140px] bg-white border-gray-200 rounded-sm h-9 font-sans text-xs">
+                                    <SelectValue placeholder="Date Range" />
+                                </SelectTrigger>
+                                <SelectContent className="rounded-sm border-gray-200 shadow-none">
+                                    <SelectItem value="all">All Time</SelectItem>
+                                    <SelectItem value="last30">Last 30 days</SelectItem>
+                                </SelectContent>
+                            </Select>
+
                             {/* Sort */}
                             <Select value={sortBy} onValueChange={setSortBy}>
-                                <SelectTrigger className="w-[180px] bg-white border-gray-200 rounded-sm h-10 font-sans text-xs">
+                                <SelectTrigger className="w-full lg:w-[140px] bg-white border-gray-200 rounded-sm h-9 font-sans text-xs">
                                     <SelectValue placeholder="Sort by" />
                                 </SelectTrigger>
                                 <SelectContent className="rounded-sm border-gray-200 shadow-none">
-                                    <SelectItem value="newest">Newest First</SelectItem>
-                                    <SelectItem value="oldest">Oldest First</SelectItem>
-                                    <SelectItem value="exercise">By Exercise Name</SelectItem>
-                                    <SelectItem value="score-high">Score (High to Low)</SelectItem>
-                                    <SelectItem value="score-low">Score (Low to High)</SelectItem>
+                                    <SelectItem value="newest">Date (Newest)</SelectItem>
+                                    <SelectItem value="oldest">Date (Oldest)</SelectItem>
+                                    <SelectItem value="exercise">Exercise Name</SelectItem>
+                                    <SelectItem value="score-high">Score (High)</SelectItem>
+                                    <SelectItem value="score-low">Score (Low)</SelectItem>
                                 </SelectContent>
                             </Select>
+
+                            {/* Export Button */}
+                            <Button
+                                variant="outline"
+                                onClick={handleExport}
+                                className="gap-2 border-gray-200 font-heading font-bold text-[10px] uppercase tracking-widest h-9 rounded-sm shadow-none w-full lg:w-auto"
+                            >
+                                <Upload className="w-3.5 h-3.5" />
+                                Export
+                            </Button>
                         </div>
                     </CardContent>
                 </Card>
 
-                {/* Submissions List */}
+                {/* Data Retention Notice - Subtle */}
+                <div className="bg-accent/5 border-l-4 border-accent rounded-r-xl p-3 flex items-start gap-2">
+                    <Info className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                    <p className="text-xs text-gray-700 font-sans">Submissions are retained for 3 years per our data retention policy.</p>
+                </div>
+
+                {/* Table */}
                 {filteredSubmissions.length === 0 ? (
                     <Card className="rounded-sm border-gray-200 bg-white shadow-none">
                         <CardContent className="p-12 text-center">
-                            <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                            <Search className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                             <h3 className="text-lg font-semibold text-gray-900 font-heading mb-2">No submissions found</h3>
                             <p className="text-sm text-gray-600 font-sans">Try adjusting your filters or search query.</p>
                         </CardContent>
                     </Card>
                 ) : (
-                    <div className="grid grid-cols-1 gap-4">
-                        {filteredSubmissions.map((submission, index) => (
-                            <motion.div
-                                key={submission.id}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.05 }}
-                            >
-                                <Card className="rounded-sm border-gray-200 bg-white shadow-none hover:shadow-sm transition-shadow">
-                                    <CardContent className="p-6">
-                                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                            {/* Left: Exercise Info */}
-                                            <div className="flex-1 space-y-3">
-                                                <div className="flex items-start justify-between gap-4">
-                                                    <div className="flex-1">
-                                                        <div className="flex items-center gap-3 mb-2">
-                                                            <h3 className="text-lg font-bold text-gray-900 font-heading">
-                                                                {submission.exerciseName}
-                                                            </h3>
-                                                            <Badge variant="outline" className="text-[10px] font-heading font-bold uppercase tracking-widest border-gray-200 text-gray-600">
-                                                                Version {submission.version}
-                                                            </Badge>
-                                                            <Badge className={`text-[10px] font-heading font-bold uppercase tracking-widest border ${getStatusColor(submission.status)}`}>
-                                                                {submission.status}
-                                                            </Badge>
+                    <Card className="rounded-sm border-gray-200 bg-white shadow-none overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <table className="w-full">
+                                    <thead>
+                                        <tr className="border-b border-gray-200 bg-gray-50/50">
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Date</th>
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Submission Name</th>
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Exercise</th>
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Type</th>
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Score</th>
+                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Status</th>
+                                            <th className="text-right py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 font-heading">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {filteredSubmissions.map((submission) => (
+                                            <tr 
+                                                key={submission.id} 
+                                                className="border-b border-gray-100 hover:bg-gray-50/50 transition-colors"
+                                            >
+                                                <td className="py-4 px-4">
+                                                    <div className="text-sm text-gray-900 font-sans">
+                                                        {formatTableDate(submission.submissionDate)}
+                                                    </div>
+                                                </td>
+                                                <td className="py-4 px-4">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-sm font-semibold text-gray-900 font-heading">
+                                                            {submission.exerciseName}
+                                                        </span>
+                                                        <Badge variant="outline" className="text-[9px] font-heading font-bold uppercase tracking-widest border-gray-200 text-gray-600 px-1.5 py-0">
+                                                            v{submission.version}
+                                                        </Badge>
+                                                    </div>
+                                                </td>
+                                                <td className="py-4 px-4">
+                                                    <span className="text-sm text-gray-700 font-sans">{submission.subject}</span>
+                                                </td>
+                                                <td className="py-4 px-4">
+                                                    <span className="text-sm text-gray-700 font-sans">Video Submission</span>
+                                                </td>
+                                                <td className="py-4 px-4">
+                                                    {submission.score !== null ? (
+                                                        <div className="flex items-center gap-1">
+                                                            <span className="text-sm font-bold text-gray-900 font-sans tabular-nums">{submission.score}</span>
+                                                            <span className="text-xs text-gray-500 font-heading font-bold uppercase tracking-widest">({submission.grade})</span>
                                                         </div>
-                                                        <p className="text-sm text-gray-600 font-sans">{submission.subject}</p>
+                                                    ) : (
+                                                        <span className="text-sm text-gray-400 font-sans">--</span>
+                                                    )}
+                                                </td>
+                                                <td className="py-4 px-4">
+                                                    <div className="flex items-center gap-2">
+                                                        {getStatusDot(submission.status)}
+                                                        <span className="text-sm text-gray-700 font-sans">{getStatusText(submission.status)}</span>
                                                     </div>
-                                                    {submission.score !== null && (
-                                                        <div className="text-right">
-                                                            <div className="text-2xl font-bold text-gray-900 font-sans tabular-nums">{submission.score}</div>
-                                                            <div className="text-xs text-gray-500 font-heading font-bold uppercase tracking-widest">{submission.grade}</div>
-                                                        </div>
-                                                    )}
-                                                </div>
-
-                                                <div className="flex items-center gap-6 text-xs text-gray-500 font-sans">
-                                                    <div className="flex items-center gap-1.5">
-                                                        <Calendar className="w-4 h-4" />
-                                                        {submission.submissionDate.toLocaleDateString('en-GB', { 
-                                                            day: 'numeric', 
-                                                            month: 'short', 
-                                                            year: 'numeric',
-                                                            hour: '2-digit',
-                                                            minute: '2-digit'
-                                                        })}
+                                                </td>
+                                                <td className="py-4 px-4">
+                                                    <div className="flex justify-end">
+                                                        <DropdownMenu>
+                                                            <DropdownMenuTrigger asChild>
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    className="h-8 w-8 p-0 hover:bg-gray-100"
+                                                                >
+                                                                    <MoreVertical className="h-4 w-4 text-gray-600" />
+                                                                </Button>
+                                                            </DropdownMenuTrigger>
+                                                            <DropdownMenuContent align="end" className="w-48">
+                                                                {submission.status === "Analyzed" && (
+                                                                    <>
+                                                                        <DropdownMenuItem asChild>
+                                                                            <Link to={`/report?submissionId=${submission.id}`} className="cursor-pointer">
+                                                                                <Eye className="mr-2 h-4 w-4" />
+                                                                                View Report
+                                                                            </Link>
+                                                                        </DropdownMenuItem>
+                                                                        <DropdownMenuSeparator />
+                                                                    </>
+                                                                )}
+                                                                <DropdownMenuItem onClick={() => handleExport()}>
+                                                                    <Download className="mr-2 h-4 w-4" />
+                                                                    Download PDF
+                                                                </DropdownMenuItem>
+                                                                <DropdownMenuSeparator />
+                                                                <DropdownMenuItem 
+                                                                    onClick={() => handleDeleteClick(submission.id)}
+                                                                    className="text-red-600 focus:text-red-600 focus:bg-red-50"
+                                                                >
+                                                                    <Trash2 className="mr-2 h-4 w-4" />
+                                                                    Delete
+                                                                </DropdownMenuItem>
+                                                            </DropdownMenuContent>
+                                                        </DropdownMenu>
                                                     </div>
-                                                    <div className="flex items-center gap-1.5">
-                                                        <Clock className="w-4 h-4" />
-                                                        {formatDate(submission.submissionDate)}
-                                                    </div>
-                                                </div>
-
-                                                {/* Files Info */}
-                                                <div className="flex items-center gap-4 text-xs text-gray-600 font-sans">
-                                                    <span className="flex items-center gap-1.5">
-                                                        <FileText className="w-3.5 h-3.5" />
-                                                        {submission.videoFile}
-                                                    </span>
-                                                    {submission.skeletonArgument && (
-                                                        <span className="text-gray-400">•</span>
-                                                    )}
-                                                    {submission.skeletonArgument && (
-                                                        <span>{submission.skeletonArgument}</span>
-                                                    )}
-                                                    {submission.caseFiles && submission.caseFiles.length > 0 && (
-                                                        <>
-                                                            <span className="text-gray-400">•</span>
-                                                            <span>{submission.caseFiles.length} case file{submission.caseFiles.length > 1 ? 's' : ''}</span>
-                                                        </>
-                                                    )}
-                                                </div>
-                                            </div>
-
-                                            {/* Right: Actions */}
-                                            <div className="flex items-center gap-2">
-                                                {submission.status === "Analyzed" && (
-                                                    <Link to={`/report?submissionId=${submission.id}`}>
-                                                        <Button 
-                                                            variant="outline" 
-                                                            size="sm"
-                                                            className="gap-2 border-gray-200 font-heading font-bold text-[10px] uppercase tracking-widest h-9 rounded-sm shadow-none"
-                                                        >
-                                                            <Eye className="w-3.5 h-3.5" />
-                                                            View Report
-                                                        </Button>
-                                                    </Link>
-                                                )}
-                                                <Button 
-                                                    variant="outline" 
-                                                    size="sm"
-                                                    className="gap-2 border-gray-200 font-heading font-bold text-[10px] uppercase tracking-widest h-9 rounded-sm shadow-none"
-                                                >
-                                                    <Download className="w-3.5 h-3.5" />
-                                                    Download
-                                                </Button>
-                                                <Button 
-                                                    variant="outline" 
-                                                    size="sm"
-                                                    onClick={() => handleDeleteClick(submission.id)}
-                                                    className="gap-2 border-red-200 text-red-600 hover:bg-red-50 font-heading font-bold text-[10px] uppercase tracking-widest h-9 rounded-sm shadow-none"
-                                                >
-                                                    <Trash2 className="w-3.5 h-3.5" />
-                                                    Delete
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </motion.div>
-                        ))}
-                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                        </div>
+                    </Card>
                 )}
-
-                {/* Submission Limit Notice */}
-                <div className="bg-amber-50/50 border-l-4 border-amber-200 rounded-r-xl p-4 flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                    <div className="flex-1">
-                        <h4 className="text-xs font-bold uppercase tracking-widest text-amber-700 font-heading mb-1">Submission Limits</h4>
-                        <p className="text-sm text-gray-800 font-sans">The system limits the number of submissions allowed per exercise to prevent abuse. This limit is configurable by administrators. If you've reached the limit for an exercise, please contact support.</p>
-                    </div>
-                </div>
             </div>
 
             {/* Delete Confirmation Dialog */}
@@ -437,4 +468,3 @@ export default function SubmissionHistory() {
         </div>
     )
 }
-
