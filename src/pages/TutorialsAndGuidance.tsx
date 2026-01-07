@@ -1,9 +1,11 @@
 import { motion } from "framer-motion"
-import { useEffect } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { Search, BookOpen, Database, FileText, Video, MessageSquare, Navigation, Target, Scale, Info, ExternalLink, Shield, ChevronRight } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useSearchParams, Link } from "react-router-dom"
 
 const legalDatabases = [
@@ -178,6 +180,8 @@ const tutorials = [
 
 export default function TutorialsAndGuidance() {
     const [searchParams] = useSearchParams()
+    const [searchQuery, setSearchQuery] = useState("")
+    const [filterCategory, setFilterCategory] = useState<string>("all")
     
     // Get tab from URL params, default to "databases"
     const tabParam = searchParams.get("tab")
@@ -201,6 +205,60 @@ export default function TutorialsAndGuidance() {
 
     const currentContent = pageContent[currentTab as keyof typeof pageContent]
 
+    // Get filter options based on current tab
+    const filterOptions = useMemo(() => {
+        if (currentTab === "databases") {
+            return Array.from(new Set(legalDatabases.map(db => db.access)))
+        } else if (currentTab === "subjects") {
+            // Extract unique subject areas for filtering (using the first word of topics as a category)
+            const categories = legalSubjects.map(s => {
+                const firstTopic = s.topics.split(",")[0].trim()
+                return firstTopic
+            })
+            return Array.from(new Set(categories))
+        } else if (currentTab === "tutorials") {
+            return Array.from(new Set(tutorials.map(t => t.category)))
+        }
+        return []
+    }, [currentTab])
+
+    // Filter data based on current tab, search query, and filter
+    const filteredData = useMemo(() => {
+        let data: any[] = []
+        
+        if (currentTab === "databases") {
+            data = legalDatabases.filter(db => {
+                const matchesSearch = db.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                    db.description.toLowerCase().includes(searchQuery.toLowerCase())
+                const matchesFilter = filterCategory === "all" || db.access === filterCategory
+                return matchesSearch && matchesFilter
+            })
+        } else if (currentTab === "subjects") {
+            data = legalSubjects.filter(subject => {
+                const matchesSearch = subject.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                    subject.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                    subject.topics.toLowerCase().includes(searchQuery.toLowerCase())
+                const matchesFilter = filterCategory === "all" || subject.topics.split(",")[0].trim() === filterCategory
+                return matchesSearch && matchesFilter
+            })
+        } else if (currentTab === "tutorials") {
+            data = tutorials.filter(tutorial => {
+                const matchesSearch = tutorial.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                     tutorial.description.toLowerCase().includes(searchQuery.toLowerCase())
+                const matchesFilter = filterCategory === "all" || tutorial.category === filterCategory
+                return matchesSearch && matchesFilter
+            })
+        }
+        
+        return data
+    }, [currentTab, searchQuery, filterCategory])
+
+    // Reset filter when tab changes
+    useEffect(() => {
+        setFilterCategory("all")
+        setSearchQuery("")
+    }, [currentTab])
+
     // Update document title
     useEffect(() => {
         document.title = `${currentContent.title} - SpeedMooting`
@@ -216,6 +274,36 @@ export default function TutorialsAndGuidance() {
                     </div>
                 </div>
 
+                {/* Filters and Search */}
+                <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
+                    <CardContent className="p-4">
+                        <div className="flex flex-col md:flex-row gap-4">
+                            <div className="flex-1 relative">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
+                                <Input
+                                    placeholder={`Search ${currentContent.title.toLowerCase()}...`}
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="pl-10 border-gray-200 dark:border-gray-700 rounded-sm h-10 font-sans text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                />
+                            </div>
+                            {filterOptions.length > 0 && (
+                                <Select value={filterCategory} onValueChange={setFilterCategory}>
+                                    <SelectTrigger className="w-[200px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-10 font-sans text-xs text-gray-900 dark:text-gray-100">
+                                        <SelectValue placeholder="All Categories" />
+                                    </SelectTrigger>
+                                    <SelectContent className="rounded-sm border-gray-200 dark:border-gray-800 shadow-none bg-white dark:bg-gray-900">
+                                        <SelectItem value="all">All Categories</SelectItem>
+                                        {filterOptions.map(option => (
+                                            <SelectItem key={option} value={option}>{option}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            )}
+                        </div>
+                    </CardContent>
+                </Card>
+
                 {currentTab === "databases" && (
                     <div className="mt-6">
                         <div className="space-y-4">
@@ -228,7 +316,7 @@ export default function TutorialsAndGuidance() {
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {legalDatabases.map((db, i) => {
+                                {filteredData.map((db, i) => {
                                     return (
                                         <motion.div
                                             key={db.id}
@@ -278,7 +366,7 @@ export default function TutorialsAndGuidance() {
                 {currentTab === "subjects" && (
                     <div className="mt-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {legalSubjects.map((subject, i) => {
+                            {filteredData.map((subject, i) => {
                                 return (
                                     <motion.div
                                         key={subject.id}
@@ -328,7 +416,7 @@ export default function TutorialsAndGuidance() {
                 {currentTab === "tutorials" && (
                     <div className="mt-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {tutorials.map((tutorial, i) => {
+                            {filteredData.map((tutorial, i) => {
                                     return (
                                         <motion.div
                                             key={tutorial.id}

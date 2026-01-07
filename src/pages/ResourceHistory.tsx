@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { toast } from "sonner"
-import { Download, Eye, MoreVertical, Search, Upload, Info, ChevronRight, Database, BookOpen, GraduationCap } from "lucide-react"
+import { Download, Eye, MoreVertical, Search, Info, ChevronRight, Database, BookOpen, GraduationCap } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -209,11 +209,6 @@ export default function ResourceHistory() {
         })
     }
 
-    const handleExport = () => {
-        toast.info("Export functionality coming soon", {
-            description: "You'll be able to export your resource history as CSV or PDF."
-        })
-    }
 
     const getTypeIcon = (type: string) => {
         switch (type) {
@@ -377,15 +372,6 @@ export default function ResourceHistory() {
                                 </SelectContent>
                             </Select>
 
-                            {/* Export Button */}
-                            <Button
-                                variant="outline"
-                                onClick={handleExport}
-                                className="gap-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 font-heading font-bold text-[10px] uppercase tracking-widest h-9 rounded-sm shadow-none w-full lg:w-auto"
-                            >
-                                <Upload className="w-3.5 h-3.5" />
-                                Export
-                            </Button>
                         </div>
                     </CardContent>
                 </Card>

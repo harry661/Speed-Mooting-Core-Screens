@@ -1,9 +1,8 @@
 import { useState, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { ArrowLeft, Download, FileText, CheckCircle2, AlertTriangle, Info, Play, MessageSquare, Briefcase, Clock, Calendar, BookOpen, Loader2, ChevronDown, ChevronUp } from "lucide-react"
+import { ArrowLeft, Download, FileText, CheckCircle2, AlertTriangle, Info, Play, MessageSquare, Briefcase, Calendar, BookOpen, Loader2, ChevronDown, ChevronUp } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -420,7 +419,6 @@ export default function AIFeedbackReport() {
     }
 
     const totalDeductions = deductions.reduce((sum, d) => sum + d.points, 0)
-    const baseScore = submissionData.overallScore - totalDeductions
     
     // Calculate progress wheel animation values
     const circumference = 2 * Math.PI * 80 // r = 80

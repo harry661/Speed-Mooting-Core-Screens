@@ -83,7 +83,6 @@ export default function AdminExerciseManagement() {
                     <TabsList className="bg-gray-100 dark:bg-gray-800/50 p-1 rounded-sm border border-gray-100 dark:border-gray-800">
                         <TabsTrigger value="exercises" className="rounded-sm px-8 py-2 data-[state=active]:bg-white dark:bg-gray-900 data-[state=active]:text-primary font-heading font-bold text-[10px] uppercase tracking-widest">Exercises</TabsTrigger>
                         <TabsTrigger value="rubrics" className="rounded-sm px-8 py-2 data-[state=active]:bg-white dark:bg-gray-900 data-[state=active]:text-primary font-heading font-bold text-[10px] uppercase tracking-widest">Rubrics</TabsTrigger>
-                        <TabsTrigger value="analytics" className="rounded-sm px-8 py-2 data-[state=active]:bg-white dark:bg-gray-900 data-[state=active]:text-primary font-heading font-bold text-[10px] uppercase tracking-widest">Analytics</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="exercises">
@@ -377,16 +376,6 @@ export default function AdminExerciseManagement() {
                                 <span className="font-bold font-heading text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-500 group-hover:text-accent">Create New Template</span>
                             </Button>
                         </div>
-                    </TabsContent>
-
-                    <TabsContent value="analytics">
-                        <Card className="border-none shadow-sm bg-white dark:bg-gray-900 p-12 text-center flex flex-col items-center">
-                            <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6 text-gray-400 dark:text-gray-500">
-                                <Scale className="w-10 h-10" />
-                            </div>
-                            <h3 className="text-xl font-bold font-heading mb-2">Advanced Analytics Coming Soon</h3>
-                            <p className="text-gray-500 dark:text-gray-400 dark:text-gray-500 max-w-sm font-sans">Track global performance trends across different legal subjects and rubric criteria once more data is collected.</p>
-                        </Card>
                     </TabsContent>
                 </Tabs>
             </div>

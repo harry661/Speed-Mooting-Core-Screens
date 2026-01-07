@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 import { useState, useMemo } from "react"
-import { Search, BookOpen, ChevronRight, Star, Clock, TrendingUp, Filter, Sparkles, Users, Award } from "lucide-react"
+import { Search, ChevronRight, Star, Clock, TrendingUp, Sparkles, Users } from "lucide-react"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -112,6 +112,9 @@ export default function ExerciseLibrary() {
 
     const filteredAndSortedExercises = useMemo(() => {
         let filtered = exercises.filter(ex => {
+            // Exclude recommended exercises from the main grid (they're shown in the Recommended section)
+            if (ex.recommended) return false
+            
             const matchesSearch = ex.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                                  ex.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                                  ex.subject.toLowerCase().includes(searchQuery.toLowerCase())
@@ -151,6 +154,56 @@ export default function ExerciseLibrary() {
                         <p className="text-gray-500 dark:text-gray-400 text-xs font-sans mt-1">Browse and select legal scenarios for mooting practice.</p>
                     </div>
                 </div>
+
+                {/* Filters and Search */}
+                <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
+                    <CardContent className="p-4">
+                        <div className="flex flex-col md:flex-row gap-4">
+                            <div className="flex-1 relative">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
+                                <Input
+                                    placeholder="Search exercises..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="pl-10 border-gray-200 dark:border-gray-700 rounded-sm h-10 font-sans text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                />
+                            </div>
+                            <Select value={selectedSubject} onValueChange={setSelectedSubject}>
+                                <SelectTrigger className="w-[180px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-10 font-sans text-xs text-gray-900 dark:text-gray-100">
+                                    <SelectValue placeholder="All Subjects" />
+                                </SelectTrigger>
+                                <SelectContent className="rounded-sm border-gray-200 dark:border-gray-800 shadow-none bg-white dark:bg-gray-900">
+                                    <SelectItem value="all">All Subjects</SelectItem>
+                                    {allSubjects.map(subject => (
+                                        <SelectItem key={subject} value={subject}>{subject}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                            <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
+                                <SelectTrigger className="w-[160px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-10 font-sans text-xs text-gray-900 dark:text-gray-100">
+                                    <SelectValue placeholder="All Difficulties" />
+                                </SelectTrigger>
+                                <SelectContent className="rounded-sm border-gray-200 dark:border-gray-800 shadow-none bg-white dark:bg-gray-900">
+                                    <SelectItem value="all">All Difficulties</SelectItem>
+                                    <SelectItem value="Beginner">Beginner</SelectItem>
+                                    <SelectItem value="Intermediate">Intermediate</SelectItem>
+                                    <SelectItem value="Advanced">Advanced</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Select value={sortBy} onValueChange={setSortBy}>
+                                <SelectTrigger className="w-[180px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-10 font-sans text-xs text-gray-900 dark:text-gray-100">
+                                    <SelectValue placeholder="Sort By" />
+                                </SelectTrigger>
+                                <SelectContent className="rounded-sm border-gray-200 dark:border-gray-800 shadow-none bg-white dark:bg-gray-900">
+                                    <SelectItem value="newest">Newest</SelectItem>
+                                    <SelectItem value="highest_rated">Highest Rated</SelectItem>
+                                    <SelectItem value="difficulty">Difficulty</SelectItem>
+                                    <SelectItem value="time">Time</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </CardContent>
+                </Card>
 
                 {/* Recommended Section */}
                 {recommendedExercises.length > 0 && (
@@ -232,56 +285,6 @@ export default function ExerciseLibrary() {
                         </div>
                     </div>
                 )}
-
-                {/* Filters and Search */}
-                                <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
-                    <CardContent className="p-4">
-                        <div className="flex flex-col md:flex-row gap-4">
-                            <div className="flex-1 relative">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
-                                <Input
-                                    placeholder="Search exercises..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="pl-10 border-gray-200 dark:border-gray-700 rounded-sm h-10 font-sans text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
-                                />
-                            </div>
-                            <Select value={selectedSubject} onValueChange={setSelectedSubject}>
-                                <SelectTrigger className="w-[180px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-10 font-sans text-xs text-gray-900 dark:text-gray-100">
-                                    <SelectValue placeholder="All Subjects" />
-                                </SelectTrigger>
-                                <SelectContent className="rounded-sm border-gray-200 dark:border-gray-800 shadow-none bg-white dark:bg-gray-900">
-                                    <SelectItem value="all">All Subjects</SelectItem>
-                                    {allSubjects.map(subject => (
-                                        <SelectItem key={subject} value={subject}>{subject}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
-                                <SelectTrigger className="w-[160px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-10 font-sans text-xs text-gray-900 dark:text-gray-100">
-                                    <SelectValue placeholder="All Difficulties" />
-                                </SelectTrigger>
-                                <SelectContent className="rounded-sm border-gray-200 dark:border-gray-800 shadow-none bg-white dark:bg-gray-900">
-                                    <SelectItem value="all">All Difficulties</SelectItem>
-                                    <SelectItem value="Beginner">Beginner</SelectItem>
-                                    <SelectItem value="Intermediate">Intermediate</SelectItem>
-                                    <SelectItem value="Advanced">Advanced</SelectItem>
-                                </SelectContent>
-                            </Select>
-                            <Select value={sortBy} onValueChange={setSortBy}>
-                                <SelectTrigger className="w-[160px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-10 font-sans text-xs text-gray-900 dark:text-gray-100">
-                                    <SelectValue placeholder="Sort by" />
-                                </SelectTrigger>
-                                <SelectContent className="rounded-sm border-gray-200 dark:border-gray-800 shadow-none bg-white dark:bg-gray-900">
-                                    <SelectItem value="rating">Highest Rated</SelectItem>
-                                    <SelectItem value="popularity">Most Popular</SelectItem>
-                                    <SelectItem value="difficulty">Difficulty</SelectItem>
-                                    <SelectItem value="time">Time</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    </CardContent>
-                </Card>
 
                 {/* All Exercises Grid */}
                 <div className="space-y-4">

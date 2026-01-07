@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { toast } from "sonner"
-import { Download, Trash2, Search, MoreVertical, ChevronRight, Upload, Info } from "lucide-react"
+import { Trash2, Search, MoreVertical, ChevronRight, Info } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -11,7 +11,6 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Link, useNavigate } from "react-router-dom"
@@ -188,11 +187,6 @@ export default function SubmissionHistory() {
         }
     }
 
-    const handleExport = () => {
-        toast.info("Export functionality coming soon", {
-            description: "You'll be able to export your submission history as CSV or PDF."
-        })
-    }
 
     const getStatusBadge = (status: string) => {
         switch (status) {
@@ -358,15 +352,6 @@ export default function SubmissionHistory() {
                                 </SelectContent>
                             </Select>
 
-                            {/* Export Button */}
-                            <Button
-                                variant="outline"
-                                onClick={handleExport}
-                                className="gap-2 border-gray-200 font-heading font-bold text-[10px] uppercase tracking-widest h-9 rounded-sm shadow-none w-full lg:w-auto"
-                            >
-                                <Upload className="w-3.5 h-3.5" />
-                                Export
-                            </Button>
                         </div>
                     </CardContent>
                 </Card>
@@ -474,11 +459,6 @@ export default function SubmissionHistory() {
                                                                     </Button>
                                                                 </DropdownMenuTrigger>
                                                                 <DropdownMenuContent align="end" className="w-48" onClick={(e) => e.stopPropagation()}>
-                                                                    <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleExport(); }}>
-                                                                        <Download className="mr-2 h-4 w-4" />
-                                                                        Download PDF
-                                                                    </DropdownMenuItem>
-                                                                    <DropdownMenuSeparator />
                                                                     <DropdownMenuItem 
                                                                         onClick={(e) => { e.stopPropagation(); handleDeleteClick(submission.id); }}
                                                                         className="text-red-600 focus:text-red-600 focus:bg-red-50"
