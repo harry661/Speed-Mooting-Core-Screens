@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
-import { BookOpen, History, LogOut, LayoutDashboard, GraduationCap, ChevronDown, ChevronUp, Database, Settings, FileText } from "lucide-react"
+import { BookOpen, History, LogOut, LayoutDashboard, GraduationCap, ChevronDown, ChevronUp, Database, Settings, FileText, LogIn } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
+import { useAuth, useLoginModal } from "@/contexts/AuthContext"
 
 const menuItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/" },
@@ -27,10 +28,18 @@ interface SidebarProps {
 
 export function Sidebar({ isCollapsed }: SidebarProps) {
     const location = useLocation()
+    const navigate = useNavigate()
+    const { isAuthenticated, logout } = useAuth()
+    const { openLoginModal } = useLoginModal()
     const [isResourcesOpen, setIsResourcesOpen] = useState(location.pathname === "/tutorials")
     const [isHistoryOpen, setIsHistoryOpen] = useState(
         location.pathname === "/history" || location.pathname.startsWith("/history/")
     )
+
+    const handleLogout = () => {
+        logout()
+        navigate("/")
+    }
     
     // Keep dropdown open when on tutorials page
     useEffect(() => {
@@ -62,24 +71,30 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
             </div>
 
             <nav className="flex-1 space-y-1">
-                {menuItems.map((item) => (
-                    <Link key={item.label} to={item.href}>
-                        <Button
-                            variant="ghost"
-                            className={cn(
-                                "w-full justify-start gap-4 text-white/60 hover:text-white hover:bg-white/5 transition-all duration-200 mb-0.5 font-heading font-medium tracking-wide rounded-l-sm rounded-r-none h-11",
-                                isCollapsed ? "px-0 justify-center" : "px-3",
-                                location.pathname === item.href && "bg-white/5 text-white font-bold border-r-2 border-accent"
-                            )}
-                        >
-                            <item.icon className={cn("w-4 h-4 shrink-0", location.pathname === item.href ? "text-accent" : "text-white/40")} />
-                            {!isCollapsed && <span className="text-[11px] uppercase tracking-[0.1em]">{item.label}</span>}
-                        </Button>
-                    </Link>
-                ))}
+                {menuItems.map((item) => {
+                    // Hide Exercises for guests
+                    if (!isAuthenticated && item.href === "/exercises") {
+                        return null
+                    }
+                    return (
+                        <Link key={item.label} to={item.href}>
+                            <Button
+                                variant="ghost"
+                                className={cn(
+                                    "w-full justify-start gap-4 text-white/60 hover:text-white hover:bg-white/5 transition-all duration-200 mb-0.5 font-heading font-medium tracking-wide rounded-l-sm rounded-r-none h-11",
+                                    isCollapsed ? "px-0 justify-center" : "px-3",
+                                    location.pathname === item.href && "bg-white/5 text-white font-bold border-r-2 border-accent"
+                                )}
+                            >
+                                <item.icon className={cn("w-4 h-4 shrink-0", location.pathname === item.href ? "text-accent" : "text-white/40")} />
+                                {!isCollapsed && <span className="text-[11px] uppercase tracking-[0.1em]">{item.label}</span>}
+                            </Button>
+                        </Link>
+                    )
+                })}
 
-                {/* History Dropdown */}
-                {isCollapsed ? (
+                {/* History Dropdown - Only show for authenticated users */}
+                {isAuthenticated && (isCollapsed ? (
                     <Link to="/history">
                         <Button
                             variant="ghost"
@@ -144,7 +159,7 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
                             )}
                         </AnimatePresence>
                     </div>
-                )}
+                ))}
 
                 {/* Resources Dropdown */}
                 {isCollapsed ? (
@@ -217,7 +232,7 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
             </nav>
 
             <div className="mt-auto pt-6 border-t border-white/10">
-                {!isCollapsed && (
+                {isAuthenticated && !isCollapsed && (
                     <div className="bg-white/5 rounded-xl p-4 mb-6">
                         <p className="text-[10px] uppercase font-bold text-white/40 mb-2 font-heading tracking-widest leading-none">Practice Goal</p>
                         <p className="text-sm font-semibold font-sans mb-2">3 Exercises this week</p>
@@ -227,30 +242,47 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
                     </div>
                 )}
 
-                <Link to="/settings">
+                {isAuthenticated ? (
+                    <>
+                        <Link to="/settings">
+                            <Button
+                                variant="ghost"
+                                className={cn(
+                                    "w-full justify-start gap-3 text-white/70 hover:text-white hover:bg-white/10 font-heading font-medium mb-2 rounded-l-sm rounded-r-none",
+                                    isCollapsed ? "px-0 justify-center" : "px-3",
+                                    location.pathname === "/settings" && "bg-white/5 text-white font-bold border-r-2 border-accent"
+                                )}
+                            >
+                                <Settings className={cn("w-5 h-5 shrink-0", location.pathname === "/settings" ? "text-accent" : "text-white/40")} />
+                                {!isCollapsed && "Settings"}
+                            </Button>
+                        </Link>
+
+                        <Button
+                            variant="ghost"
+                            onClick={handleLogout}
+                            className={cn(
+                                "w-full justify-start gap-3 text-white/70 hover:text-white hover:bg-white/10 font-heading font-medium",
+                                isCollapsed ? "px-0 justify-center" : "px-3"
+                            )}
+                        >
+                            <LogOut className="w-5 h-5 shrink-0" />
+                            {!isCollapsed && "Log Out"}
+                        </Button>
+                    </>
+                ) : (
                     <Button
                         variant="ghost"
+                        onClick={openLoginModal}
                         className={cn(
-                            "w-full justify-start gap-3 text-white/70 hover:text-white hover:bg-white/10 font-heading font-medium mb-2 rounded-l-sm rounded-r-none",
-                            isCollapsed ? "px-0 justify-center" : "px-3",
-                            location.pathname === "/settings" && "bg-white/5 text-white font-bold border-r-2 border-accent"
+                            "w-full justify-start gap-3 text-white/70 hover:text-white hover:bg-white/10 font-heading font-medium",
+                            isCollapsed ? "px-0 justify-center" : "px-3"
                         )}
                     >
-                        <Settings className={cn("w-5 h-5 shrink-0", location.pathname === "/settings" ? "text-accent" : "text-white/40")} />
-                        {!isCollapsed && "Settings"}
+                        <LogIn className="w-5 h-5 shrink-0" />
+                        {!isCollapsed && "Sign In"}
                     </Button>
-                </Link>
-
-                <Button
-                    variant="ghost"
-                    className={cn(
-                        "w-full justify-start gap-3 text-white/70 hover:text-white hover:bg-white/10 font-heading font-medium",
-                        isCollapsed ? "px-0 justify-center" : "px-3"
-                    )}
-                >
-                    <LogOut className="w-5 h-5 shrink-0" />
-                    {!isCollapsed && "Log Out"}
-                </Button>
+                )}
             </div>
         </div>
     )

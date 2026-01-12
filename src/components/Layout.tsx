@@ -1,9 +1,11 @@
 import { useState, createContext, useContext } from "react"
-import { Bell, PanelLeftClose, PanelLeftOpen, Moon, Sun, CheckCircle2, AlertCircle, Info, X, Clock, FileText } from "lucide-react"
+import { Bell, PanelLeftClose, PanelLeftOpen, Moon, Sun, CheckCircle2, AlertCircle, Info, X, Clock, FileText, LogIn } from "lucide-react"
 import { Sidebar } from "./Sidebar"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useTheme } from "@/contexts/ThemeContext"
+import { useAuth, useLoginModal } from "@/contexts/AuthContext"
+import { Link } from "react-router-dom"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -82,6 +84,8 @@ const sampleNotifications: Notification[] = [
 export function Layout({ children }: { children: React.ReactNode }) {
     const [isCollapsed, setIsCollapsed] = useState(false)
     const { theme, toggleTheme } = useTheme()
+    const { isAuthenticated, user, logout } = useAuth()
+    const { openLoginModal } = useLoginModal()
     const [notifications, setNotifications] = useState<Notification[]>(sampleNotifications)
     const navigate = useNavigate()
     
@@ -260,16 +264,26 @@ export function Layout({ children }: { children: React.ReactNode }) {
                                     )}
                                 </DropdownMenuContent>
                             </DropdownMenu>
-                            <div className="flex items-center gap-3">
-                                <div className="text-right hidden sm:block">
-                                    <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">Alex Thompson</p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">Student Advocate</p>
+                            {isAuthenticated && user ? (
+                                <div className="flex items-center gap-3">
+                                    <div className="text-right hidden sm:block">
+                                        <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{user.name}</p>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400">Student Advocate</p>
+                                    </div>
+                                    <Avatar className="border-2 border-[#00524d]/10 dark:border-accent/30">
+                                        <AvatarImage src={user.avatar} />
+                                        <AvatarFallback>{user.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                                    </Avatar>
                                 </div>
-                                <Avatar className="border-2 border-[#00524d]/10 dark:border-accent/30">
-                                    <AvatarImage src="https://github.com/shadcn.png" />
-                                    <AvatarFallback>AT</AvatarFallback>
-                                </Avatar>
-                            </div>
+                            ) : (
+                                <Button 
+                                    onClick={openLoginModal}
+                                    className="bg-accent hover:bg-accent/90 text-white shadow-none rounded-sm px-4 h-9 font-heading font-bold uppercase tracking-widest text-[10px]"
+                                >
+                                    <LogIn className="w-4 h-4 mr-2" />
+                                    Sign In
+                                </Button>
+                            )}
                         </div>
                     </header>
                     <div className="flex-1 overflow-y-auto">
