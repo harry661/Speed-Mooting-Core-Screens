@@ -122,7 +122,7 @@ export default function Dashboard() {
                                     </Button>
                                 </Link>
                                 <Link to="/tutorials">
-                                    <Button variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-sm px-6 h-11 font-heading font-bold uppercase tracking-widest text-xs">
+                                    <Button variant="outline" className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-accent hover:border-accent hover:text-white rounded-sm px-6 h-11 font-heading font-bold uppercase tracking-widest text-xs">
                                         Browse Tutorials
                                     </Button>
                                 </Link>
