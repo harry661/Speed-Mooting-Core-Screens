@@ -17,6 +17,9 @@ const recentSubmissions = [
     { id: 1, title: "Contract Breach - Offer & Acceptance", date: "2 hours ago", score: "82", status: "Analyzed" },
     { id: 2, title: "Negligence Case - Duty of Care", date: "Yesterday", score: "74", status: "Analyzed" },
     { id: 3, title: "Criminal Law - Mens Rea", date: "3 days ago", score: "--", status: "Processing" },
+    { id: 4, title: "Constitutional Review", date: "5 days ago", score: "88", status: "Analyzed" },
+    { id: 5, title: "Evidence Admissibility", date: "1 week ago", score: "79", status: "Analyzed" },
+    { id: 6, title: "Property Law - Land Disputes", date: "1 week ago", score: "71", status: "Analyzed" },
 ]
 
 const featuredTutorials = [
@@ -363,11 +366,8 @@ export default function Dashboard() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <Card className="lg:col-span-2 rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
-                        <CardHeader className="flex flex-row items-center justify-between border-b border-gray-100 dark:border-gray-800 py-4">
+                        <CardHeader className="border-b border-gray-100 dark:border-gray-800 py-4">
                             <CardTitle className="text-base font-bold font-heading text-gray-900 dark:text-gray-100">Recent Case Practice</CardTitle>
-                            <Link to="/history">
-                                <Button variant="ghost" size="sm" className="text-accent hover:bg-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest transition-colors">Full History</Button>
-                            </Link>
                         </CardHeader>
                         <CardContent className="p-0">
                             <div className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -410,39 +410,47 @@ export default function Dashboard() {
                                     </motion.div>
                                 ))}
                             </div>
+                            <div className="p-4 border-t border-gray-100 dark:border-gray-800">
+                                <Link to="/history">
+                                    <Button variant="ghost" className="w-full text-accent hover:bg-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-9">
+                                        View Full History
+                                        <ChevronRight className="w-3.5 h-3.5 ml-2" />
+                                    </Button>
+                                </Link>
+                            </div>
                         </CardContent>
                     </Card>
 
-                    <div className="space-y-6">
-                        <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
+                    <div className="flex flex-col gap-6 h-full">
+                        <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none flex-1 flex flex-col">
                             <CardHeader className="border-b border-gray-100 dark:border-gray-800 py-4">
                                 <CardTitle className="text-base font-bold font-heading text-gray-900 dark:text-gray-100">Advocacy Toolkit</CardTitle>
                             </CardHeader>
-                            <CardContent className="p-4 space-y-2">
+                            <CardContent className="p-4 space-y-2 flex-1 flex flex-col justify-center">
                                 <Link to="/tutorials?tab=subjects">
-                                    <Button variant="outline" className="w-full justify-start gap-4 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-accent hover:border-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-11 rounded-sm group transition-all">
-                                        <BookOpen className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                                    <Button variant="ghost" className="w-full justify-start gap-4 text-accent hover:bg-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-9">
+                                        <BookOpen className="w-4 h-4" />
                                         Legal Subject Guides
                                     </Button>
                                 </Link>
                                 <Link to="/tutorials/1">
-                                    <Button variant="outline" className="w-full justify-start gap-4 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-accent hover:border-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-11 rounded-sm group transition-all">
-                                        <Video className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                                    <Button variant="ghost" className="w-full justify-start gap-4 text-accent hover:bg-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-9">
+                                        <Video className="w-4 h-4" />
                                         Submission Checklist
                                     </Button>
                                 </Link>
                             </CardContent>
                         </Card>
 
-                        <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
+                        <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none flex-1 flex flex-col">
                             <CardHeader className="border-b border-gray-100 dark:border-gray-800 py-4">
                                 <div className="flex items-center gap-2">
                                     <Trophy className="w-4 h-4 text-accent" />
                                     <CardTitle className="text-base font-bold font-heading text-gray-900 dark:text-gray-100">Upcoming Competitions</CardTitle>
                                 </div>
                             </CardHeader>
-                            <CardContent className="p-4">
-                                <div className="space-y-4 mb-6">
+                            <CardContent className="p-4 flex-1 flex flex-col">
+                                <div className="space-y-4 mb-6 flex-1">
                                     {mockCompetitions
                                         .filter(comp => comp.status === "upcoming" || comp.status === "active")
                                         .slice(0, 2)
