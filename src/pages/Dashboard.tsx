@@ -367,7 +367,12 @@ export default function Dashboard() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <Card className="lg:col-span-2 rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
                         <CardHeader className="border-b border-gray-100 dark:border-gray-800 py-4">
-                            <CardTitle className="text-base font-bold font-heading text-gray-900 dark:text-gray-100">Recent Case Practice</CardTitle>
+                            <div className="flex items-center gap-3">
+                                <div className="bg-accent/10 dark:bg-accent/20 p-2 rounded-sm">
+                                    <FileText className="w-5 h-5 text-accent" />
+                                </div>
+                                <CardTitle className="text-base font-bold font-heading text-gray-900 dark:text-gray-100">Recent Case Practice</CardTitle>
+                            </div>
                         </CardHeader>
                         <CardContent className="p-0">
                             <div className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -424,7 +429,12 @@ export default function Dashboard() {
                     <div className="flex flex-col gap-6 h-full">
                         <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none flex-1 flex flex-col">
                             <CardHeader className="border-b border-gray-100 dark:border-gray-800 py-4">
-                                <CardTitle className="text-base font-bold font-heading text-gray-900 dark:text-gray-100">Advocacy Toolkit</CardTitle>
+                                <div className="flex items-center gap-3">
+                                    <div className="bg-accent/10 dark:bg-accent/20 p-2 rounded-sm">
+                                        <BookOpen className="w-5 h-5 text-accent" />
+                                    </div>
+                                    <CardTitle className="text-base font-bold font-heading text-gray-900 dark:text-gray-100">Advocacy Toolkit</CardTitle>
+                                </div>
                             </CardHeader>
                             <CardContent className="p-4 space-y-2 flex-1 flex flex-col justify-center">
                                 <Link to="/tutorials?tab=subjects">
@@ -444,8 +454,10 @@ export default function Dashboard() {
 
                         <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none flex-1 flex flex-col">
                             <CardHeader className="border-b border-gray-100 dark:border-gray-800 py-4">
-                                <div className="flex items-center gap-2">
-                                    <Trophy className="w-4 h-4 text-accent" />
+                                <div className="flex items-center gap-3">
+                                    <div className="bg-accent/10 dark:bg-accent/20 p-2 rounded-sm">
+                                        <Trophy className="w-5 h-5 text-accent" />
+                                    </div>
                                     <CardTitle className="text-base font-bold font-heading text-gray-900 dark:text-gray-100">Upcoming Competitions</CardTitle>
                                 </div>
                             </CardHeader>
