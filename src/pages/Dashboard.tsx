@@ -8,9 +8,9 @@ import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "@/contexts/AuthContext"
 
 const stats = [
-    { title: "Total Submissions", value: "12", icon: Clock, trend: "+2 this month", color: "text-blue-600" },
-    { title: "Average Score", value: "78%", icon: TrendingUp, trend: "+5% improvment", color: "text-green-600" },
-    { title: "Active Exercises", value: "4", icon: BookOpen, trend: "2 ending soon", color: "text-orange-600" },
+    { title: "Total Submissions", value: "12", icon: Clock, trend: "+2 this month" },
+    { title: "Average Score", value: "78%", icon: TrendingUp, trend: "+5% improvment" },
+    { title: "Active Exercises", value: "4", icon: BookOpen, trend: "2 ending soon" },
 ]
 
 const recentSubmissions = [
@@ -150,7 +150,7 @@ export default function Dashboard() {
                                         key={competition.id}
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: i * 0.1 }}
+                                        transition={{ delay: i * 0.1, ease: [0.25, 1, 0.5, 1] }}
                                     >
                                         <Card className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-none overflow-hidden">
                                             <CardHeader className="p-5 pb-3">
@@ -241,7 +241,7 @@ export default function Dashboard() {
                                             key={tutorial.id}
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: i * 0.1 }}
+                                            transition={{ delay: i * 0.1, ease: [0.25, 1, 0.5, 1] }}
                                         >
                                             <Card className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-none overflow-hidden">
                                                 <div className="relative w-full h-32 overflow-hidden">
@@ -322,7 +322,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Redesigned Practice Suggestion as Notification */}
-                <div className="bg-accent/5 border-l-4 border-accent rounded-r-xl p-4 flex items-center justify-between">
+                <div className="bg-accent/5 border-l-2 border-accent rounded-r-sm p-4 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <div className="bg-accent/10 p-2 rounded-sm">
                             <Scale className="w-4 h-4 text-accent" />
@@ -345,12 +345,12 @@ export default function Dashboard() {
                             key={stat.title}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.1 }}
+                            transition={{ delay: i * 0.1, ease: [0.25, 1, 0.5, 1] }}
                         >
                             <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
                                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                                     <CardTitle className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest font-heading">{stat.title}</CardTitle>
-                                    <stat.icon className={cn("w-4 h-4", stat.color)} />
+                                    <stat.icon className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                                 </CardHeader>
                                 <CardContent>
                                     <div className="text-2xl font-bold text-gray-900 dark:text-gray-100 font-sans tabular-nums tracking-tight">{stat.value}</div>
@@ -381,7 +381,7 @@ export default function Dashboard() {
                                         key={sub.id}
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: 0.3 + (i * 0.1) }}
+                                        transition={{ delay: 0.3 + (i * 0.1), ease: [0.25, 1, 0.5, 1] }}
                                         onClick={() => handleSubmissionClick(sub)}
                                         className={cn(
                                             "p-4 transition-colors flex items-center justify-between group",
@@ -395,7 +395,7 @@ export default function Dashboard() {
                                             )} />
                                             <div>
                                                 <h4 className="font-bold text-sm text-gray-900 dark:text-gray-100 group-hover:text-accent transition-colors font-heading">{sub.title}</h4>
-                                                <p className="text-xs text-gray-500 dark:text-gray-400 font-sans uppercase tracking-tight">{sub.date}</p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400 font-mono uppercase tracking-tight">{sub.date}</p>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-6">
@@ -549,7 +549,7 @@ export default function Dashboard() {
                                         key={tutorial.id}
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: i * 0.1 }}
+                                        transition={{ delay: i * 0.1, ease: [0.25, 1, 0.5, 1] }}
                                     >
                                         <Card className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-none overflow-hidden">
                                             <div className="relative w-full h-32 overflow-hidden">

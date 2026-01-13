@@ -4,7 +4,7 @@ import { Sidebar } from "./Sidebar"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useTheme } from "@/contexts/ThemeContext"
-import { useAuth, useLoginModal } from "@/contexts/AuthContext"
+import { useAuth } from "@/contexts/AuthContext"
 import { Link } from "react-router-dom"
 import {
     DropdownMenu,
@@ -84,8 +84,7 @@ const sampleNotifications: Notification[] = [
 export function Layout({ children }: { children: React.ReactNode }) {
     const [isCollapsed, setIsCollapsed] = useState(false)
     const { theme, toggleTheme } = useTheme()
-    const { isAuthenticated, user, logout } = useAuth()
-    const { openLoginModal } = useLoginModal()
+    const { isAuthenticated, user } = useAuth()
     const [notifications, setNotifications] = useState<Notification[]>(sampleNotifications)
     const navigate = useNavigate()
     
@@ -142,7 +141,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div className="flex h-screen overflow-hidden">
                 <Sidebar isCollapsed={isCollapsed} />
                 <div className="flex-1 flex flex-col overflow-hidden">
-                    <header className="h-16 border-b bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 flex items-center justify-between px-6 sticky top-0 z-10 shadow-sm">
+                    <header className="h-16 border-b bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 flex items-center justify-between px-6 sticky top-0 z-10">
                         <div className="flex items-center gap-3">
                             <Button
                                 variant="ghost"
@@ -177,9 +176,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                                         )}
                                     </Button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent 
-                                    align="end" 
-                                    className="w-80 rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg p-0"
+                                <DropdownMenuContent
+                                    align="end"
+                                    className="w-80 rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-0"
                                 >
                                     <div className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-800">
                                         <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100 font-heading">Notifications</h3>
@@ -230,7 +229,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                                                                 <div className="flex items-center justify-between">
                                                                     <div className="flex items-center gap-1 text-[10px] text-gray-500 dark:text-gray-400 font-sans">
                                                                         <Clock className="w-3 h-3" />
-                                                                        <span>{formatTimestamp(notification.timestamp)}</span>
+                                                                        <span className="font-mono">{formatTimestamp(notification.timestamp)}</span>
                                                                     </div>
                                                                     <Button
                                                                         variant="ghost"
@@ -276,13 +275,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
                                     </Avatar>
                                 </div>
                             ) : (
-                                <Button 
-                                    onClick={openLoginModal}
-                                    className="bg-accent hover:bg-accent/90 text-white shadow-none rounded-sm px-4 h-9 font-heading font-bold uppercase tracking-widest text-[10px]"
-                                >
-                                    <LogIn className="w-4 h-4 mr-2" />
-                                    Sign In
-                                </Button>
+                                <Link to="/login">
+                                    <Button
+                                        className="bg-accent hover:bg-accent/90 text-white shadow-none rounded-sm px-4 h-9 font-heading font-bold uppercase tracking-widest text-[10px]"
+                                    >
+                                        <LogIn className="w-4 h-4 mr-2" />
+                                        Sign In
+                                    </Button>
+                                </Link>
                             )}
                         </div>
                     </header>

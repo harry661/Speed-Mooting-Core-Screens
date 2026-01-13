@@ -1,10 +1,9 @@
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Outlet } from "react-router-dom"
 import { Toaster } from "sonner"
 import { Layout } from "./Layout"
 import { ProtectedRoute } from "./ProtectedRoute"
-import { useLoginModal } from "@/contexts/AuthContext"
-import { LoginModal } from "./LoginModal"
 import Dashboard from "../pages/Dashboard"
+import Login from "../pages/Login"
 import ExerciseLibrary from "../pages/ExerciseLibrary"
 import ExerciseDetail from "../pages/ExerciseDetail"
 import SubmissionFlow from "../pages/SubmissionFlow"
@@ -17,53 +16,48 @@ import SubmissionHistory from "../pages/SubmissionHistory"
 import Settings from "../pages/Settings"
 
 export function AppContent() {
-    const { isLoginModalOpen, closeLoginModal } = useLoginModal()
-
     return (
         <>
+            <Toaster position="top-right" richColors />
             <Routes>
-                <Route path="/*" element={
-                    <Layout>
-                        <Toaster position="top-right" richColors />
-                        <Routes>
-                            <Route path="/" element={<Dashboard />} />
-                            <Route path="/exercises" element={<ExerciseLibrary />} />
-                            <Route path="/exercises/:id" element={<ExerciseDetail />} />
-                            <Route path="/submit" element={
-                                <ProtectedRoute>
-                                    <SubmissionFlow />
-                                </ProtectedRoute>
-                            } />
-                            <Route path="/report" element={
-                                <ProtectedRoute>
-                                    <AIFeedbackReport />
-                                </ProtectedRoute>
-                            } />
-                            <Route path="/history" element={
-                                <ProtectedRoute>
-                                    <SubmissionHistory />
-                                </ProtectedRoute>
-                            } />
-                            <Route path="/tutorials" element={<TutorialsAndGuidance />} />
-                            <Route path="/tutorials/:id" element={<TutorialDetail />} />
-                            <Route path="/subjects/:id" element={<SubjectGuideDetail />} />
-                            <Route path="/settings" element={
-                                <ProtectedRoute>
-                                    <Settings />
-                                </ProtectedRoute>
-                            } />
-                            <Route path="/admin/exercises" element={
-                                <ProtectedRoute>
-                                    <AdminExerciseManagement />
-                                </ProtectedRoute>
-                            } />
-                        </Routes>
-                    </Layout>
-                } />
+                {/* Public route outside Layout - no sidebar/header */}
+                <Route path="/login" element={<Login />} />
+
+                {/* All other routes wrapped in Layout */}
+                <Route element={<Layout><Outlet /></Layout>}>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/exercises" element={<ExerciseLibrary />} />
+                    <Route path="/exercises/:id" element={<ExerciseDetail />} />
+                    <Route path="/submit" element={
+                        <ProtectedRoute>
+                            <SubmissionFlow />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/report" element={
+                        <ProtectedRoute>
+                            <AIFeedbackReport />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/history" element={
+                        <ProtectedRoute>
+                            <SubmissionHistory />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/tutorials" element={<TutorialsAndGuidance />} />
+                    <Route path="/tutorials/:id" element={<TutorialDetail />} />
+                    <Route path="/subjects/:id" element={<SubjectGuideDetail />} />
+                    <Route path="/settings" element={
+                        <ProtectedRoute>
+                            <Settings />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="/admin/exercises" element={
+                        <ProtectedRoute>
+                            <AdminExerciseManagement />
+                        </ProtectedRoute>
+                    } />
+                </Route>
             </Routes>
-            <LoginModal open={isLoginModalOpen} onOpenChange={(open) => {
-                if (!open) closeLoginModal()
-            }} />
         </>
     )
 }

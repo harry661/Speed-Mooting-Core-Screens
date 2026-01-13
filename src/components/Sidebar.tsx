@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
-import { useAuth, useLoginModal } from "@/contexts/AuthContext"
+import { useAuth } from "@/contexts/AuthContext"
 
 const menuItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/" },
@@ -30,7 +30,6 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
     const location = useLocation()
     const navigate = useNavigate()
     const { isAuthenticated, logout } = useAuth()
-    const { openLoginModal } = useLoginModal()
     const [isResourcesOpen, setIsResourcesOpen] = useState(location.pathname === "/tutorials")
     const [isHistoryOpen, setIsHistoryOpen] = useState(
         location.pathname === "/history" || location.pathname.startsWith("/history/")
@@ -38,7 +37,8 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
 
     const handleLogout = () => {
         logout()
-        navigate("/")
+        // Use window.location for synchronous navigation to guest view
+        window.location.href = "/"
     }
     
     // Keep dropdown open when on tutorials page
@@ -57,7 +57,7 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
 
     return (
         <div className={cn(
-            "bg-primary dark:bg-gray-900 text-white dark:text-gray-100 h-screen flex flex-col transition-all duration-300 shadow-none border-r border-[#1a3d34] dark:border-gray-800 z-20 relative",
+            "bg-primary dark:bg-primary/90 text-white dark:text-gray-100 h-screen flex flex-col transition-all duration-300 shadow-none border-r border-primary/20 dark:border-primary/30 z-20 relative",
             isCollapsed ? "w-20 p-4" : "w-64 p-6"
         )}>
             <div className={cn(
@@ -144,11 +144,11 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
                                                     <Button
                                                         variant="ghost"
                                                         className={cn(
-                                                            "w-full justify-start gap-3 text-white/50 hover:text-white hover:bg-white/5 transition-all duration-200 mb-0.5 font-heading font-medium tracking-wide rounded-l-sm rounded-r-none h-9 px-3 text-[10px]",
+                                                            "w-full justify-start gap-3 text-white/60 hover:text-white hover:bg-white/5 transition-all duration-200 mb-0.5 font-heading font-medium tracking-wide rounded-l-sm rounded-r-none h-9 px-3 text-[10px]",
                                                             isActive && "bg-white/5 text-white font-bold border-r-2 border-accent"
                                                         )}
                                                     >
-                                                        <SubIcon className={cn("w-3.5 h-3.5 shrink-0", isActive ? "text-accent" : "text-white/30")} />
+                                                        <SubIcon className={cn("w-3.5 h-3.5 shrink-0", isActive ? "text-accent" : "text-white/40")} />
                                                         <span className="uppercase tracking-[0.1em]">{subItem.label}</span>
                                                     </Button>
                                                 </Link>
@@ -213,11 +213,11 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
                                                     <Button
                                                         variant="ghost"
                                                         className={cn(
-                                                            "w-full justify-start gap-3 text-white/50 hover:text-white hover:bg-white/5 transition-all duration-200 mb-0.5 font-heading font-medium tracking-wide rounded-l-sm rounded-r-none h-9 px-3 text-[10px]",
+                                                            "w-full justify-start gap-3 text-white/60 hover:text-white hover:bg-white/5 transition-all duration-200 mb-0.5 font-heading font-medium tracking-wide rounded-l-sm rounded-r-none h-9 px-3 text-[10px]",
                                                             isActive && "bg-white/5 text-white font-bold border-r-2 border-accent"
                                                         )}
                                                     >
-                                                        <SubIcon className={cn("w-3.5 h-3.5 shrink-0", isActive ? "text-accent" : "text-white/30")} />
+                                                        <SubIcon className={cn("w-3.5 h-3.5 shrink-0", isActive ? "text-accent" : "text-white/40")} />
                                                         <span className="uppercase tracking-[0.1em]">{subItem.label}</span>
                                                     </Button>
                                                 </Link>
@@ -233,8 +233,8 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
 
             <div className="mt-auto pt-6 border-t border-white/10">
                 {isAuthenticated && !isCollapsed && (
-                    <div className="bg-white/5 rounded-xl p-4 mb-6">
-                        <p className="text-[10px] uppercase font-bold text-white/40 mb-2 font-heading tracking-widest leading-none">Practice Goal</p>
+                    <div className="bg-white/5 rounded-sm p-4 mb-6">
+                        <p className="text-[10px] uppercase font-medium text-white/40 mb-3 font-heading tracking-widest leading-none">Practice Goal</p>
                         <p className="text-sm font-semibold font-sans mb-2">3 Exercises this week</p>
                         <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
                             <div className="h-full bg-white w-2/3"></div>
@@ -248,7 +248,7 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
                             <Button
                                 variant="ghost"
                                 className={cn(
-                                    "w-full justify-start gap-3 text-white/70 hover:text-white hover:bg-white/10 font-heading font-medium mb-2 rounded-l-sm rounded-r-none",
+                                    "w-full justify-start gap-3 text-white/60 hover:text-white hover:bg-white/10 font-heading font-medium mb-2 rounded-l-sm rounded-r-none",
                                     isCollapsed ? "px-0 justify-center" : "px-3",
                                     location.pathname === "/settings" && "bg-white/5 text-white font-bold border-r-2 border-accent"
                                 )}
@@ -262,7 +262,7 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
                             variant="ghost"
                             onClick={handleLogout}
                             className={cn(
-                                "w-full justify-start gap-3 text-white/70 hover:text-white hover:bg-white/10 font-heading font-medium",
+                                "w-full justify-start gap-3 text-white/60 hover:text-white hover:bg-white/10 font-heading font-medium",
                                 isCollapsed ? "px-0 justify-center" : "px-3"
                             )}
                         >
@@ -271,17 +271,18 @@ export function Sidebar({ isCollapsed }: SidebarProps) {
                         </Button>
                     </>
                 ) : (
-                    <Button
-                        variant="ghost"
-                        onClick={openLoginModal}
-                        className={cn(
-                            "w-full justify-start gap-3 text-white/70 hover:text-white hover:bg-white/10 font-heading font-medium",
-                            isCollapsed ? "px-0 justify-center" : "px-3"
-                        )}
-                    >
-                        <LogIn className="w-5 h-5 shrink-0" />
-                        {!isCollapsed && "Sign In"}
-                    </Button>
+                    <Link to="/login" className="w-full">
+                        <Button
+                            variant="ghost"
+                            className={cn(
+                                "w-full justify-start gap-3 text-white/60 hover:text-white hover:bg-white/10 font-heading font-medium",
+                                isCollapsed ? "px-0 justify-center" : "px-3"
+                            )}
+                        >
+                            <LogIn className="w-5 h-5 shrink-0" />
+                            {!isCollapsed && "Sign In"}
+                        </Button>
+                    </Link>
                 )}
             </div>
         </div>

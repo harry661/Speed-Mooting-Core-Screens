@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react"
-import { useNavigate, Link } from "react-router-dom"
+import { useNavigate, Link, useSearchParams, useLocation } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Mail, Lock, Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -18,6 +18,9 @@ export default function Login() {
     
     const { login } = useAuth()
     const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
+    const location = useLocation()
+    const returnUrl = searchParams.get('returnUrl') || location.state?.returnUrl || '/'
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
@@ -26,7 +29,7 @@ export default function Login() {
 
         try {
             await login(email, password)
-            navigate("/")
+            navigate(returnUrl, { replace: true })
         } catch (err) {
             setError("Failed to sign in. Please try again.")
         } finally {
@@ -40,10 +43,10 @@ export default function Login() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-6 lg:p-8">
-            <div className="w-full max-w-7xl flex">
+        <div className="min-h-screen flex">
+            <div className="w-full flex">
                 {/* Left Panel - Courtroom Image */}
-                <div className="hidden lg:flex lg:w-2/5 relative rounded-2xl overflow-hidden my-8">
+                <div className="hidden lg:flex lg:w-2/5 relative overflow-hidden">
                     <div 
                         className="absolute inset-0 bg-cover bg-center"
                         style={{
@@ -78,7 +81,7 @@ export default function Login() {
                     </div>
 
                     <div className="space-y-2">
-                        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 font-heading">
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 font-heading">
                             Welcome back
                         </h2>
                         <p className="text-gray-600 dark:text-gray-400 font-sans text-sm">

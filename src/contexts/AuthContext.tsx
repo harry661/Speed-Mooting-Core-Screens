@@ -15,14 +15,7 @@ interface AuthContextType {
     logout: () => void
 }
 
-interface LoginModalContextType {
-    openLoginModal: () => void
-    closeLoginModal: () => void
-    isLoginModalOpen: boolean
-}
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
-const LoginModalContext = createContext<LoginModalContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
@@ -41,8 +34,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
         return null
     })
-
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
 
     useEffect(() => {
         if (isAuthenticated && user) {
@@ -78,23 +69,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return (
         <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
-            <LoginModalContext.Provider value={{ 
-                openLoginModal: () => setIsLoginModalOpen(true),
-                closeLoginModal: () => setIsLoginModalOpen(false),
-                isLoginModalOpen
-            }}>
-                {children}
-            </LoginModalContext.Provider>
+            {children}
         </AuthContext.Provider>
     )
-}
-
-export function useLoginModal() {
-    const context = useContext(LoginModalContext)
-    if (!context) {
-        throw new Error("useLoginModal must be used within AuthProvider")
-    }
-    return context
 }
 
 export function useAuth() {

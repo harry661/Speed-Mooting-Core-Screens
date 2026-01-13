@@ -69,8 +69,8 @@ export default {
         },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        "accordion-down": "accordion-down 0.2s cubic-bezier(0.25, 1, 0.5, 1)",
+        "accordion-up": "accordion-up 0.2s cubic-bezier(0.25, 1, 0.5, 1)",
       },
     }
   },
