@@ -287,7 +287,7 @@ export default function ResourceHistory() {
     }
 
     return (
-        <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
+        <div className="flex-1 bg-[#FBFBF9] dark:bg-gray-950 min-h-screen p-6">
             <div className="w-full space-y-6">
                 {/* Breadcrumbs */}
                 <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 font-sans">

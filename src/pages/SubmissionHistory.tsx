@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { toast } from "sonner"
-import { Trash2, Search, MoreVertical, ChevronRight } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { Trash2, Search, MoreVertical, ChevronRight, FileText } from "lucide-react"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Link, useNavigate } from "react-router-dom"
 import { cn } from "@/lib/utils"
+import { format } from "date-fns"
 
 interface Submission {
     id: number
@@ -54,9 +55,9 @@ const sampleSubmissions: Submission[] = [
         subject: "Contract Law",
         submissionDate: new Date("2024-01-10T10:15:00"),
         version: 2,
-        status: "Analyzed",
-        score: 78,
-        grade: "B+",
+        status: "Processing",
+        score: null,
+        grade: null,
         videoFile: "submission_v2_contract_breach.mp4",
         skeletonArgument: "skeleton_v2.pdf"
     },
@@ -81,9 +82,9 @@ const sampleSubmissions: Submission[] = [
         subject: "Criminal Law",
         submissionDate: new Date("2024-01-14T09:20:00"),
         version: 1,
-        status: "Analyzed",
-        score: 76,
-        grade: "B+",
+        status: "Failed",
+        score: null,
+        grade: null,
         videoFile: "submission_v1_mens_rea.mp4"
     },
     {
@@ -93,9 +94,9 @@ const sampleSubmissions: Submission[] = [
         subject: "Contract Law",
         submissionDate: new Date("2024-01-05T11:00:00"),
         version: 1,
-        status: "Analyzed",
-        score: 71,
-        grade: "B-",
+        status: "Processing",
+        score: null,
+        grade: null,
         videoFile: "submission_v1_contract_breach.mp4",
         skeletonArgument: "skeleton_v1.pdf"
     },
@@ -270,7 +271,7 @@ export default function SubmissionHistory() {
     }
 
     return (
-        <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
+        <div className="flex-1 bg-[#FBFBF9] dark:bg-gray-950 min-h-screen p-6">
             <motion.div 
                 className="w-full space-y-6"
                 initial={{ opacity: 0, y: 10 }}
@@ -362,121 +363,138 @@ export default function SubmissionHistory() {
                     </CardContent>
                 </Card>
 
-                {/* Table */}
+                {/* Empty State or Card Grid */}
                 {filteredSubmissions.length === 0 ? (
-                    <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
-                        <CardContent className="p-12 text-center">
-                            <Search className="w-12 h-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 font-heading mb-2">No submissions found</h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-300 font-sans">Try adjusting your filters or search query.</p>
-                        </CardContent>
-                    </Card>
-                ) : (
-                    <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none overflow-hidden">
-                        <div className="overflow-x-auto">
-                            <table className="w-full">
-                                    <thead>
-                                        <tr className="border-b border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/50">
-                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Date</th>
-                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Submission Name</th>
-                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Exercise</th>
-                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Type</th>
-                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Score</th>
-                                            <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Status</th>
-                                            <th className="text-right py-3 px-4 text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400 font-heading">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {filteredSubmissions.map((submission) => {
-                                            const subjectColors = getSubjectColorClasses(submission.subject)
-                                            const isClickable = submission.status === "Analyzed"
-                                            const handleRowClick = (e: React.MouseEvent) => {
-                                                // Don't navigate if clicking on the dropdown or its button
-                                                if ((e.target as HTMLElement).closest('[role="menu"]') || 
-                                                    (e.target as HTMLElement).closest('button')) {
-                                                    return
-                                                }
-                                                if (isClickable) {
-                                                    navigate(`/report?submissionId=${submission.id}`)
-                                                }
-                                            }
-                                            return (
-                                                <tr 
-                                                    key={submission.id} 
-                                                    onClick={handleRowClick}
-                                                    className={cn(
-                                                        "border-b border-gray-100 dark:border-gray-800 transition-colors",
-                                                        isClickable ? "cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-800/50" : "cursor-default",
-                                                        !isClickable && subjectColors.hover
-                                                    )}
-                                                >
-                                                    <td className="py-4 px-4">
-                                                        <div className="text-sm text-gray-900 dark:text-gray-100 font-sans">
-                                                            {formatTableDate(submission.submissionDate)}
-                                                        </div>
-                                                    </td>
-                                                    <td className="py-4 px-4">
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 font-heading">
-                                                                {submission.exerciseName}
-                                                            </span>
-                                                            <Badge variant="outline" className="text-[9px] font-heading font-bold uppercase tracking-widest border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 px-1.5 py-0">
-                                                                v{submission.version}
-                                                            </Badge>
-                                                        </div>
-                                                    </td>
-                                                    <td className="py-4 px-4">
-                                                        <Badge className={`text-[10px] font-heading font-semibold uppercase tracking-wider px-2 py-0.5 border ${subjectColors.badge}`}>
-                                                            {submission.subject}
-                                                        </Badge>
-                                                    </td>
-                                                    <td className="py-4 px-4">
-                                                        <span className="text-sm text-gray-700 dark:text-gray-300 font-sans">Video Submission</span>
-                                                    </td>
-                                                    <td className="py-4 px-4">
-                                                        {submission.score !== null ? (
-                                                            <div className="flex items-center gap-1">
-                                                                <span className={`text-sm font-bold font-sans tabular-nums ${getScoreColor(submission.score)}`}>{submission.score}</span>
-                                                                <span className="text-xs text-gray-500 dark:text-gray-400 font-heading font-bold uppercase tracking-widest">({submission.grade})</span>
-                                                            </div>
-                                                        ) : (
-                                                            <span className="text-sm text-gray-400 dark:text-gray-500 font-sans">--</span>
-                                                        )}
-                                                    </td>
-                                                    <td className="py-4 px-4">
-                                                        {getStatusBadge(submission.status)}
-                                                    </td>
-                                                    <td className="py-4 px-4">
-                                                        <div className="flex justify-end" onClick={(e) => e.stopPropagation()}>
-                                                            <DropdownMenu>
-                                                                <DropdownMenuTrigger asChild>
-                                                                    <Button
-                                                                        variant="ghost"
-                                                                        className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-gray-800"
-                                                                        onClick={(e) => e.stopPropagation()}
-                                                                    >
-                                                                        <MoreVertical className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                                                                    </Button>
-                                                                </DropdownMenuTrigger>
-                                                                <DropdownMenuContent align="end" className="w-48" onClick={(e) => e.stopPropagation()}>
-                                                                    <DropdownMenuItem 
-                                                                        onClick={(e) => { e.stopPropagation(); handleDeleteClick(submission.id); }}
-                                                                        className="text-red-600 focus:text-red-600 focus:bg-red-50"
-                                                                    >
-                                                                        <Trash2 className="mr-2 h-4 w-4" />
-                                                                        Delete
-                                                                    </DropdownMenuItem>
-                                                                </DropdownMenuContent>
-                                                            </DropdownMenu>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            )
-                                        })}
-                                    </tbody>
-                                </table>
+                    <div className="flex flex-col items-center justify-center py-16 px-4">
+                        <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-full mb-4">
+                            <FileText className="w-8 h-8 text-gray-400 dark:text-gray-500" />
                         </div>
-                    </Card>
+                        <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 font-heading mb-2">
+                            No submissions found
+                        </h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 text-center max-w-sm">
+                            {searchQuery || exerciseFilter !== "all" || statusFilter !== "all"
+                                ? "Try adjusting your filters to see more results."
+                                : "You haven't submitted any exercises yet. Get started with your first mooting exercise!"}
+                        </p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredSubmissions.map((submission, i) => {
+                            const subjectColors = getSubjectColorClasses(submission.subject)
+                            const isClickable = submission.status === "Analyzed"
+
+                            return (
+                                <motion.div
+                                    key={submission.id}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: i * 0.05 }}
+                                >
+                                    <Card
+                                        className={cn(
+                                            "h-full rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex flex-col group shadow-none hover:border-accent transition-colors",
+                                            isClickable && "cursor-pointer"
+                                        )}
+                                        onClick={() => {
+                                            if (isClickable) {
+                                                navigate(`/report?submissionId=${submission.id}`)
+                                            }
+                                        }}
+                                    >
+                                        <CardHeader className="p-5 pb-3">
+                                            <div className="flex items-center justify-between mb-3">
+                                                <Badge variant="outline" className={cn(
+                                                    "text-[9px] font-heading font-bold uppercase tracking-widest rounded-sm px-1.5 py-0.5 border",
+                                                    subjectColors.badge
+                                                )}>
+                                                    {submission.subject}
+                                                </Badge>
+                                                <Badge variant="outline" className={cn(
+                                                    "rounded-sm px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest",
+                                                    submission.status === "Analyzed"
+                                                        ? "border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/30"
+                                                        : submission.status === "Processing"
+                                                        ? "border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800"
+                                                        : "border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/30"
+                                                )}>
+                                                    {submission.status === "Analyzed" ? "COMPLETED" : submission.status === "Processing" ? "PENDING" : "CANCELED"}
+                                                </Badge>
+                                            </div>
+                                            <CardTitle className="text-base group-hover:text-accent transition-colors font-heading font-bold leading-tight text-gray-900 dark:text-gray-100">
+                                                {submission.exerciseName}
+                                            </CardTitle>
+                                        </CardHeader>
+                                        <CardContent className="p-5 pt-0 flex-1">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <p className="text-xs text-gray-500 dark:text-gray-400 font-mono uppercase tracking-tight">
+                                                    {format(submission.submissionDate, "MMM dd, yyyy")}
+                                                </p>
+                                                <span className="text-gray-300 dark:text-gray-600">•</span>
+                                                <Badge variant="outline" className="text-[9px] px-1.5 py-0 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                                                    V{submission.version}
+                                                </Badge>
+                                            </div>
+                                            {submission.score !== null && (
+                                                <div className="flex items-baseline gap-2">
+                                                    <p className={cn(
+                                                        "text-2xl font-bold tabular-nums font-sans",
+                                                        getScoreColor(submission.score)
+                                                    )}>
+                                                        {submission.score}
+                                                    </p>
+                                                    <p className="text-xs uppercase font-bold text-gray-400 dark:text-gray-500 font-heading tracking-widest">
+                                                        {submission.grade}
+                                                    </p>
+                                                </div>
+                                            )}
+                                        </CardContent>
+                                        <CardFooter className="p-5 pt-0 flex items-center justify-between">
+                                            {isClickable ? (
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    className="rounded-sm border-accent/20 text-accent hover:bg-accent hover:text-white font-heading font-semibold text-xs transition-colors"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        navigate(`/report?submissionId=${submission.id}`)
+                                                    }}
+                                                >
+                                                    View Report
+                                                </Button>
+                                            ) : (
+                                                <div className="flex-1"></div>
+                                            )}
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                    >
+                                                        <MoreVertical className="h-4 w-4" />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end" className="rounded-sm">
+                                                    <DropdownMenuItem
+                                                        onClick={(e) => {
+                                                            e.stopPropagation()
+                                                            handleDeleteClick(submission.id)
+                                                        }}
+                                                        className="text-red-600 focus:text-red-600 focus:bg-red-50"
+                                                    >
+                                                        <Trash2 className="mr-2 h-4 w-4" />
+                                                        Delete
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </CardFooter>
+                                    </Card>
+                                </motion.div>
+                            )
+                        })}
+                    </div>
                 )}
 
             {/* Delete Confirmation Dialog */}

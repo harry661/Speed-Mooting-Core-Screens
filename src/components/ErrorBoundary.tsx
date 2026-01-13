@@ -36,7 +36,7 @@ export class ErrorBoundary extends Component<Props, State> {
     public render() {
         if (this.state.hasError) {
             return (
-                <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6 flex items-center justify-center">
+                <div className="flex-1 bg-[#FBFBF9] dark:bg-gray-950 min-h-screen p-6 flex items-center justify-center">
                     <Card className="max-w-md w-full rounded-sm border-red-200 dark:border-red-800 bg-white dark:bg-gray-900 shadow-none">
                         <CardContent className="p-8 text-center">
                             <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">

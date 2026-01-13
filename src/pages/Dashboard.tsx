@@ -103,7 +103,7 @@ export default function Dashboard() {
     // Guest View
     if (!isAuthenticated) {
         return (
-            <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
+            <div className="flex-1 bg-[#FBFBF9] dark:bg-gray-950 min-h-screen p-6">
                 <div className="w-full space-y-6">
                     {/* Hero Section */}
                     <div className="relative overflow-hidden rounded-sm bg-gradient-to-br from-primary/10 via-accent/5 to-transparent dark:from-primary/20 dark:via-accent/10 border border-primary/20 dark:border-primary/30 p-8 lg:p-12">
@@ -307,7 +307,7 @@ export default function Dashboard() {
 
     // Authenticated View (existing content)
     return (
-        <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
+        <div className="flex-1 bg-[#FBFBF9] dark:bg-gray-950 min-h-screen p-6">
             <div className="w-full space-y-6">
                 <div className="flex items-center justify-between">
                     <div className="space-y-1">

@@ -472,7 +472,7 @@ export default function TutorialDetail() {
 
     if (!tutorial) {
         return (
-            <div className="flex-1 bg-[#fcf8f8] min-h-screen p-6">
+            <div className="flex-1 bg-[#FBFBF9] min-h-screen p-6">
                 <div className="w-full space-y-6">
                     <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-none">
                         <CardContent className="p-12 text-center">
@@ -495,7 +495,7 @@ export default function TutorialDetail() {
         .filter(Boolean)
 
     return (
-        <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
+        <div className="flex-1 bg-[#FBFBF9] dark:bg-gray-950 min-h-screen p-6">
             <div className="w-full space-y-6">
                 {/* Back Button */}
                 <Link to="/tutorials?tab=tutorials">

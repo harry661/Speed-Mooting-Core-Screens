@@ -285,7 +285,7 @@ export default function ExerciseDetail() {
 
     if (!exercise) {
         return (
-            <div className="flex-1 bg-[#fcf8f8] min-h-screen p-6">
+            <div className="flex-1 bg-[#FBFBF9] min-h-screen p-6">
                 <div className="max-w-4xl mx-auto">
                     <Card className="rounded-sm border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
                         <CardContent className="p-8 text-center">
@@ -304,7 +304,7 @@ export default function ExerciseDetail() {
     }
 
     return (
-        <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
+        <div className="flex-1 bg-[#FBFBF9] dark:bg-gray-950 min-h-screen p-6">
             <div className="w-full max-w-[95vw] mx-auto">
                 {/* Header */}
                 <div className="flex items-center gap-4 mb-6">

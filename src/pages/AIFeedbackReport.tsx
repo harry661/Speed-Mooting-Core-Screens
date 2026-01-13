@@ -426,7 +426,7 @@ export default function AIFeedbackReport() {
     const strokeDashoffset = circumference - (circumference * submissionData.overallScore / 100)
 
     return (
-        <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
+        <div className="flex-1 bg-[#FBFBF9] dark:bg-gray-950 min-h-screen p-6">
             <motion.div 
                 className="w-full space-y-6"
                 initial={{ opacity: 0, y: 10 }}

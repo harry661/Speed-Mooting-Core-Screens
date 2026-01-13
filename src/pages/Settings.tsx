@@ -22,7 +22,7 @@ export default function Settings() {
     }
 
     return (
-        <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
+        <div className="flex-1 bg-[#FBFBF9] dark:bg-gray-950 min-h-screen p-6">
             <div className="w-full max-w-4xl mx-auto space-y-6">
                 {/* Header */}
                 <div>

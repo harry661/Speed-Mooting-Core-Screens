@@ -167,7 +167,7 @@ export default function SubmissionFlow() {
     }
     
     return (
-        <div className="flex-1 bg-[#fcf8f8] dark:bg-gray-950 min-h-screen p-6">
+        <div className="flex-1 bg-[#FBFBF9] dark:bg-gray-950 min-h-screen p-6">
             <div className="w-full space-y-6 max-w-[95vw] mx-auto">
                 {/* Return Button */}
                 <Link to={returnPath}>

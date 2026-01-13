@@ -168,7 +168,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                                     <Button
                                         variant="ghost"
                                         size="icon"
-                                        className="relative w-9 h-9 text-gray-500 dark:text-gray-400 hover:text-[#00524d] dark:hover:text-accent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                        className="relative w-9 h-9 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-accent hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                                     >
                                         <Bell className="w-6 h-6" />
                                         {unreadCount > 0 && (
@@ -269,7 +269,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                                         <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{user.name}</p>
                                         <p className="text-xs text-gray-500 dark:text-gray-400">Student Advocate</p>
                                     </div>
-                                    <Avatar className="border-2 border-[#00524d]/10 dark:border-accent/30">
+                                    <Avatar className="border-2 border-primary/10 dark:border-accent/30">
                                         <AvatarImage src={user.avatar} />
                                         <AvatarFallback>{user.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                                     </Avatar>
