@@ -30,6 +30,50 @@ This Skill provides the official SpeedMooting design system for building new scr
 
 **Do not deviate from these patterns.** New screens should visually match Dashboard, Exercises, and History pages.
 
+## SpeedMooting Tech Stack
+
+This section provides the technical infrastructure context for building SpeedMooting features.
+
+**Core Technologies:**
+- React 19.2.0
+- Tailwind CSS 3.4.19
+- TypeScript ~5.9.3
+
+**UI Components:**
+- shadcn/ui (Radix UI primitives)
+- Custom components in `src/components/`
+- Component library built on Radix UI for accessibility
+
+**Navigation & Routing:**
+- React Router 7.11.0
+- Use `<Link>` components for internal navigation
+- Use `useNavigate()` hook for programmatic navigation
+- Use `useLocation()` for active route detection
+
+**State Management:**
+- React Context API
+- `AuthContext` for authentication state
+- `ThemeContext` for dark/light theme management
+- Use Context for global state, local state for component-specific data
+
+**Animations:**
+- Framer Motion 12.24.3
+- Use `motion` components for transitions and animations
+- Standard easing: `cubic-bezier(0.25, 1, 0.5, 1)`
+- Timing: 150ms micro-interactions, 200-250ms larger transitions
+- Stagger children with delay multipliers (e.g., `delay: i * 0.1`)
+
+**Icons:**
+- Lucide React 0.562.0
+- Import from `lucide-react`
+- Example: `import { ArrowRight, Check, X } from "lucide-react"`
+- Consistent sizing: `w-4 h-4`, `w-5 h-5`, `w-6 h-6`
+
+**Development Tools:**
+- Vite for build tooling
+- ESLint for code quality
+- TypeScript for type safety
+
 ## SpeedMooting Design Identity
 
 **This design system is established and should be followed consistently across all screens.**
@@ -173,7 +217,22 @@ body, p, span {
 Numbers, IDs, codes, timestamps belong in monospace. Use `tabular-nums` for columnar alignment. Mono signals "this is data."
 
 ### Iconography
-Use **Phosphor Icons** (`@phosphor-icons/react`). Icons clarify, not decorate — if removing an icon loses no meaning, remove it.
+Use **Lucide React** (`lucide-react`). Icons clarify, not decorate — if removing an icon loses no meaning, remove it.
+
+**Import Pattern:**
+```tsx
+import { Check, X, ArrowRight, Settings } from "lucide-react"
+```
+
+**Sizing:**
+- `w-4 h-4` (16px): Default for buttons, inline elements
+- `w-5 h-5` (20px): Sidebar navigation, card headers
+- `w-6 h-6` (24px): Feature cards, prominent actions
+
+**Color Patterns:**
+- Active/Accent: `text-accent`
+- Inactive: `text-white/40` (sidebar), `text-gray-400` (light mode)
+- Hover states: Transition from muted to accent
 
 Give standalone icons presence with subtle background containers.
 

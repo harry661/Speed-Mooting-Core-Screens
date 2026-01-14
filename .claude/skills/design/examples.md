@@ -464,9 +464,48 @@ Complete component library following SpeedMooting's legal/formal aesthetic with 
 
 ## Navigation
 
+### React Router Integration
+
+SpeedMooting uses React Router 7.11.0 for navigation. Always use `<Link>` components for internal navigation and detect active routes with `useLocation()`.
+
+```tsx
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import { LayoutDashboard, BookOpen, History } from "lucide-react"
+import { cn } from "@/lib/utils"
+
+// Active state detection
+const location = useLocation()
+const navigate = useNavigate()
+
+// Check if current route matches
+const isActive = location.pathname === "/dashboard"
+
+// Navigation with Link component
+<Link to="/dashboard">
+  <Button className={cn(
+    "w-full justify-start gap-4 text-white/60 hover:text-white",
+    isActive && "bg-white/5 text-white font-bold border-r-2 border-accent"
+  )}>
+    <LayoutDashboard className={cn("w-4 h-4", isActive ? "text-accent" : "text-white/40")} />
+    <span className="text-[11px] uppercase tracking-[0.1em]">Dashboard</span>
+  </Button>
+</Link>
+
+// Programmatic navigation
+const handleSubmit = () => {
+  // ... form logic
+  navigate("/dashboard")
+}
+```
+
 ### Sidebar Navigation (SpeedMooting Style)
 ```tsx
+import { Link, useLocation } from "react-router-dom"
+import { LayoutDashboard, BookOpen, History } from "lucide-react"
+
 // SpeedMooting dark green sidebar with bronze/gold accents
+const location = useLocation()
+
 <nav className="w-64 h-screen bg-primary p-6 border-r border-primary/20">
   <div className="flex items-center gap-3 mb-12">
     <img src="/logo.png" alt="Logo" className="w-8 h-8" />
@@ -787,6 +826,160 @@ Complete component library following SpeedMooting's legal/formal aesthetic with 
   <span>Loading...</span>
 </button>
 ```
+
+---
+
+## Animations (Framer Motion)
+
+SpeedMooting uses Framer Motion 12.24.3 for smooth, professional animations. Follow these patterns for consistency.
+
+### Stagger Animation (List Items)
+```tsx
+import { motion } from "framer-motion"
+
+// Animate list items with stagger effect
+<div className="space-y-4">
+  {items.map((item, i) => (
+    <motion.div
+      key={item.id}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        delay: i * 0.1,
+        ease: [0.25, 1, 0.5, 1],
+        duration: 0.2
+      }}
+    >
+      <Card>
+        <CardContent>{item.title}</CardContent>
+      </Card>
+    </motion.div>
+  ))}
+</div>
+```
+
+### Fade In Animation
+```tsx
+import { motion } from "framer-motion"
+
+// Simple fade in for page content
+<motion.div
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.2, ease: [0.25, 1, 0.5, 1] }}
+>
+  <PageContent />
+</motion.div>
+```
+
+### Slide In Animation
+```tsx
+import { motion } from "framer-motion"
+
+// Slide in from right (for modals, sidebars)
+<motion.div
+  initial={{ x: 100, opacity: 0 }}
+  animate={{ x: 0, opacity: 1 }}
+  exit={{ x: 100, opacity: 0 }}
+  transition={{ duration: 0.25, ease: [0.25, 1, 0.5, 1] }}
+>
+  <Sidebar />
+</motion.div>
+```
+
+### Hover Scale Effect
+```tsx
+import { motion } from "framer-motion"
+
+// Subtle scale on hover (use sparingly)
+<motion.button
+  whileHover={{ scale: 1.02 }}
+  whileTap={{ scale: 0.98 }}
+  transition={{ duration: 0.15 }}
+  className="px-6 py-2 bg-accent text-white rounded-sm"
+>
+  Click Me
+</motion.button>
+```
+
+### Accordion/Dropdown Animation
+```tsx
+import { motion, AnimatePresence } from "framer-motion"
+
+// Expand/collapse animation
+<AnimatePresence>
+  {isOpen && (
+    <motion.div
+      initial={{ height: 0, opacity: 0 }}
+      animate={{ height: "auto", opacity: 1 }}
+      exit={{ height: 0, opacity: 0 }}
+      transition={{ duration: 0.2, ease: [0.25, 1, 0.5, 1] }}
+      className="overflow-hidden"
+    >
+      <div className="p-4">Content here</div>
+    </motion.div>
+  )}
+</AnimatePresence>
+```
+
+### Grid Item Animation
+```tsx
+import { motion } from "framer-motion"
+
+// Animate grid items with stagger
+<div className="grid grid-cols-3 gap-6">
+  {cards.map((card, i) => (
+    <motion.div
+      key={card.id}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        delay: i * 0.05,
+        duration: 0.2,
+        ease: [0.25, 1, 0.5, 1]
+      }}
+    >
+      <Card>{card.content}</Card>
+    </motion.div>
+  ))}
+</div>
+```
+
+### Layout Animation (Shared Layout)
+```tsx
+import { motion } from "framer-motion"
+
+// Animate layout changes smoothly
+<motion.div layout transition={{ duration: 0.2, ease: [0.25, 1, 0.5, 1] }}>
+  <DynamicContent />
+</motion.div>
+```
+
+### Animation Best Practices
+
+**Timing:**
+- Micro-interactions: 150ms
+- Standard transitions: 200ms
+- Larger movements: 250ms
+- Never exceed 300ms
+
+**Easing:**
+- Always use: `[0.25, 1, 0.5, 1]` (SpeedMooting standard)
+- Matches CSS: `cubic-bezier(0.25, 1, 0.5, 1)`
+
+**Stagger Delays:**
+- List items: `delay: i * 0.1`
+- Grid items: `delay: i * 0.05`
+- Fast reveals: `delay: i * 0.05`
+
+**When to Animate:**
+- ✓ Page transitions
+- ✓ List/grid item reveals
+- ✓ Modal/drawer entrances
+- ✓ Hover states (subtle)
+- ✓ Accordion/dropdown expansion
+- ✗ Every state change (over-animation)
+- ✗ Long durations (slow UX)
 
 ---
 
