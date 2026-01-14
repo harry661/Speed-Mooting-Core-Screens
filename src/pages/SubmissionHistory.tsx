@@ -305,12 +305,13 @@ export default function SubmissionHistory() {
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     className="pl-10 rounded-sm border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 font-sans text-sm h-9 text-gray-900 dark:text-gray-100"
+                                    aria-label="Search submissions by exercise name or subject"
                                 />
                             </div>
 
                             {/* Type Filter - Using Exercise as Type */}
                             <Select value={exerciseFilter} onValueChange={setExerciseFilter}>
-                                <SelectTrigger className="w-full lg:w-[140px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100">
+                                <SelectTrigger className="w-full lg:w-[140px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100" aria-label="Filter submissions by exercise">
                                     <SelectValue placeholder="Exercise: All" />
                                 </SelectTrigger>
                                 <SelectContent className="rounded-sm border-gray-200 dark:border-gray-800 shadow-none bg-white dark:bg-gray-900">
@@ -323,7 +324,7 @@ export default function SubmissionHistory() {
 
                             {/* Status Filter */}
                             <Select value={statusFilter} onValueChange={setStatusFilter}>
-                                <SelectTrigger className="w-full lg:w-[130px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100">
+                                <SelectTrigger className="w-full lg:w-[130px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100" aria-label="Filter submissions by status">
                                     <SelectValue placeholder="Status: All" />
                                 </SelectTrigger>
                                 <SelectContent className="rounded-sm border-gray-200 dark:border-gray-800 shadow-none bg-white dark:bg-gray-900">
@@ -336,7 +337,7 @@ export default function SubmissionHistory() {
 
                             {/* Date Range Filter */}
                             <Select value={dateRangeFilter} onValueChange={setDateRangeFilter}>
-                                <SelectTrigger className="w-full lg:w-[140px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100">
+                                <SelectTrigger className="w-full lg:w-[140px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100" aria-label="Filter submissions by date range">
                                     <SelectValue placeholder="Date Range" />
                                 </SelectTrigger>
                                 <SelectContent className="rounded-sm border-gray-200 dark:border-gray-800 shadow-none bg-white dark:bg-gray-900">
@@ -347,7 +348,7 @@ export default function SubmissionHistory() {
 
                             {/* Sort */}
                             <Select value={sortBy} onValueChange={setSortBy}>
-                                <SelectTrigger className="w-full lg:w-[140px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100">
+                                <SelectTrigger className="w-full lg:w-[140px] bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-sm h-9 font-sans text-xs text-gray-900 dark:text-gray-100" aria-label="Sort submissions">
                                     <SelectValue placeholder="Sort by" />
                                 </SelectTrigger>
                                 <SelectContent className="rounded-sm border-gray-200 dark:border-gray-800 shadow-none bg-white dark:bg-gray-900">
@@ -454,7 +455,7 @@ export default function SubmissionHistory() {
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
-                                                    className="rounded-sm border-accent/20 text-accent hover:bg-accent hover:text-white font-heading font-semibold text-xs transition-colors"
+                                                    className="rounded-sm border-accent/20 text-accent group-hover:bg-accent group-hover:text-white font-heading font-semibold text-xs transition-colors"
                                                     onClick={(e) => {
                                                         e.stopPropagation()
                                                         navigate(`/report?submissionId=${submission.id}`)
@@ -472,6 +473,7 @@ export default function SubmissionHistory() {
                                                         size="sm"
                                                         className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
                                                         onClick={(e) => e.stopPropagation()}
+                                                        aria-label="Submission actions"
                                                     >
                                                         <MoreVertical className="h-4 w-4" />
                                                     </Button>

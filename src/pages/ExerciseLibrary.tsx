@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { cn } from "@/lib/utils"
 
 const exercises = [
@@ -90,6 +90,7 @@ const getDifficultyColor = (difficulty: "Beginner" | "Intermediate" | "Advanced"
 }
 
 export default function ExerciseLibrary() {
+    const navigate = useNavigate()
     const [searchQuery, setSearchQuery] = useState("")
     const [selectedSubject, setSelectedSubject] = useState<string>("all")
     const [selectedDifficulty, setSelectedDifficulty] = useState<string>("all")
@@ -206,7 +207,10 @@ export default function ExerciseLibrary() {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: i * 0.1 }}
                                 >
-                                    <Card className="h-full rounded-sm border-2 border-accent/30 dark:border-accent/50 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-none overflow-hidden relative">
+                                    <Card
+                                        className="h-full rounded-sm border-2 border-accent/30 dark:border-accent/50 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-none overflow-hidden relative cursor-pointer"
+                                        onClick={() => navigate(`/exercises/${ex.id}`)}
+                                    >
                                         <div className="absolute top-3 right-3 z-10">
                                             <Badge className="bg-accent text-white border-none px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-widest">
                                                 Recommended
@@ -249,12 +253,17 @@ export default function ExerciseLibrary() {
                                             </div>
                                         </CardContent>
                                         <CardFooter className="p-5 pt-0">
-                                            <Link to={`/exercises/${ex.id}`} className="w-full">
-                                                <Button variant="outline" className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 hover:bg-accent hover:border-accent hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-11 group/btn">
-                                                    View Details
-                                                    <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                                                </Button>
-                                            </Link>
+                                            <Button
+                                                variant="outline"
+                                                className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 group-hover:bg-accent group-hover:border-accent group-hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-11 transition-colors"
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    navigate(`/exercises/${ex.id}`)
+                                                }}
+                                            >
+                                                View Details
+                                                <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover:translate-x-1 transition-transform" />
+                                            </Button>
                                         </CardFooter>
                                     </Card>
                                 </motion.div>
@@ -278,7 +287,10 @@ export default function ExerciseLibrary() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: i * 0.05 }}
                             >
-                                <Card className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-none overflow-hidden">
+                                <Card
+                                    className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-none overflow-hidden cursor-pointer"
+                                    onClick={() => navigate(`/exercises/${ex.id}`)}
+                                >
                                     <div className="relative w-full h-32 overflow-hidden">
                                         <img 
                                             src={ex.bannerImage} 
@@ -324,12 +336,17 @@ export default function ExerciseLibrary() {
                                         </div>
                                     </CardContent>
                                     <CardFooter className="p-5 pt-0">
-                                        <Link to={`/exercises/${ex.id}`} className="w-full">
-                                            <Button variant="outline" className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 hover:bg-accent hover:border-accent hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-11 group/btn">
-                                                View Details
-                                                <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                                            </Button>
-                                        </Link>
+                                        <Button
+                                            variant="outline"
+                                            className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 group-hover:bg-accent group-hover:border-accent group-hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-11 transition-colors"
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                navigate(`/exercises/${ex.id}`)
+                                            }}
+                                        >
+                                            View Details
+                                            <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover:translate-x-1 transition-transform" />
+                                        </Button>
                                     </CardFooter>
                                 </Card>
                             </motion.div>

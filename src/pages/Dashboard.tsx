@@ -144,7 +144,7 @@ export default function Dashboard() {
                                 const daysUntil = getDaysUntil(competition.endDate)
                                 const isActive = competition.status === "active"
                                 const isUpcoming = competition.status === "upcoming"
-                                
+
                                 return (
                                     <motion.div
                                         key={competition.id}
@@ -152,7 +152,10 @@ export default function Dashboard() {
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: i * 0.1, ease: [0.25, 1, 0.5, 1] }}
                                     >
-                                        <Card className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-none overflow-hidden">
+                                        <Card
+                                            className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-none overflow-hidden cursor-pointer"
+                                            onClick={() => navigate("/login")}
+                                        >
                                             <CardHeader className="p-5 pb-3">
                                                 <div className="flex items-start justify-between gap-3 mb-2">
                                                     <div className="bg-accent/10 dark:bg-accent/20 p-2 rounded-sm">
@@ -203,12 +206,17 @@ export default function Dashboard() {
                                                 </div>
                                             </CardContent>
                                             <CardContent className="p-5 pt-0">
-                                                <Link to="/login">
-                                                    <Button variant="outline" className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 hover:bg-accent hover:border-accent hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 group/btn">
-                                                        {isActive ? "Join Competition" : "Learn More"}
-                                                        <ArrowRight className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                                                    </Button>
-                                                </Link>
+                                                <Button
+                                                    variant="outline"
+                                                    className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 group-hover:bg-accent group-hover:border-accent group-hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 transition-colors"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        navigate("/login")
+                                                    }}
+                                                >
+                                                    {isActive ? "Join Competition" : "Learn More"}
+                                                    <ArrowRight className="w-3.5 h-3.5 ml-2 group-hover:translate-x-1 transition-transform" />
+                                                </Button>
                                             </CardContent>
                                         </Card>
                                     </motion.div>
@@ -243,12 +251,16 @@ export default function Dashboard() {
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: i * 0.1, ease: [0.25, 1, 0.5, 1] }}
                                         >
-                                            <Card className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-none overflow-hidden">
+                                            <Card
+                                                className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-none overflow-hidden cursor-pointer"
+                                                onClick={() => navigate(`/tutorials/${tutorial.id}`)}
+                                            >
                                                 <div className="relative w-full h-32 overflow-hidden">
-                                                    <img 
-                                                        src={tutorial.bannerImage} 
+                                                    <img
+                                                        src={tutorial.bannerImage}
                                                         alt={tutorial.title}
                                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                                        loading="lazy"
                                                     />
                                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                                                     <div className="absolute top-3 right-3">
@@ -268,12 +280,17 @@ export default function Dashboard() {
                                                     </p>
                                                 </CardContent>
                                                 <CardContent className="p-5 pt-0">
-                                                    <Link to={`/tutorials/${tutorial.id}`}>
-                                                        <Button variant="outline" className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 hover:bg-accent hover:border-accent hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 group/btn">
+                                                    <Button
+                                                        variant="outline"
+                                                        className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 group-hover:bg-accent group-hover:border-accent group-hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 transition-colors"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation()
+                                                            navigate(`/tutorials/${tutorial.id}`)
+                                                        }}
+                                                    >
                                                         Access Tutorial
-                                                        <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                                                        <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover:translate-x-1 transition-transform" />
                                                     </Button>
-                                                    </Link>
                                                 </CardContent>
                                             </Card>
                                         </motion.div>
@@ -551,12 +568,16 @@ export default function Dashboard() {
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: i * 0.1, ease: [0.25, 1, 0.5, 1] }}
                                     >
-                                        <Card className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-none overflow-hidden">
+                                        <Card
+                                            className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-none overflow-hidden cursor-pointer"
+                                            onClick={() => navigate(`/tutorials/${tutorial.id}`)}
+                                        >
                                             <div className="relative w-full h-32 overflow-hidden">
-                                                <img 
-                                                    src={tutorial.bannerImage} 
+                                                <img
+                                                    src={tutorial.bannerImage}
                                                     alt={tutorial.title}
                                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                                    loading="lazy"
                                                 />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                                                 <div className="absolute top-3 right-3">
@@ -576,12 +597,17 @@ export default function Dashboard() {
                                                 </p>
                                             </CardContent>
                                             <CardContent className="p-5 pt-0">
-                                                <Link to={`/tutorials/${tutorial.id}`}>
-                                                    <Button variant="outline" className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 hover:bg-accent hover:border-accent hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 group/btn">
-                                                        Access Tutorial
-                                                        <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                                                    </Button>
-                                                </Link>
+                                                <Button
+                                                    variant="outline"
+                                                    className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 group-hover:bg-accent group-hover:border-accent group-hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 transition-colors"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        navigate(`/tutorials/${tutorial.id}`)
+                                                    }}
+                                                >
+                                                    Access Tutorial
+                                                    <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover:translate-x-1 transition-transform" />
+                                                </Button>
                                             </CardContent>
                                         </Card>
                                     </motion.div>

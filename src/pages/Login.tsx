@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react"
+import { useState, useCallback, FormEvent } from "react"
 import { useNavigate, Link, useSearchParams, useLocation } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Mail, Lock, Eye, EyeOff } from "lucide-react"
@@ -22,7 +22,7 @@ export default function Login() {
     const location = useLocation()
     const returnUrl = searchParams.get('returnUrl') || location.state?.returnUrl || '/'
 
-    const handleSubmit = async (e: FormEvent) => {
+    const handleSubmit = useCallback(async (e: FormEvent) => {
         e.preventDefault()
         setError("")
         setIsLoading(true)
@@ -35,12 +35,12 @@ export default function Login() {
         } finally {
             setIsLoading(false)
         }
-    }
+    }, [email, password, login, navigate, returnUrl])
 
-    const handleGoogleSignIn = () => {
+    const handleGoogleSignIn = useCallback(() => {
         // Mock Google sign in
         setError("Google sign in is not yet implemented")
-    }
+    }, [])
 
     return (
         <div className="min-h-screen flex">
@@ -137,6 +137,7 @@ export default function Login() {
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
                                         className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
                                     >
                                         {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                     </button>

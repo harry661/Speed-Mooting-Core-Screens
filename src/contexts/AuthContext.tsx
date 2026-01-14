@@ -19,29 +19,43 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-        const savedAuth = localStorage.getItem("isAuthenticated")
-        return savedAuth === "true"
+        try {
+            const savedAuth = localStorage.getItem("isAuthenticated")
+            return savedAuth === "true"
+        } catch (e) {
+            console.warn("localStorage unavailable (private browsing?)", e)
+            return false
+        }
     })
     
     const [user, setUser] = useState<User | null>(() => {
-        const savedUser = localStorage.getItem("user")
-        if (savedUser) {
-            try {
-                return JSON.parse(savedUser)
-            } catch {
-                return null
+        try {
+            const savedUser = localStorage.getItem("user")
+            if (savedUser) {
+                try {
+                    return JSON.parse(savedUser)
+                } catch {
+                    return null
+                }
             }
+            return null
+        } catch (e) {
+            console.warn("localStorage unavailable (private browsing?)", e)
+            return null
         }
-        return null
     })
 
     useEffect(() => {
-        if (isAuthenticated && user) {
-            localStorage.setItem("isAuthenticated", "true")
-            localStorage.setItem("user", JSON.stringify(user))
-        } else {
-            localStorage.removeItem("isAuthenticated")
-            localStorage.removeItem("user")
+        try {
+            if (isAuthenticated && user) {
+                localStorage.setItem("isAuthenticated", "true")
+                localStorage.setItem("user", JSON.stringify(user))
+            } else {
+                localStorage.removeItem("isAuthenticated")
+                localStorage.removeItem("user")
+            }
+        } catch (e) {
+            console.warn("localStorage unavailable (private browsing?)", e)
         }
     }, [isAuthenticated, user])
 

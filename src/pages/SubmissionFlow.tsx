@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useSearchParams, useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { getExerciseById } from "@/data/exercises"
 import { formatFileSize, getFileType } from "@/utils/fileUtils"
+import { UPLOAD_LIMITS, VALID_VIDEO_TYPES, VALID_DOCUMENT_EXTENSIONS, FILE_INPUT_ACCEPT, UPLOAD_ERROR_MESSAGES, FILE_TYPE_DISPLAY } from "@/constants/upload"
 
 const steps = [
     { id: 1, title: "Upload & Details", description: "Upload files and add description", icon: Upload },
@@ -52,20 +53,19 @@ export default function SubmissionFlow() {
     const returnPath = exerciseId ? `/exercises/${exerciseId}` : "/exercises"
     
     // File upload handlers
-    const handleVideoUpload = async (file: File) => {
+    const handleVideoUpload = useCallback(async (file: File) => {
         setUploadErrors(prev => ({ ...prev, video: undefined }))
-        
-        if (file.size > 500 * 1024 * 1024) {
-            const error = "Video file size must be less than 500MB"
+
+        if (file.size > UPLOAD_LIMITS.MAX_VIDEO_SIZE) {
+            const error = UPLOAD_ERROR_MESSAGES.VIDEO_TOO_LARGE
             setUploadErrors(prev => ({ ...prev, video: error }))
             toast.error("File too large", {
                 description: error
             })
             return
         }
-        const validTypes = ["video/mp4", "video/mov", "video/webm"]
-        if (!validTypes.includes(file.type)) {
-            const error = "Please upload MP4, MOV, or WEBM video files only"
+        if (!VALID_VIDEO_TYPES.includes(file.type as any)) {
+            const error = UPLOAD_ERROR_MESSAGES.VIDEO_INVALID_TYPE
             setUploadErrors(prev => ({ ...prev, video: error }))
             toast.error("Invalid file type", {
                 description: error
@@ -83,15 +83,14 @@ export default function SubmissionFlow() {
         if (!uploadTimestamp) {
             setUploadTimestamp(new Date())
         }
-    }
+    }, [uploadTimestamp])
     
-    const handleSkeletonUpload = (file: File) => {
+    const handleSkeletonUpload = useCallback((file: File) => {
         setUploadErrors(prev => ({ ...prev, skeleton: undefined }))
-        
-        const validTypes = [".doc", ".docx", ".pdf"]
+
         const ext = file.name.toLowerCase().split('.').pop()
-        if (!ext || !validTypes.includes(`.${ext}`)) {
-            const error = "Please upload Word (.doc, .docx) or PDF files only"
+        if (!ext || !VALID_DOCUMENT_EXTENSIONS.includes(`.${ext}` as any)) {
+            const error = UPLOAD_ERROR_MESSAGES.DOCUMENT_INVALID_TYPE
             setUploadErrors(prev => ({ ...prev, skeleton: error }))
             toast.error("Invalid file type", {
                 description: error
@@ -105,26 +104,25 @@ export default function SubmissionFlow() {
         if (!uploadTimestamp) {
             setUploadTimestamp(new Date())
         }
-    }
+    }, [uploadTimestamp])
     
-    const handleCaseFilesUpload = (files: FileList | null) => {
+    const handleCaseFilesUpload = useCallback((files: FileList | null) => {
         if (!files) return
-        const validTypes = [".pdf", ".doc", ".docx"]
         const newFiles = Array.from(files).filter(file => {
             const ext = file.name.toLowerCase().split('.').pop()
-            return ext && validTypes.includes(`.${ext}`)
+            return ext && VALID_DOCUMENT_EXTENSIONS.includes(`.${ext}` as any)
         })
         const invalidFiles = Array.from(files).filter(file => {
             const ext = file.name.toLowerCase().split('.').pop()
-            return !ext || !validTypes.includes(`.${ext}`)
+            return !ext || !VALID_DOCUMENT_EXTENSIONS.includes(`.${ext}` as any)
         })
-        
+
         if (invalidFiles.length > 0) {
             toast.error("Some files were skipped", {
                 description: `Only PDF, Word (.doc, .docx) files are allowed. ${invalidFiles.length} file(s) skipped.`
             })
         }
-        
+
         if (newFiles.length > 0) {
             setCaseFiles(prev => [...prev, ...newFiles])
             toast.success(`${newFiles.length} case file(s) uploaded`)
@@ -132,16 +130,16 @@ export default function SubmissionFlow() {
                 setUploadTimestamp(new Date())
             }
         }
-    }
+    }, [uploadTimestamp])
     
-    const removeCaseFile = (index: number) => {
+    const removeCaseFile = useCallback((index: number) => {
         setCaseFiles(prev => prev.filter((_, i) => i !== index))
-    }
+    }, [])
     
     // Validation
     const canProceedToStep2 = videoFile !== null && description.trim().length > 0
     
-    const handleProceed = async () => {
+    const handleProceed = useCallback(async () => {
         if (currentStep === 1 && !canProceedToStep2) {
             toast.error("Missing required information", {
                 description: "Please upload a video file and provide a description before proceeding"
@@ -164,7 +162,7 @@ export default function SubmissionFlow() {
                 navigate("/history")
             }, 2000)
         }
-    }
+    }, [currentStep, canProceedToStep2, navigate])
     
     return (
         <div className="flex-1 bg-[#FBFBF9] dark:bg-gray-950 min-h-screen p-6">
@@ -235,7 +233,7 @@ export default function SubmissionFlow() {
                                                     <input
                                                         type="file"
                                                         ref={videoInputRef}
-                                                        accept="video/mp4,video/mov,video/webm"
+                                                        accept={FILE_INPUT_ACCEPT.VIDEO}
                                                         onChange={(e) => e.target.files?.[0] && handleVideoUpload(e.target.files[0])}
                                                         className="hidden"
                                                     />
@@ -265,7 +263,7 @@ export default function SubmissionFlow() {
                                                                 <>
                                                                     <Upload className="w-8 h-8 text-primary dark:text-gray-300 mx-auto mb-2" />
                                                                     <p className="text-sm font-medium text-gray-600 dark:text-gray-300 font-sans mb-1">Click to browse or drag file here</p>
-                                                                    <p className="text-xs text-gray-400 font-sans">MP4, MOV or WEBM • Max 500MB</p>
+                                                                    <p className="text-xs text-gray-400 font-sans">{FILE_TYPE_DISPLAY.VIDEO}</p>
                                                                 </>
                                                             )}
                                                         </div>
@@ -286,6 +284,7 @@ export default function SubmissionFlow() {
                                                                     if (videoInputRef.current) videoInputRef.current.value = ""
                                                                 }}
                                                                 className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                                                aria-label="Remove video file"
                                                             >
                                                                 <X className="w-4 h-4" />
                                                             </Button>
@@ -348,7 +347,7 @@ export default function SubmissionFlow() {
                                                             <input
                                                                 type="file"
                                                                 ref={skeletonInputRef}
-                                                                accept=".doc,.docx,.pdf"
+                                                                accept={FILE_INPUT_ACCEPT.DOCUMENT}
                                                                 onChange={(e) => e.target.files?.[0] && handleSkeletonUpload(e.target.files[0])}
                                                                 className="hidden"
                                                             />
@@ -360,7 +359,7 @@ export default function SubmissionFlow() {
                                                                     <FileText className="w-8 h-8 text-primary mb-2" />
                                                                     <p className="text-sm font-medium text-gray-600 dark:text-gray-300 font-sans mb-1">Skeleton Argument</p>
                                                                     <p className="text-sm font-medium text-gray-600 dark:text-gray-300 font-sans mb-1">Click to browse or drag file here</p>
-                                                                    <p className="text-xs text-gray-400 font-sans">Word (.doc, .docx) or PDF • Optional</p>
+                                                                    <p className="text-xs text-gray-400 font-sans">{FILE_TYPE_DISPLAY.SKELETON}</p>
                                                                 </div>
                                                             ) : (
                                                                 <div className="border border-gray-200 dark:border-gray-800 rounded-xl p-4 bg-gray-50 dark:bg-gray-800 flex items-center justify-between min-h-[140px]">
@@ -379,6 +378,7 @@ export default function SubmissionFlow() {
                                                                             if (skeletonInputRef.current) skeletonInputRef.current.value = ""
                                                                         }}
                                                                         className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                                                        aria-label="Remove skeleton argument file"
                                                                     >
                                                                         <X className="w-4 h-4" />
                                                                     </Button>
@@ -397,7 +397,7 @@ export default function SubmissionFlow() {
                                                             <input
                                                                 type="file"
                                                                 ref={caseFilesInputRef}
-                                                                accept=".pdf,.doc,.docx"
+                                                                accept={FILE_INPUT_ACCEPT.DOCUMENT}
                                                                 multiple
                                                                 onChange={(e) => handleCaseFilesUpload(e.target.files)}
                                                                 className="hidden"
@@ -410,7 +410,7 @@ export default function SubmissionFlow() {
                                                                     <File className="w-8 h-8 text-primary mb-2" />
                                                                     <p className="text-sm font-medium text-gray-600 dark:text-gray-300 font-sans mb-1">Case Files</p>
                                                                     <p className="text-sm font-medium text-gray-600 dark:text-gray-300 font-sans mb-1">Click to browse or drag files here</p>
-                                                                    <p className="text-xs text-gray-400 font-sans">PDF, Word (.doc, .docx) • Optional</p>
+                                                                    <p className="text-xs text-gray-400 font-sans">{FILE_TYPE_DISPLAY.CASE_FILES}</p>
                                                                 </div>
                                                             ) : (
                                                                 <div className="flex-1 flex flex-col space-y-2">
@@ -432,6 +432,7 @@ export default function SubmissionFlow() {
                                                                                 size="sm"
                                                                                 onClick={() => removeCaseFile(index)}
                                                                                 className="text-red-600 hover:text-red-700 hover:bg-red-50 shrink-0 h-6 w-6 p-0"
+                                                                                aria-label={`Remove case file ${file.name}`}
                                                                             >
                                                                                 <X className="w-3 h-3" />
                                                                             </Button>

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useSearchParams, Link } from "react-router-dom"
+import { useSearchParams, Link, useNavigate } from "react-router-dom"
 
 const legalDatabases = [
     { 
@@ -179,6 +179,7 @@ const tutorials = [
 ]
 
 export default function TutorialsAndGuidance() {
+    const navigate = useNavigate()
     const [searchParams] = useSearchParams()
     const [searchQuery, setSearchQuery] = useState("")
     const [filterCategory, setFilterCategory] = useState<string>("all")
@@ -366,7 +367,10 @@ export default function TutorialsAndGuidance() {
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: i * 0.05 }}
                                     >
-                                        <Card className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-sm overflow-hidden">
+                                        <Card
+                                            className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-sm overflow-hidden cursor-pointer"
+                                            onClick={() => navigate(`/subjects/${subject.id}`)}
+                                        >
                                             <div className="relative w-full h-32 overflow-hidden">
                                                 <img 
                                                     src={subject.bannerImage} 
@@ -390,12 +394,17 @@ export default function TutorialsAndGuidance() {
                                                 </div>
                                             </CardContent>
                                             <CardContent className="p-5 pt-0">
-                                                <Link to={`/subjects/${subject.id}`}>
-                                                    <Button variant="outline" className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 hover:bg-accent hover:border-accent hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-9 rounded-sm group/btn">
-                                                        View Guide
-                                                        <ExternalLink className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                                                    </Button>
-                                                </Link>
+                                                <Button
+                                                    variant="outline"
+                                                    className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 group-hover:bg-accent group-hover:border-accent group-hover:text-white font-heading font-bold text-[10px] uppercase tracking-widest h-9 rounded-sm transition-colors"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        navigate(`/subjects/${subject.id}`)
+                                                    }}
+                                                >
+                                                    View Guide
+                                                    <ExternalLink className="w-3.5 h-3.5 ml-2 group-hover:translate-x-0.5 transition-transform" />
+                                                </Button>
                                             </CardContent>
                                         </Card>
                                     </motion.div>
@@ -416,7 +425,10 @@ export default function TutorialsAndGuidance() {
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: i * 0.05 }}
                                         >
-                                            <Card className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-sm overflow-hidden">
+                                            <Card
+                                                className="h-full rounded-sm border-gray-200 dark:border-gray-800 hover:border-accent transition-colors bg-white dark:bg-gray-900 flex flex-col group shadow-sm overflow-hidden cursor-pointer"
+                                                onClick={() => navigate(`/tutorials/${tutorial.id}`)}
+                                            >
                                                 <div className="relative w-full h-32 overflow-hidden">
                                                     <img 
                                                         src={tutorial.bannerImage} 
@@ -441,12 +453,17 @@ export default function TutorialsAndGuidance() {
                                                     </p>
                                                 </CardContent>
                                                 <CardContent className="p-5 pt-0">
-                                                    <Link to={`/tutorials/${tutorial.id}`}>
-                                                        <Button variant="outline" className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 hover:bg-accent hover:border-accent hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 group/btn">
-                                                            Access Tutorial
-                                                            <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                                                        </Button>
-                                                    </Link>
+                                                    <Button
+                                                        variant="outline"
+                                                        className="w-full border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 group-hover:bg-accent group-hover:border-accent group-hover:text-white shadow-none rounded-sm font-heading font-bold uppercase tracking-widest text-[10px] h-9 transition-colors"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation()
+                                                            navigate(`/tutorials/${tutorial.id}`)
+                                                        }}
+                                                    >
+                                                        Access Tutorial
+                                                        <ChevronRight className="w-3.5 h-3.5 ml-2 group-hover:translate-x-1 transition-transform" />
+                                                    </Button>
                                                 </CardContent>
                                             </Card>
                                         </motion.div>
